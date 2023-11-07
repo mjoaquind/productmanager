@@ -101,7 +101,6 @@ try {
     console.error(error.message);
 }
 
-
 try {
     console.log(productManager.getProductById(2))
 } catch (error) {
