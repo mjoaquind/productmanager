@@ -19,50 +19,41 @@ class ProductManager {
     addProduct = async (productData) => {
         const { title, description, price, thumbnail, code, stock } = productData;
 
-        await this.getProducts();
+        const products = await this.getProducts();
 
-        if(this.products.length === 0) {
+        if(products.length === 0) {
             productData.id = 1;
         } else {
-            productData.id = this.products[this.products.length - 1].id + 1;
+            productData.id = products[products.length - 1].id + 1;
         }
 
         if (!title || !description || !price || !thumbnail || !code || !stock) {
             throw new Error('Todos los campos del producto son obligatorios');
         }
 
-        if (this.products.some(product => product.code === code)) {
+        if (products.some(product => product.code === code)) {
             throw new Error("El código de producto está duplicado.");
         }
     
-        const product = {
-            id: productData.id,
-            title,
-            description,
-            price,
-            thumbnail,
-            code,
-            stock,
-        };
-        this.products.push(product);
-        await fs.promises.writeFile(this.path, JSON.stringify(this.products, null, '\t'));
+        products.push(productData);
+        await fs.promises.writeFile(this.path, JSON.stringify(products, null, '\t'));
         console.info(`Se agrego el producto con el ID: ${productData.id}`);
     }
 
-    getProductById = async(id) => {
-        await this.getProducts();
-        const product = this.products.find(product => product.id === id);
-        if (!product) {
-            throw new Error(`Producto con id ${id} no encontrado`);
+    getProductById = async (id) => {
+        const products = await this.getProducts();
+        const productById = products.find(product => product.id === id);
+        if (!productById) {
+            throw new Error(`Producto con ID ${id} no encontrado`);
         }
-        return product;
+        return productById;
     }
 
 
     updateProduct = async (id, updatedData) => {
         const { title, description, price, thumbnail, code, stock } = updatedData;
-        await this.getProducts();
-        const index = this.products.findIndex(product => product.id === id);
+        const products = await this.getProducts();
+        const index = products.findIndex(product => product.id === id);
         
         if (index === -1) {
             throw new Error(`Producto con ID ${id} no encontrado`);
@@ -72,30 +63,30 @@ class ProductManager {
             throw new Error('Todos los campos del producto son obligatorios');
         }
 
-        if (this.products.some(product => product.code === updatedData.code && product.id !== id)) {
+        if (products.some(product => product.code === updatedData.code && product.id !== id)) {
             throw new Error("El código de producto está duplicado.");
         }
 
         const updatedProduct = {
-            ...this.products[index],
+            ...products[index],
             ...updatedData,
         };
 
-        this.products[index] = updatedProduct;
-        await fs.promises.writeFile(this.path, JSON.stringify(this.products, null, '\t'));
+        products[index] = updatedProduct;
+        await fs.promises.writeFile(this.path, JSON.stringify(products, null, '\t'));
         console.info(`Se actualizó el producto con el ID: ${id}`);
     }
 
 
     deleteProduct = async (id) => {
-        await this.getProducts();
-        const index = this.products.findIndex(product => product.id === id);
+        const products = await this.getProducts();
+        const index = products.findIndex(product => product.id === id);
         if (index === -1) {
             throw new Error(`Producto con ID ${id} no encontrado`);
         }
 
-        this.products.splice(index, 1);
-        await fs.promises.writeFile(this.path, JSON.stringify(this.products, null, '\t'));
+        products.splice(index, 1);
+        await fs.promises.writeFile(this.path, JSON.stringify(products, null, '\t'));
         console.info(`Se eliminó el producto con el ID: ${id}`);
     }
 }
