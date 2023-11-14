@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { resourceUsage } from 'process';
 
 class ProductManager {
     constructor(path) {
@@ -17,77 +18,98 @@ class ProductManager {
     }
 
     addProduct = async (productData) => {
-        const { title, description, price, thumbnail, code, stock } = productData;
+        let resultado = '';
+        try {
+            const { title, description, price, thumbnail, code, stock } = productData;
 
-        const products = await this.getProducts();
+            const products = await this.getProducts();
 
-        if(products.length === 0) {
-            productData.id = 1;
-        } else {
-            productData.id = products[products.length - 1].id + 1;
+            if(products.length === 0) {
+                productData.id = 1;
+            } else {
+                productData.id = products[products.length - 1].id + 1;
+            }
+
+            if (!title || !description || !price || !thumbnail || !code || !stock) {
+                throw new Error('Todos los campos del producto son obligatorios');
+            }
+
+            if (products.some(product => product.code === code)) {
+                throw new Error("El código de producto está duplicado.");
+            }
+        
+            products.push(productData);
+            await fs.promises.writeFile(this.path, JSON.stringify(products, null, '\t'));
+            resultado = `Se agrego el producto con el ID: ${productData.id}`;
+        } catch (error) {
+            resultado = `Error al agregar el producto: ${error.message}`;
         }
-
-        if (!title || !description || !price || !thumbnail || !code || !stock) {
-            throw new Error('Todos los campos del producto son obligatorios');
-        }
-
-        if (products.some(product => product.code === code)) {
-            throw new Error("El código de producto está duplicado.");
-        }
-    
-        products.push(productData);
-        await fs.promises.writeFile(this.path, JSON.stringify(products, null, '\t'));
-        console.info(`Se agrego el producto con el ID: ${productData.id}`);
+        return resultado;
     }
 
     getProductById = async (id) => {
-        const products = await this.getProducts();
-        const productById = products.find(product => product.id === id);
-        if (!productById) {
-            throw new Error(`Producto con ID ${id} no encontrado`);
+        try {
+            const products = await this.getProducts();
+            const productById = products.find(product => product.id === id);
+            if (!productById) {
+                throw new Error(`Producto con ID ${id} no encontrado`);
+            }
+            return JSON.stringify(productById, null, '\t');
+        } catch (error) {
+            let resultado = `Error al buscar el producto: ${error.message}`;
+            return resultado;
         }
-        return productById;
     }
-
 
     updateProduct = async (id, updatedData) => {
-        const { title, description, price, thumbnail, code, stock } = updatedData;
-        const products = await this.getProducts();
-        const index = products.findIndex(product => product.id === id);
-        
-        if (index === -1) {
-            throw new Error(`Producto con ID ${id} no encontrado`);
+        let resultado = '';
+        try {
+            const { title, description, price, thumbnail, code, stock } = updatedData;
+            const products = await this.getProducts();
+            const index = products.findIndex(product => product.id === id);
+            
+            if (index === -1) {
+                throw new Error(`Producto con ID ${id} no encontrado`);
+            }
+
+            if (!title || !description || !price || !thumbnail || !code || !stock) {
+                throw new Error('Todos los campos del producto son obligatorios');
+            }
+
+            if (products.some(product => product.code === updatedData.code && product.id !== id)) {
+                throw new Error("El código de producto está duplicado.");
+            }
+
+            const updatedProduct = {
+                ...products[index],
+                ...updatedData,
+            };
+
+            products[index] = updatedProduct;
+            await fs.promises.writeFile(this.path, JSON.stringify(products, null, '\t'));
+            resultado = `Se actualizó el producto con el ID: ${id}`;
+        } catch (error) {
+            resultado = `Error al actualizar el producto: ${error.message}`;
         }
-
-        if (!title || !description || !price || !thumbnail || !code || !stock) {
-            throw new Error('Todos los campos del producto son obligatorios');
-        }
-
-        if (products.some(product => product.code === updatedData.code && product.id !== id)) {
-            throw new Error("El código de producto está duplicado.");
-        }
-
-        const updatedProduct = {
-            ...products[index],
-            ...updatedData,
-        };
-
-        products[index] = updatedProduct;
-        await fs.promises.writeFile(this.path, JSON.stringify(products, null, '\t'));
-        console.info(`Se actualizó el producto con el ID: ${id}`);
+        return resultado;
     }
 
-
     deleteProduct = async (id) => {
-        const products = await this.getProducts();
-        const index = products.findIndex(product => product.id === id);
-        if (index === -1) {
-            throw new Error(`Producto con ID ${id} no encontrado`);
-        }
+        let resultado = '';
+        try {
+            const products = await this.getProducts();
+            const index = products.findIndex(product => product.id === id);
+            if (index === -1) {
+                throw new Error(`Producto con ID ${id} no encontrado`);
+            }
 
-        products.splice(index, 1);
-        await fs.promises.writeFile(this.path, JSON.stringify(products, null, '\t'));
-        console.info(`Se eliminó el producto con el ID: ${id}`);
+            products.splice(index, 1);
+            await fs.promises.writeFile(this.path, JSON.stringify(products, null, '\t'));
+            resultado = `Se eliminó el producto con el ID: ${id}`;
+        } catch (error) {
+            resultado = `Error al eliminar el producto: ${error.message}`;
+        }
+        return resultado;
     }
 }
 

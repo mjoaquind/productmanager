@@ -11,8 +11,7 @@ const env = async () => {
     console.log(products);
 
     // Agregar un producto
-    try {
-        await productManager.addProduct({
+    const newProduct = await productManager.addProduct({
             title: "producto prueba",
             description: "Este es un producto prueba",
             price: 200,
@@ -20,13 +19,10 @@ const env = async () => {
             code: "abc123",
             stock: 25,
         });
-    } catch (error) {
-        console.error(error.message);
-    }
+    console.log(newProduct);
 
     // intento agregar un producto con codigo duplicado
-    try {
-        await productManager.addProduct({
+    const newProduct2 = await productManager.addProduct({
             title: "producto prueba 2",
             description: "Este es un producto prueba 2",
             price: 400,
@@ -34,13 +30,10 @@ const env = async () => {
             code: "abc123",
             stock: 5,
         });
-    } catch (error) {
-        console.error(error.message);
-    }
+    console.log(newProduct2);
 
     // inserto el 2do producto
-    try {
-        await productManager.addProduct({
+    const newProduct3 = await productManager.addProduct({
             title: "producto prueba 2",
             description: "Este es un producto prueba 2",
             price: 400,
@@ -48,13 +41,10 @@ const env = async () => {
             code: "abcd1234",
             stock: 5,
         });
-    } catch (error) {
-        console.error(error.message);
-    }
+    console.log(newProduct3);
 
     // actualizo el 2do producto
-    try {
-        await productManager.updateProduct(2, {
+    const updateProduct1 = await productManager.updateProduct(2, {
             title: "actualizo el producto de prueba 2",
             description: "Este es un producto prueba 2 actualizado",
             price: 450,
@@ -62,30 +52,17 @@ const env = async () => {
             code: "abcd1234",
             stock: 3,
         });
-    } catch (error) {
-        console.error(error.message);
-    }
+    console.log(updateProduct1);
 
     // muestro el producto con id 1
-    try {
-        console.log(await productManager.getProductById(1))
-    } catch (error) {
-        console.error(error.message);
-    }
+    console.log('muestro el producto con id 1:' + await productManager.getProductById(1))
 
     // muestro el producto con id 3 (que no existe)
-    try {
-        console.log(await productManager.getProductById(3))
-    } catch (error) {
-        console.error(error.message);
-    }
+    console.log('muestro el producto con id 3 (que no existe):' + await productManager.getProductById(3))
 
     // elimino el producto con id 1
-    try {
-        console.log(await productManager.deleteProduct(1))
-    } catch (error) {
-        console.error(error.message);
-    }
+    console.log('elimino el producto con id 1:' + await productManager.deleteProduct(1))
+    
 }
 
 env();
