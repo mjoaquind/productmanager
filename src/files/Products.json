@@ -61,5 +61,32 @@
 		"code": "p7abc123",
 		"stock": 25,
 		"id": 7
+	},
+	{
+		"title": "Producto 8",
+		"description": "Este es el octavo producto de prueba",
+		"price": 170,
+		"thumbnail": "Imagen 8",
+		"code": "p8abc123",
+		"stock": 14,
+		"id": 8
+	},
+	{
+		"title": "Producto 9",
+		"description": "Este es el noveno producto de prueba",
+		"price": 220,
+		"thumbnail": "Imagen 9",
+		"code": "p9abc123",
+		"stock": 22,
+		"id": 9
+	},
+	{
+		"title": "Producto 10",
+		"description": "Este es el décimo producto de prueba",
+		"price": 190,
+		"thumbnail": "Imagen 10",
+		"code": "p10abc123",
+		"stock": 30,
+		"id": 10
 	}
 ]

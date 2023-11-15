@@ -1,7 +1,7 @@
 import express from "express";
 import ProductManager from "./managers/ProductManager.js";
 
-const PORT = 3000;
+const PORT = 8080;
 
 const app = express();
 
@@ -17,7 +17,6 @@ const productManager = new ProductManager(path);
 app.get('/products', async (req, res) => {
 
     let limit = parseInt(req.query.limit) || 0;
-    console.log(limit);
 
     const products = await productManager.getProducts();
     
@@ -35,35 +34,10 @@ app.get('/products/:pid', async (req, res) => {
     res.json({product});
 })
 
+/*
 const env = async () => {
+    // pruebo agregar un producto con codigo que ya existe
     const newProduct = await productManager.addProduct({
-        title: "Producto 7",
-        description: "Este es el séptimo producto de prueba",
-        price: 200,
-        thumbnail: "Imagen 7",
-        code: "p7abc123",
-        stock: 25
-    });
-    console.log(newProduct);
-    const newProduct1 = await productManager.addProduct({
-        title: "Producto 8",
-        description: "Este es el octavo producto de prueba",
-        price: 170,
-        thumbnail: "Imagen 8",
-        code: "p8abc123",
-        stock: 14
-    });
-    console.log(newProduct1);
-    const newProduct2 = await productManager.addProduct({
-        title: "Producto 9",
-        description: "Este es el noveno producto de prueba",
-        price: 220,
-        thumbnail: "Imagen 9",
-        code: "p9abc123",
-        stock: 22
-    });
-    console.log(newProduct2);
-    const newProduct3 = await productManager.addProduct({
         title: "Producto 10",
         description: "Este es el décimo producto de prueba",
         price: 190,
@@ -71,7 +45,18 @@ const env = async () => {
         code: "p10abc123",
         stock: 30
     });
-    console.log(newProduct3);
+    console.log(newProduct);
+    // pruebo agregar un nuevo producto que no esta desde el inicio en Products.json
+    const newProduct1 = await productManager.addProduct({
+        title: "Producto 11",
+        description: "Este es el onceavo producto de prueba",
+        price: 310,
+        thumbnail: "Imagen 11",
+        code: "p11abc123",
+        stock: 9
+    });
+    console.log(newProduct1);
 }
 
 env();
+*/
