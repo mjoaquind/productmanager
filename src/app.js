@@ -5,81 +5,73 @@ const PORT = 3000;
 
 const app = express();
 
-const path = './files/Products.json';
-const productManager = new ProductManager(path);
-
-app.get('/', async (req, res) => {
-    const products = await productManager.getProducts();
-    res.send({products});
-})
+app.use(express.urlencoded({extended:true}));
 
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);
 })
 
-/*
+const path = './src/files/Products.json';
+const productManager = new ProductManager(path);
 
-// Obtener productos (debe devolver un arreglo vacío)
+app.get('/products', async (req, res) => {
+
+    let limit = parseInt(req.query.limit) || 0;
+    console.log(limit);
+
+    const products = await productManager.getProducts();
+    
+    if(limit == 0){
+        res.json({products});
+    } else {
+        const resultado = products.slice(0,parseInt(limit));
+        res.json({products: resultado});
+    }
+    
+})
+
+app.get('/products/:pid', async (req, res) => {
+    const product = await productManager.getProductById(req.params.pid);
+    res.json({product});
+})
 
 const env = async () => {
-    let products = await productManager.getProducts();
-    console.log(products);
-
-    // Agregar un producto
     const newProduct = await productManager.addProduct({
-            title: "producto prueba",
-            description: "Este es un producto prueba",
-            price: 200,
-            thumbnail: "Sin imagen",
-            code: "abc123",
-            stock: 25,
-        });
+        title: "Producto 7",
+        description: "Este es el séptimo producto de prueba",
+        price: 200,
+        thumbnail: "Imagen 7",
+        code: "p7abc123",
+        stock: 25
+    });
     console.log(newProduct);
-
-    // intento agregar un producto con codigo duplicado
+    const newProduct1 = await productManager.addProduct({
+        title: "Producto 8",
+        description: "Este es el octavo producto de prueba",
+        price: 170,
+        thumbnail: "Imagen 8",
+        code: "p8abc123",
+        stock: 14
+    });
+    console.log(newProduct1);
     const newProduct2 = await productManager.addProduct({
-            title: "producto prueba 2",
-            description: "Este es un producto prueba 2",
-            price: 400,
-            thumbnail: "Tampoco tiene imagen",
-            code: "abc123",
-            stock: 5,
-        });
+        title: "Producto 9",
+        description: "Este es el noveno producto de prueba",
+        price: 220,
+        thumbnail: "Imagen 9",
+        code: "p9abc123",
+        stock: 22
+    });
     console.log(newProduct2);
-
-    // inserto el 2do producto
     const newProduct3 = await productManager.addProduct({
-            title: "producto prueba 2",
-            description: "Este es un producto prueba 2",
-            price: 400,
-            thumbnail: "Tampoco tiene imagen",
-            code: "abcd1234",
-            stock: 5,
-        });
+        title: "Producto 10",
+        description: "Este es el décimo producto de prueba",
+        price: 190,
+        thumbnail: "Imagen 10",
+        code: "p10abc123",
+        stock: 30
+    });
     console.log(newProduct3);
-
-    // actualizo el 2do producto
-    const updateProduct1 = await productManager.updateProduct(2, {
-            title: "actualizo el producto de prueba 2",
-            description: "Este es un producto prueba 2 actualizado",
-            price: 450,
-            thumbnail: "Tampoco tiene imagen",
-            code: "abcd1234",
-            stock: 3,
-        });
-    console.log(updateProduct1);
-
-    // muestro el producto con id 1
-    console.log('muestro el producto con id 1:' + await productManager.getProductById(1))
-
-    // muestro el producto con id 3 (que no existe)
-    console.log('muestro el producto con id 3 (que no existe):' + await productManager.getProductById(3))
-
-    // elimino el producto con id 1
-    console.log('elimino el producto con id 1:' + await productManager.deleteProduct(1))
-    
 }
 
 env();
-
-*/

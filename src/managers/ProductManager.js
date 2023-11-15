@@ -1,5 +1,4 @@
 import fs from 'fs';
-import { resourceUsage } from 'process';
 
 class ProductManager {
     constructor(path) {
@@ -35,7 +34,7 @@ class ProductManager {
             }
 
             if (products.some(product => product.code === code)) {
-                throw new Error("El código de producto está duplicado.");
+                throw new Error(`El código de producto ${code} está duplicado.`);
             }
         
             products.push(productData);
@@ -50,11 +49,11 @@ class ProductManager {
     getProductById = async (id) => {
         try {
             const products = await this.getProducts();
-            const productById = products.find(product => product.id === id);
+            const productById = products.find(product => parseInt(product.id) === parseInt(id));
             if (!productById) {
                 throw new Error(`Producto con ID ${id} no encontrado`);
             }
-            return JSON.stringify(productById, null, '\t');
+            return productById;
         } catch (error) {
             let resultado = `Error al buscar el producto: ${error.message}`;
             return resultado;
