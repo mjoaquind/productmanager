@@ -1,9 +1,24 @@
+import express from "express";
 import ProductManager from "./managers/ProductManager.js";
 
+const PORT = 3000;
+
+const app = express();
+
 const path = './files/Products.json';
-
-
 const productManager = new ProductManager(path);
+
+app.get('/', async (req, res) => {
+    const products = await productManager.getProducts();
+    res.send({products});
+})
+
+app.listen(PORT, () => {
+    console.log(`Servidor escuchando en el puerto ${PORT}`);
+})
+
+/*
+
 // Obtener productos (debe devolver un arreglo vacío)
 
 const env = async () => {
@@ -66,3 +81,5 @@ const env = async () => {
 }
 
 env();
+
+*/
