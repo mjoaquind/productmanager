@@ -5,13 +5,14 @@ const PORT = 8080;
 
 const app = express();
 
+app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);
 })
 
-const path = './src/files/Products.json';
+const path = './files/Products.json';
 const productManager = new ProductManager(path);
 
 app.get('/products', async (req, res) => {
@@ -21,20 +22,20 @@ app.get('/products', async (req, res) => {
     const products = await productManager.getProducts();
     
     if(limit == 0){
-        res.json({products});
+        res.status(200).send({products});
     } else {
         const resultado = products.slice(0,parseInt(limit));
-        res.json({products: resultado});
+        res.status(200).send({products: resultado});
     }
     
 })
 
 app.get('/products/:pid', async (req, res) => {
     const product = await productManager.getProductById(req.params.pid);
-    res.json({product});
+    res.status(200).send({product});
 })
 
-/*
+
 const env = async () => {
     // pruebo agregar un producto con codigo que ya existe
     const newProduct = await productManager.addProduct({
@@ -59,4 +60,3 @@ const env = async () => {
 }
 
 env();
-*/
