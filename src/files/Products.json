@@ -6,6 +6,8 @@
 		"thumbnail": "Imagen 1",
 		"code": "p1abc123",
 		"stock": 10,
+		"status": true,
+		"category": "Categoría A",
 		"id": 1
 	},
 	{
@@ -15,6 +17,8 @@
 		"thumbnail": "Imagen 2",
 		"code": "p2abc123",
 		"stock": 15,
+		"status": true,
+		"category": "Categoría A",
 		"id": 2
 	},
 	{
@@ -24,6 +28,8 @@
 		"thumbnail": "Imagen 3",
 		"code": "p3abc123",
 		"stock": 8,
+		"status": true,
+		"category": "Categoría A",
 		"id": 3
 	},
 	{
@@ -33,6 +39,8 @@
 		"thumbnail": "Imagen 4",
 		"code": "p4abc123",
 		"stock": 20,
+		"status": true,
+		"category": "Categoría A",
 		"id": 4
 	},
 	{
@@ -42,6 +50,8 @@
 		"thumbnail": "Imagen 5",
 		"code": "p5abc123",
 		"stock": 12,
+		"status": true,
+		"category": "Categoría A",
 		"id": 5
 	},
 	{
@@ -51,6 +61,8 @@
 		"thumbnail": "Imagen 6",
 		"code": "p6abc123",
 		"stock": 18,
+		"status": true,
+		"category": "Categoría A",
 		"id": 6
 	},
 	{
@@ -60,6 +72,8 @@
 		"thumbnail": "Imagen 7",
 		"code": "p7abc123",
 		"stock": 25,
+		"status": true,
+		"category": "Categoría A",
 		"id": 7
 	},
 	{
@@ -69,6 +83,8 @@
 		"thumbnail": "Imagen 8",
 		"code": "p8abc123",
 		"stock": 14,
+		"status": true,
+		"category": "Categoría A",
 		"id": 8
 	},
 	{
@@ -78,6 +94,8 @@
 		"thumbnail": "Imagen 9",
 		"code": "p9abc123",
 		"stock": 22,
+		"status": true,
+		"category": "Categoría A",
 		"id": 9
 	},
 	{
@@ -86,7 +104,9 @@
 		"price": 190,
 		"thumbnail": "Imagen 10",
 		"code": "p10abc123",
-		"stock": 30,
+		"stock": 3,
+		"status": true,
+		"category": "Categoría A",
 		"id": 10
 	}
 ]

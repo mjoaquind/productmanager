@@ -16,6 +16,21 @@ class ProductManager {
         }
     }
 
+    getProductById = async (id) => {
+        try {
+            const products = await this.getProducts();
+            const productById = products.find(product => parseInt(product.id) === parseInt(id));
+            
+            if (!productById) {
+                throw new Error(`Producto con ID ${id} no encontrado`);
+            }
+            return productById;
+        } catch (error) {
+            let resultado = `Error al buscar el producto: ${error.message}`;
+            return resultado;
+        }
+    }
+
     addProduct = async (productData) => {
         let resultado = '';
         try {
@@ -44,20 +59,6 @@ class ProductManager {
             resultado = `Error al agregar el producto: ${error.message}`;
         }
         return resultado;
-    }
-
-    getProductById = async (id) => {
-        try {
-            const products = await this.getProducts();
-            const productById = products.find(product => parseInt(product.id) === parseInt(id));
-            if (!productById) {
-                throw new Error(`Producto con ID ${id} no encontrado`);
-            }
-            return productById;
-        } catch (error) {
-            let resultado = `Error al buscar el producto: ${error.message}`;
-            return resultado;
-        }
     }
 
     updateProduct = async (id, updatedData) => {
