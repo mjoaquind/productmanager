@@ -72,6 +72,12 @@ class CartManager {
                 throw new Error(`Producto con ID ${productId} no encontrado`);
             }
 
+            const totalQuantityInAllCarts = this.getTotalQuantityInAllCarts(carts, productId);
+
+            if(totalQuantityInAllCarts >= product.stock) {
+                throw new Error(`No hay suficiente stock del producto con ID ${productId}`);
+            }
+
             const productIntex = cart.products.findIndex(product => parseInt(product.id) === parseInt(productId));
 
             if(productIntex === -1) {
@@ -111,6 +117,12 @@ class CartManager {
                 throw new Error('Todos los campos del producto son obligatorios');
             }
 
+            const totalQuantityInAllCarts = this.getTotalQuantityInAllCarts(carts, productId);
+
+            if(totalQuantityInAllCarts >= product.stock) {
+                throw new Error(`No hay suficiente stock del producto con ID ${productId}`);
+            }
+
             const productsPath = `${__dirname}/files/Products.json`;
             const producto = new ProductManager(productsPath);
             const product = await producto.getProductById(parseInt(productId));
@@ -132,25 +144,36 @@ class CartManager {
         return resultado;
     }
 
-/*
-    deleteProduct = async (id) => {
+
+    deleteCart = async (id) => {
         let resultado = '';
         try {
-            const products = await this.getProducts();
-            const index = products.findIndex(product => product.id === id);
+            const carts = await this.getCarts();
+            const index = carts.findIndex(cart => parseInt(cart.id) === parseInt(id));
+            
             if (index === -1) {
-                throw new Error(`Producto con ID ${id} no encontrado`);
+                throw new Error(`Carrito con ID ${id} no encontrado`);
             }
 
-            products.splice(index, 1);
-            await fs.promises.writeFile(this.path, JSON.stringify(products, null, '\t'));
-            resultado = `Se eliminó el producto con el ID: ${id}`;
+            carts.splice(index, 1);
+            await fs.promises.writeFile(this.path, JSON.stringify(carts, null, '\t'));
+            resultado = `Se eliminó el carrito con el ID: ${id}`;
         } catch (error) {
-            resultado = `Error al eliminar el producto: ${error.message}`;
+            resultado = `Error al eliminar el carrito: ${error.message}`;
         }
         return resultado;
     }
-    */
+
+    getTotalQuantityInAllCarts = (carts, productId) => {
+        return carts.reduce((total, cart) => {
+            const productIndex = cart.products.findIndex(product => parseInt(product.id) === parseInt(productId));
+            if (productIndex !== -1) {
+                total += cart.products[productIndex].quantity;
+            }
+            return total;
+        }, 0);
+    }
+
 }
 
 export default CartManager;
