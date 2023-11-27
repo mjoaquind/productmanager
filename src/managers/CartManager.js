@@ -32,6 +32,16 @@ class CartManager {
         }
     }
 
+    getTotalQuantityInAllCarts = (carts, productId) => {
+        return carts.reduce((total, cart) => {
+            const productIndex = cart.products.findIndex(product => parseInt(product.id) === parseInt(productId));
+            if (productIndex !== -1) {
+                total += cart.products[productIndex].quantity;
+            }
+            return total;
+        }, 0);
+    }
+
     addCart = async () => {
         let resultado = '';
         try {
@@ -144,7 +154,6 @@ class CartManager {
         return resultado;
     }
 
-
     deleteCart = async (id) => {
         let resultado = '';
         try {
@@ -163,17 +172,6 @@ class CartManager {
         }
         return resultado;
     }
-
-    getTotalQuantityInAllCarts = (carts, productId) => {
-        return carts.reduce((total, cart) => {
-            const productIndex = cart.products.findIndex(product => parseInt(product.id) === parseInt(productId));
-            if (productIndex !== -1) {
-                total += cart.products[productIndex].quantity;
-            }
-            return total;
-        }, 0);
-    }
-
 }
 
 export default CartManager;
