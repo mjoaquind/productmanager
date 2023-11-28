@@ -31,30 +31,40 @@ class ProductManager {
         }
     }
 
-    addProduct = async (productData) => {
+    addProduct = async ({ title, description, price, status = true, category, thumbnails = [], code, stock }) => {
         let resultado = '';
         try {
-            const { title, description, price, thumbnail, code, stock } = productData;
-
             const products = await this.getProducts();
-
-            if(products.length === 0) {
+    
+            if (products.length === 0) {
                 productData.id = 1;
             } else {
                 productData.id = products[products.length - 1].id + 1;
             }
-
-            if (!title || !description || !price || !thumbnail || !code || !stock) {
-                throw new Error('Todos los campos del producto son obligatorios');
+    
+            if (!title || !description || !price || !category || !code || !stock) {
+                throw new Error('Excepto "thumbnails", todos los campos del producto son obligatorios');
             }
-
+    
             if (products.some(product => product.code === code)) {
                 throw new Error(`El código de producto ${code} está duplicado.`);
             }
-        
+
+            const productData = {
+                id: productData.id,
+                title,
+                description,
+                price,
+                status,
+                category,
+                thumbnails: Array.isArray(thumbnails) ? thumbnails : [],
+                code,
+                stock
+            };
+    
             products.push(productData);
             await fs.promises.writeFile(this.path, JSON.stringify(products, null, '\t'));
-            resultado = `Se agrego el producto con el ID: ${productData.id}`;
+            resultado = `Se agregó el producto con el ID: ${productData.id}`;
         } catch (error) {
             resultado = `Error al agregar el producto: ${error.message}`;
         }
@@ -64,7 +74,7 @@ class ProductManager {
     updateProduct = async (id, updatedData) => {
         let resultado = '';
         try {
-            const { title, description, price, thumbnail, code, stock } = updatedData;
+            const { title, description, price, status = true, category, thumbnail = [], code, stock } = updatedData;
             const products = await this.getProducts();
             const index = products.findIndex(product => product.id === id);
             
@@ -72,8 +82,8 @@ class ProductManager {
                 throw new Error(`Producto con ID ${id} no encontrado`);
             }
 
-            if (!title || !description || !price || !thumbnail || !code || !stock) {
-                throw new Error('Todos los campos del producto son obligatorios');
+            if (!title || !description || !price || !status || !category || !code || !stock) {
+                throw new Error('Excepto "thumbnails", todos los campos del producto son obligatorios');
             }
 
             if (products.some(product => product.code === updatedData.code && product.id !== id)) {
@@ -82,7 +92,14 @@ class ProductManager {
 
             const updatedProduct = {
                 ...products[index],
-                ...updatedData,
+                title,
+                description,
+                price,
+                status,
+                category,
+                thumbnails: Array.isArray(thumbnails) ? thumbnails : [],
+                code,
+                stock,
             };
 
             products[index] = updatedProduct;
