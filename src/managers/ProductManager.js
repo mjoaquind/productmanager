@@ -57,7 +57,7 @@ class ProductManager {
                 price,
                 status,
                 category,
-                thumbnail: Array.isArray(thumbnails) ? thumbnails : [],
+                thumbnail: Array.isArray(thumbnail) ? thumbnail : [],
                 code,
                 stock
             };
