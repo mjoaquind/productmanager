@@ -88,21 +88,6 @@ class CartManager {
                 throw new Error(`No hay suficiente stock del producto con ID ${productId}`);
             }
 
-            const productIntex = cart.products.findIndex(product => parseInt(product.id) === parseInt(productId));
-
-            if(productIntex === -1) {
-                cart.products.push({
-                    id: parseInt(productId),
-                    quantity: 1
-                });
-            } else {
-                if(cart.products[productIntex].quantity === product.stock) {
-                    throw new Error(`No hay suficiente stock del producto con ID ${productId}`);
-                } else {
-                    cart.products[productIntex].quantity++;
-                }
-            }
-
             carts[cartIndex] = cart;
             await fs.promises.writeFile(this.path, JSON.stringify(carts, null, '\t'));
             resultado = `Se agrego el producto con el ID: ${productId} en el carrito con el ID: ${cartId}`;
@@ -127,17 +112,17 @@ class CartManager {
                 throw new Error('Todos los campos del producto son obligatorios');
             }
 
-            const totalQuantityInAllCarts = this.getTotalQuantityInAllCarts(carts, productId);
-
-            if(totalQuantityInAllCarts >= product.stock) {
-                throw new Error(`No hay suficiente stock del producto con ID ${productId}`);
-            }
-
             const productsPath = `${__dirname}/files/Products.json`;
             const producto = new ProductManager(productsPath);
             const product = await producto.getProductById(parseInt(productId));
             if(parseInt(product.id) !== parseInt(productId)) {
                 throw new Error(`Producto con ID ${productId} no encontrado`);
+            }
+
+            const totalQuantityInAllCarts = this.getTotalQuantityInAllCarts(carts, productId);
+
+            if(totalQuantityInAllCarts >= product.stock) {
+                throw new Error(`No hay suficiente stock del producto con ID ${productId}`);
             }
 
             const updatedCart = {
