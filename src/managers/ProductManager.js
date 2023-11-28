@@ -31,7 +31,7 @@ class ProductManager {
         }
     }
 
-    addProduct = async ({ title, description, price, status = true, category, thumbnails = [], code, stock }) => {
+    addProduct = async ({ title, description, price, status = true, category, thumbnail = [], code, stock }) => {
         let resultado = '';
         try {
             const products = await this.getProducts();
@@ -42,7 +42,7 @@ class ProductManager {
                 productData.id = products[products.length - 1].id + 1;
             }
     
-            if (!title || !description || !price || !category || !code || !stock) {
+            if (!title || !description || !price || !category || !status || !category || !code || !stock) {
                 throw new Error('Excepto "thumbnails", todos los campos del producto son obligatorios');
             }
     
@@ -57,7 +57,7 @@ class ProductManager {
                 price,
                 status,
                 category,
-                thumbnails: Array.isArray(thumbnails) ? thumbnails : [],
+                thumbnail: Array.isArray(thumbnails) ? thumbnails : [],
                 code,
                 stock
             };
@@ -97,7 +97,7 @@ class ProductManager {
                 price,
                 status,
                 category,
-                thumbnails: Array.isArray(thumbnails) ? thumbnails : [],
+                thumbnail: Array.isArray(thumbnail) ? thumbnail : [],
                 code,
                 stock,
             };
