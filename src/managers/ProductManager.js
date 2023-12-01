@@ -115,7 +115,8 @@ class ProductManager {
         let resultado = '';
         try {
             const products = await this.getProducts();
-            const index = products.findIndex(product => product.id === id);
+            const index = products.findIndex(product => parseInt(product.id) === parseInt(id));
+
             if (index === -1) {
                 throw new Error(`Producto con ID ${id} no encontrado`);
             }

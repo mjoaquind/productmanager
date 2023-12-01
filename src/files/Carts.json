@@ -18,11 +18,11 @@
 			{
 				"id": 10,
 				"quantity": 3
+			},
+			{
+				"id": 1,
+				"quantity": 1
 			}
 		]
-	},
-	{
-		"id": 4,
-		"products": []
 	}
 ]

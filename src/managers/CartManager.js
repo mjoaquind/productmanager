@@ -32,6 +32,8 @@ class CartManager {
         }
     }
 
+
+
     getTotalQuantityInAllCarts = (carts, productId) => {
         return carts.reduce((total, cart) => {
             const productIndex = cart.products.findIndex(product => parseInt(product.id) === parseInt(productId));
@@ -86,6 +88,21 @@ class CartManager {
 
             if(totalQuantityInAllCarts >= product.stock) {
                 throw new Error(`No hay suficiente stock del producto con ID ${productId}`);
+            }
+
+            const productIntex = cart.products.findIndex(product => parseInt(product.id) === parseInt(productId));
+
+            if(productIntex === -1) {
+                cart.products.push({
+                    id: parseInt(productId),
+                    quantity: 1
+                });
+            } else {
+                if(cart.products[productIntex].quantity === product.stock) {
+                    throw new Error(`No hay suficiente stock del producto con ID ${productId}`);
+                } else {
+                    cart.products[productIntex].quantity++;
+                }
             }
 
             carts[cartIndex] = cart;

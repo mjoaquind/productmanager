@@ -142,21 +142,5 @@
 		"status": true,
 		"category": "Categoría A",
 		"id": 9
-	},
-	{
-		"title": "Producto 10",
-		"description": "Este es el décimo producto de prueba",
-		"price": 190,
-		"thumbnail": [
-			"https://i.dummyjson.com/data/products/10/1.jpg",
-			"https://i.dummyjson.com/data/products/10/2.jpg",
-			"https://i.dummyjson.com/data/products/10/3.jpg",
-			"https://i.dummyjson.com/data/products/10/thumbnail.jpeg"
-		],
-		"code": "p10abc123",
-		"stock": 3,
-		"status": true,
-		"category": "Categoría A",
-		"id": 10
 	}
 ]
