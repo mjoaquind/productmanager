@@ -114,32 +114,38 @@ class CartManager {
         return resultado;
     }
 
-    updateCart = async (id, updatedData) => {
+    updateCart = async (cartId, updatedData) => {
         let resultado = '';
         try {
-            const { productId, quantity } = updatedData;
             const carts = await this.getCarts();
-            const index = carts.findIndex(cart => parseInt(cart.id) === parseInt(id));
+            const index = carts.findIndex(cart => parseInt(cart.id) === parseInt(cartId));
             
             if (index === -1) {
-                throw new Error(`Carrito con ID ${id} no encontrado`);
+                throw new Error(`Carrito con ID ${cartId} no encontrado`);
             }
 
-            if (!productId || !quantity) {
+            let productsArray = updatedData.products;
+
+            console.log(productsArray);
+
+
+            const { id, quantity } = updatedData.products[0];
+
+            if (!id || !quantity) {
                 throw new Error('Todos los campos del producto son obligatorios');
             }
 
             const productsPath = `${__dirname}/files/Products.json`;
             const producto = new ProductManager(productsPath);
-            const product = await producto.getProductById(parseInt(productId));
-            if(parseInt(product.id) !== parseInt(productId)) {
-                throw new Error(`Producto con ID ${productId} no encontrado`);
+            const product = await producto.getProductById(parseInt(id));
+            if(parseInt(product.id) !== parseInt(id)) {
+                throw new Error(`Producto con ID ${id} no encontrado`);
             }
 
-            const totalQuantityInAllCarts = this.getTotalQuantityInAllCarts(carts, productId);
+            const totalQuantityInAllCarts = this.getTotalQuantityInAllCarts(carts, id);
 
             if(totalQuantityInAllCarts >= product.stock) {
-                throw new Error(`No hay suficiente stock del producto con ID ${productId}`);
+                throw new Error(`No hay suficiente stock del producto con ID ${id}`);
             }
 
             const updatedCart = {
@@ -149,7 +155,7 @@ class CartManager {
 
             carts[index] = updatedCart;
             await fs.promises.writeFile(this.path, JSON.stringify(carts, null, '\t'));
-            resultado = `Se actualizó el carrito con el ID: ${id}`;
+            resultado = `Se actualizó el carrito con el ID: ${cartId}`;
         } catch (error) {
             resultado = `Error al actualizar el carrito: ${error.message}`;
         }
