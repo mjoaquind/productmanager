@@ -1,0 +1,25 @@
+<div class="container mt-4 text-center">
+    <h1>Listado de Productos</h1>
+    <div class="row">
+        
+        {{#each products}}
+            <div class="col-md-4">
+                <div class="card">
+                    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            {{#each this.thumbnail}}
+                                <div class="carousel-item {{#if @first}}active{{/if}}">
+                                    <img src="{{this}}" class="d-block w-100" alt="Imagen del producto">
+                                </div>
+                            {{/each}}
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{this.title}}</h5>
+                        <p class="card-text">{{this.description}}</p>
+                    </div>
+                </div>
+            </div>
+        {{/each}}
+    </div>
+</div>
