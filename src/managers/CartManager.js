@@ -21,7 +21,7 @@ class CartManager {
     getCartById = async (id) => {
         try {
             const carts = await this.getCarts();
-            const cartById = carts.find(cart => parseInt(cart.id) === parseInt(id));
+            const cartById = carts.find(cart => cart.id === id);
             if (!cartById) {
                 throw new Error(`Carrito con ID ${id} no encontrado`);
             }
@@ -36,7 +36,7 @@ class CartManager {
 
     getTotalQuantityInAllCarts = (carts, productId) => {
         return carts.reduce((total, cart) => {
-            const productIndex = cart.products.findIndex(product => parseInt(product.id) === parseInt(productId));
+            const productIndex = cart.products.findIndex(product => product.id === productId);
             if (productIndex !== -1) {
                 total += cart.products[productIndex].quantity;
             }
@@ -69,7 +69,7 @@ class CartManager {
         try {
             const carts = await this.getCarts();
 
-            const cartIndex = carts.findIndex(cart => parseInt(cart.id) === parseInt(cartId));
+            const cartIndex = carts.findIndex(cart => cart.id === cartId);
 
             if(cartIndex === -1) {
                 throw new Error(`Carrito con ID ${cartId} no encontrado`);
@@ -79,8 +79,8 @@ class CartManager {
             
             const productsPath = `${__dirname}/files/Products.json`;
             const producto = new ProductManager(productsPath);
-            const product = await producto.getProductById(parseInt(productId));
-            if(parseInt(product.id) !== parseInt(productId)) {
+            const product = await producto.getProductById(productId);
+            if(parseInt(product.id) !== productId) {
                 throw new Error(`Producto con ID ${productId} no encontrado`);
             }
 
@@ -90,11 +90,11 @@ class CartManager {
                 throw new Error(`No hay suficiente stock del producto con ID ${productId}`);
             }
 
-            const productIntex = cart.products.findIndex(product => parseInt(product.id) === parseInt(productId));
+            const productIntex = cart.products.findIndex(product => product.id === productId);
 
             if(productIntex === -1) {
                 cart.products.push({
-                    id: parseInt(productId),
+                    id: productId,
                     quantity: 1
                 });
             } else {
@@ -118,7 +118,7 @@ class CartManager {
         let resultado = '';
         try {
             const carts = await this.getCarts();
-            const index = carts.findIndex(cart => parseInt(cart.id) === parseInt(cartId));
+            const index = carts.findIndex(cart => cart.id === cartId);
             
             if (index === -1) {
                 throw new Error(`Carrito con ID ${cartId} no encontrado`);
@@ -137,8 +137,8 @@ class CartManager {
 
             const productsPath = `${__dirname}/files/Products.json`;
             const producto = new ProductManager(productsPath);
-            const product = await producto.getProductById(parseInt(id));
-            if(parseInt(product.id) !== parseInt(id)) {
+            const product = await producto.getProductById(id);
+            if(product.id !== id) {
                 throw new Error(`Producto con ID ${id} no encontrado`);
             }
 
@@ -166,7 +166,7 @@ class CartManager {
         let resultado = '';
         try {
             const carts = await this.getCarts();
-            const index = carts.findIndex(cart => parseInt(cart.id) === parseInt(id));
+            const index = carts.findIndex(cart => cart.id === id);
             
             if (index === -1) {
                 throw new Error(`Carrito con ID ${id} no encontrado`);

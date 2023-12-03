@@ -19,7 +19,7 @@ class ProductManager {
     getProductById = async (id) => {
         try {
             const products = await this.getProducts();
-            const productById = products.find(product => parseInt(product.id) === parseInt(id));
+            const productById = products.find(product => product.id === id);
             
             if (!productById) {
                 throw new Error(`Producto con ID ${id} no encontrado`);
@@ -115,7 +115,7 @@ class ProductManager {
         let resultado = '';
         try {
             const products = await this.getProducts();
-            const index = products.findIndex(product => parseInt(product.id) === parseInt(id));
+            const index = products.findIndex(product => product.id === id);
 
             if (index === -1) {
                 throw new Error(`Producto con ID ${id} no encontrado`);

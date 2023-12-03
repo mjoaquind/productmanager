@@ -19,7 +19,8 @@ router.get('/', async (req, res) => {
 })
 
 router.get('/:cid', async (req, res) => {
-    const cart = await cartManager.getCartById(req.params.cid);
+    const cid = req.params.cid;
+    const cart = await cartManager.getCartById(parseInt(cid));
     res.send({cart});
 })
 
@@ -35,7 +36,7 @@ router.post('/', async (req, res) => {
 router.post('/:cid/product/:pid', async (req, res) => {
     const cid = req.params.cid;
     const pid = req.params.pid;
-    const cart = await cartManager.addProductToCart(cid, pid);
+    const cart = await cartManager.addProductToCart(parseInt(cid), parseInt(pid));
     res.send({
         status:"success",
         message: `Product ${pid} added to Cart ${cid}`,
@@ -46,7 +47,7 @@ router.post('/:cid/product/:pid', async (req, res) => {
 router.put('/:cid', async (req, res) => {
     const cid = req.params.cid;
     const data = req.body.cart;
-    const cart = await cartManager.updateCart(cid, data);
+    const cart = await cartManager.updateCart(parseInt(cid), data);
     res.send({
         status:"success",
         message: `Cart ${cid} updated`,
@@ -56,7 +57,7 @@ router.put('/:cid', async (req, res) => {
 
 router.delete('/:cid', async (req, res) => {
     const cid = req.params.cid;
-    const cart = await cartManager.deleteCart(cid);
+    const cart = await cartManager.deleteCart(parseInt(cid));
     res.send({
         status:"success",
         message: `Cart ${cid} deleted`,

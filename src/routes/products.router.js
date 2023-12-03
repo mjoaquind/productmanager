@@ -24,7 +24,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:pid', async (req, res) => {
     const pid = req.params.pid;
-    const product = await productManager.getProductById(pid);
+    const product = await productManager.getProductById(parseInt(pid));
     res.send({product});
 })
 
@@ -40,8 +40,8 @@ router.post('/', async (req, res) => {
 
 router.put('/:pid', async (req, res) => {
     const pid = req.params.pid;
-    const product = req.body;
-    const products = await productManager.updateProduct(pid, product);
+    const product = req.body.product;
+    const products = await productManager.updateProduct(parseInt(pid), product);
     res.send({
         status:"success",
         message: `Product ${pid} updated`,
@@ -51,7 +51,7 @@ router.put('/:pid', async (req, res) => {
 
 router.delete('/:pid', async (req, res) => {
     const pid = req.params.pid;
-    const product = await productManager.deleteProduct(pid);
+    const product = await productManager.deleteProduct(parseInt(pid));
     res.send({
         status:"success",
         message: `Product ${pid} deleted`,
