@@ -80,7 +80,7 @@ class CartManager {
             const productsPath = `${__dirname}/files/Products.json`;
             const producto = new ProductManager(productsPath);
             const product = await producto.getProductById(productId);
-            if(parseInt(product.id) !== productId) {
+            if(product.id !== productId) {
                 throw new Error(`Producto con ID ${productId} no encontrado`);
             }
 

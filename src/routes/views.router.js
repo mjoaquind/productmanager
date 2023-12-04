@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
     const limit = parseInt(req.query.limit) || 0;
 
     const products = await productManager.getProducts();
-    
+
     if(limit == 0){
         res.render('home',{products});
     } else {

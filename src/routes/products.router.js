@@ -29,7 +29,7 @@ router.get('/:pid', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-    const product = req.body;
+    const product = req.body.product;
     const products = await productManager.addProduct(product);
     res.send({
         status:"success",

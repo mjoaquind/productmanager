@@ -33,35 +33,36 @@ class ProductManager {
 
     addProduct = async ({ title, description, price, status = true, category, thumbnail = [], code, stock }) => {
         let resultado = '';
+        let id = 0;
         try {
             const products = await this.getProducts();
-    
+
             if (products.length === 0) {
-                productData.id = 1;
+                id = 1;
             } else {
-                productData.id = products[products.length - 1].id + 1;
+                id = products[products.length - 1].id + 1;
             }
     
-            if (!title || !description || !price || !category || !status || !category || !code || !stock) {
+            if (!title || !description || !price || !category || !category || !code || !stock) {
                 throw new Error('Excepto "thumbnails", todos los campos del producto son obligatorios');
             }
     
             if (products.some(product => product.code === code)) {
                 throw new Error(`El código de producto ${code} está duplicado.`);
             }
-
+    
             const productData = {
-                id: productData.id,
                 title,
                 description,
                 price,
-                status,
-                category,
                 thumbnail: Array.isArray(thumbnail) ? thumbnail : [],
                 code,
-                stock
+                stock,
+                status,
+                category,
+                id
             };
-    
+
             products.push(productData);
             await fs.promises.writeFile(this.path, JSON.stringify(products, null, '\t'));
             resultado = `Se agregó el producto con el ID: ${productData.id}`;
@@ -82,7 +83,7 @@ class ProductManager {
                 throw new Error(`Producto con ID ${id} no encontrado`);
             }
 
-            if (!title || !description || !price || !status || !category || !code || !stock) {
+            if (!title || !description || !price || !category || !code || !stock) {
                 throw new Error('Excepto "thumbnails", todos los campos del producto son obligatorios');
             }
 

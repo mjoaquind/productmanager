@@ -154,8 +154,8 @@
 			"https://i.dummyjson.com/data/products/10/thumbnail.jpeg"
 		],
 		"code": "p10abc123",
-		"stock": 6,
-		"status": true,
+		"stock": 7,
+		"status": false,
 		"category": "Categoría A",
 		"id": 10
 	}
