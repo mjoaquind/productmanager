@@ -20,19 +20,16 @@ class ProductManager {
         try {
             const products = await this.getProducts();
             const productById = products.find(product => product.id === id);
-            
             if (!productById) {
                 throw new Error(`Producto con ID ${id} no encontrado`);
             }
             return productById;
         } catch (error) {
-            let resultado = `Error al buscar el producto: ${error.message}`;
-            return resultado;
+            throw new Error(`Error al buscar el producto: ${error.message}`);
         }
     }
 
     addProduct = async ({ title, description, price, status = true, category, thumbnail = [], code, stock }) => {
-        let resultado = '';
         let id = 0;
         try {
             const products = await this.getProducts();
@@ -65,15 +62,14 @@ class ProductManager {
 
             products.push(productData);
             await fs.promises.writeFile(this.path, JSON.stringify(products, null, '\t'));
-            resultado = `Se agregó el producto con el ID: ${productData.id}`;
+            let resultado = `Se agregó el producto con el ID: ${productData.id}`;
+            return resultado;
         } catch (error) {
-            resultado = `Error al agregar el producto: ${error.message}`;
+            throw new Error(`Error al agregar el producto: ${error.message}`);
         }
-        return resultado;
     }
 
     updateProduct = async (id, updatedData) => {
-        let resultado = '';
         try {
             const { title, description, price, status = true, category, thumbnail = [], code, stock } = updatedData;
             const products = await this.getProducts();
@@ -105,15 +101,14 @@ class ProductManager {
 
             products[index] = updatedProduct;
             await fs.promises.writeFile(this.path, JSON.stringify(products, null, '\t'));
-            resultado = `Se actualizó el producto con el ID: ${id}`;
+            let resultado = `Se actualizó el producto con el ID: ${id}`;
+            return resultado;
         } catch (error) {
-            resultado = `Error al actualizar el producto: ${error.message}`;
+            throw new Error(`Error al actualizar el producto: ${error.message}`);
         }
-        return resultado;
     }
 
     deleteProduct = async (id) => {
-        let resultado = '';
         try {
             const products = await this.getProducts();
             const index = products.findIndex(product => product.id === id);
@@ -124,11 +119,11 @@ class ProductManager {
 
             products.splice(index, 1);
             await fs.promises.writeFile(this.path, JSON.stringify(products, null, '\t'));
-            resultado = `Se eliminó el producto con el ID: ${id}`;
+            let resultado = `Se eliminó el producto con el ID: ${id}`;
+            return resultado;
         } catch (error) {
-            resultado = `Error al eliminar el producto: ${error.message}`;
+            throw new Error(`Error al eliminar el producto: ${error.message}`);
         }
-        return resultado;
     }
 }
 

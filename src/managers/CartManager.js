@@ -27,17 +27,15 @@ class CartManager {
             }
             return cartById;
         } catch (error) {
-            let resultado = `Error al buscar el carrito: ${error.message}`;
-            return resultado;
+            throw new Error(`Error al buscar el carrito: ${error.message}`);
         }
     }
-
-
 
     getTotalQuantityInAllCarts = (carts, productId) => {
         return carts.reduce((total, cart) => {
             const productIndex = cart.products.findIndex(product => product.id === productId);
             if (productIndex !== -1) {
+                
                 total += cart.products[productIndex].quantity;
             }
             return total;
@@ -45,7 +43,6 @@ class CartManager {
     }
 
     addCart = async () => {
-        let resultado = '';
         try {
             const carts = await this.getCarts();
 
@@ -57,15 +54,14 @@ class CartManager {
             carts.push(cart);
 
             await fs.promises.writeFile(this.path, JSON.stringify(carts, null, '\t'));
-            resultado = `Se agrego el carrito con el ID: ${cart.id}`;
+            let resultado = `Se agrego el carrito con el ID: ${cart.id}`;
+            return resultado;
         } catch (error) {
-            resultado = `Error al agregar el carrito: ${error.message}`;
+            throw new Error(`Error al agregar el carrito: ${error.message}`);
         }
-        return resultado;
     }
 
     addProductToCart = async (cartId, productId) => {
-        let resultado = '';
         try {
             const carts = await this.getCarts();
 
@@ -107,15 +103,14 @@ class CartManager {
 
             carts[cartIndex] = cart;
             await fs.promises.writeFile(this.path, JSON.stringify(carts, null, '\t'));
-            resultado = `Se agrego el producto con el ID: ${productId} en el carrito con el ID: ${cartId}`;
+            let resultado = `Se agrego el producto con el ID: ${productId} en el carrito con el ID: ${cartId}`;
+            return resultado;
         } catch (error) {
-            resultado = `Error al agregar el producto al carrito: ${error.message}`;
+            throw new Error(`Error al agregar el producto al carrito: ${error.message}`);
         }
-        return resultado;
     }
 
     updateCart = async (cartId, updatedData) => {
-        let resultado = '';
         try {
             const carts = await this.getCarts();
             const index = carts.findIndex(cart => cart.id === cartId);
@@ -123,11 +118,6 @@ class CartManager {
             if (index === -1) {
                 throw new Error(`Carrito con ID ${cartId} no encontrado`);
             }
-
-            let productsArray = updatedData.products;
-
-            console.log(productsArray);
-
 
             const { id, quantity } = updatedData.products[0];
 
@@ -155,15 +145,14 @@ class CartManager {
 
             carts[index] = updatedCart;
             await fs.promises.writeFile(this.path, JSON.stringify(carts, null, '\t'));
-            resultado = `Se actualizó el carrito con el ID: ${cartId}`;
+            let resultado = `Se actualizó el carrito con el ID: ${cartId}`;
+            return resultado;
         } catch (error) {
-            resultado = `Error al actualizar el carrito: ${error.message}`;
+            throw new Error(`Error al actualizar el carrito: ${error.message}`);
         }
-        return resultado;
     }
 
     deleteCart = async (id) => {
-        let resultado = '';
         try {
             const carts = await this.getCarts();
             const index = carts.findIndex(cart => cart.id === id);
@@ -174,11 +163,11 @@ class CartManager {
 
             carts.splice(index, 1);
             await fs.promises.writeFile(this.path, JSON.stringify(carts, null, '\t'));
-            resultado = `Se eliminó el carrito con el ID: ${id}`;
+            let resultado = `Se eliminó el carrito con el ID: ${id}`;
+            return resultado;
         } catch (error) {
-            resultado = `Error al eliminar el carrito: ${error.message}`;
+            throw new Error(`Error al eliminar el carrito: ${error.message}`);
         }
-        return resultado;
     }
 }
 
