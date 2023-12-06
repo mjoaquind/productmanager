@@ -1,0 +1,13 @@
+<div class="container mt-4 text-center">
+    <h1>Productos en Realtime</h1>
+    
+    {{> addProductForm}}
+    <h2>Listado de Productos</h2>
+    <div  id="product-card" class="row">
+        {{#each products}}
+            {{> card this}}
+        {{/each}}
+    </div>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script>
