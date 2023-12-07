@@ -29,8 +29,9 @@ class ProductManager {
         }
     }
 
-    addProduct = async ({ title, description, price, status = true, category, thumbnail = [], code, stock }) => {
+    addProduct = async (product) => {
         let id = 0;
+        const { title, description, price, status = true, category, thumbnail = [], code, stock } = product;
         try {
             const products = await this.getProducts();
 
@@ -40,7 +41,7 @@ class ProductManager {
                 id = products[products.length - 1].id + 1;
             }
     
-            if (!title || !description || !price || !category || !category || !code || !stock) {
+            if (!title || !description || !price || !category || !code || !stock) {
                 throw new Error('Excepto "thumbnails", todos los campos del producto son obligatorios');
             }
     

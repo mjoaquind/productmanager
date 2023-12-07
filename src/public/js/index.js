@@ -3,40 +3,36 @@ const socketClient = io();
 document.addEventListener('DOMContentLoaded', () => {
     const addProductForm = document.getElementById('addProductForm');
     const titleInput = document.getElementById('title');
-    const priceInput = document.getElementById('price');
-    const stockInput = document.getElementById('stock');
     const descriptionInput = document.getElementById('description');
-    const productList = document.getElementById('products-card');
+    const priceInput = document.getElementById('price');
+    const codeInput = document.getElementById('code');
+    const stockInput = document.getElementById('stock');
+    const categoryInput = document.getElementById('category');
+    const productCard = document.getElementById('product-card');
 
     const submitProductForm = (event) => {
         event.preventDefault();
 
         const title = titleInput.value;
-        const price = priceInput.value;
-        const stock = stockInput.value;
         const description = descriptionInput.value;
+        const price = parseInt(priceInput.value);
+        const code = codeInput.value;
+        const stock = parseInt(stockInput.value);
+        const category = categoryInput.value;
 
-        socketClient.emit('addProduct', { title, price, stock, description }); 
+        socketClient.emit('addProduct', { title, description, price, code, stock, category }); 
         addProductForm.reset();
     };
 
     addProductForm.addEventListener('submit', submitProductForm);
 
-    socketClient.on('newProduct', (productData) => {
-        console.log('Nuevo producto agregado en tiempo real:', productData);
-        const listItem = document.createElement('li');
-        listItem.textContent += `Nombre: ${productData.title}, Precio: ${productData.price}, Descripción: ${productData.description}`;
-        productList.appendChild(listItem);
-    });
-
-
-/*
-    data.products.forEach(product => {
+    socketClient.on('newProduct', (product) => {
+        console.log('Nuevo producto agregado en tiempo real:', product);
         const cardItem = document.createElement('div');
         cardItem.classList.add('col-md-4');
         cardItem.innerHTML = `
         <div class="card">
-            <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+            <div id="${product.id}" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
                 ${product.thumbnail.map((image, index) => `
                     <div class="carousel-item ${index === 0 ? 'active' : ''}">
@@ -51,6 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         </div>
         `;
-        productList.appendChild(cardItem);
-    });*/
+        productCard.appendChild(cardItem);
+    });
 });

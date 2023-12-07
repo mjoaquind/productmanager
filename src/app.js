@@ -16,7 +16,7 @@ app.use(express.urlencoded({extended:true}));
 
 const httpServer = app.listen(PORT, () => console.log(`Servidor escuchando en el puerto ${PORT}`));
 
-const io = new Server(httpServer);
+const socketServer = new Server(httpServer);
 
 app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
@@ -30,29 +30,21 @@ app.use('/api/carts',cartsRouter);
 app.use('/',viewsRouter);
 
 
-const path = `${__dirname}/files/Products.json`;
-const productManager = new ProductManager(path);
+socketServer.on("connection", (socket) => {
+    console.log("Nuevo cliente conectado con ID:",socket.id);
 
-
-io.on('connection', async (socket) => {
-    try {
-        console.log('Nuevo cliente conectado');
-
-        const products = await productManager.getProducts();
-        io.to(socket.id).emit('realTimeProductsUpdate', { products });
-
-        socket.on('addProduct', async (data) => {
-        console.log('Mensaje recibido desde el cliente:', data);
+    socket.on('addProduct', async (product) => {
         try {
-            if (data === 'productChanged') {
-            const products = await productManager.getProducts();
-            io.emit('realTimeProductsUpdate', { products });
-            }
+            console.log('Datos del producto recibidos en el servidor:', product);
+
+            const path = `${__dirname}/files/Products.json`;
+            const productManager = new ProductManager(path);
+            await productManager.addProduct(product);
+
+            // Emite el evento 'newProduct' a todos los clientes conectados para actualizar la lista en tiempo real
+            socketServer.emit('newProduct', product);
         } catch (error) {
-            console.error('Error al manejar el mensaje:', error.message);
+            console.error('Error al agregar producto:', error.message);
         }
-        });
-    } catch (error) {
-        console.error('Error en la conexión de socket:', error.message);
-    }
+    });
 });
