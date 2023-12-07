@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const codeInput = document.getElementById('code');
     const stockInput = document.getElementById('stock');
     const categoryInput = document.getElementById('category');
+
     const productCard = document.getElementById('product-card');
 
     const submitProductForm = (event) => {
