@@ -22,16 +22,9 @@ router.get('/', async (req, res) => {
 
 
 router.get('/realtimeproducts', async (req, res) => {
-    const limit = parseInt(req.query.limit) || 0;
-
     const products = await productManager.getProducts();
+    res.render('realTimeProducts',{products});
 
-    if(limit == 0){
-        res.render('realTimeProducts',{products});
-    } else {
-        const resultado = products.slice(0,limit);
-        res.render('realTimeProducts',{products: resultado});
-    }
 });
 
 export default router;
