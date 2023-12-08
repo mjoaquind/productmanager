@@ -1,53 +1,60 @@
 const socketClient = io();
 
-document.addEventListener('DOMContentLoaded', () => {
-    const addProductForm = document.getElementById('addProductForm');
-    const titleInput = document.getElementById('title');
-    const descriptionInput = document.getElementById('description');
-    const priceInput = document.getElementById('price');
-    const codeInput = document.getElementById('code');
-    const stockInput = document.getElementById('stock');
-    const categoryInput = document.getElementById('category');
+socketClient.on('products', (obj) => {
+    updateProductCards(obj);
+});
 
+const updateProductCards = (products) => {
     const productCard = document.getElementById('product-card');
 
-    const submitProductForm = (event) => {
-        event.preventDefault();
+    let productosHTML = "";
 
-        const title = titleInput.value;
-        const description = descriptionInput.value;
-        const price = parseInt(priceInput.value);
-        const code = codeInput.value;
-        const stock = parseInt(stockInput.value);
-        const category = categoryInput.value;
-
-        socketClient.emit('addProduct', { title, description, price, code, stock, category }); 
-        addProductForm.reset();
-    };
-
-    addProductForm.addEventListener('submit', submitProductForm);
-
-    socketClient.on('newProduct', (product) => {
-        console.log('Nuevo producto agregado en tiempo real:', product);
-        const cardItem = document.createElement('div');
-        cardItem.classList.add('col-md-4');
-        cardItem.innerHTML = `
-        <div class="card">
-            <div id="${product.id}" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                ${product.thumbnail.map((image, index) => `
-                    <div class="carousel-item ${index === 0 ? 'active' : ''}">
-                        <img src="${image}" class="d-block w-100" alt="Imagen del producto">
+    products.forEach(product => {
+        productosHTML += `
+        <div class="col-md-4">
+            <div id="${product.id}" class="card">
+                <div id="${product.id}" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                    ${product.thumbnail.map((image, index) => `
+                        <div class="carousel-item ${index === 0 ? 'active' : ''}">
+                            <img src="${image}" class="d-block w-100" alt="Imagen del Producto">
+                        </div>
+                    `).join('')}
                     </div>
-                `).join('')}
                 </div>
-            </div>
-            <div class="card-body">
-                <h5 class="card-title">${product.title}</h5>
-                <p class="card-text">${product.description}</p>
+                <div class="card-body">
+                    <h5 class="card-title">${product.title}</h5>
+                    <p class="card-text">${product.description}</p>
+                    <p class="card-text">Precio: $ ${product.price}</p>
+                    <p class="card-text">Código: ${product.code}</p>
+                </div>
+                <div class="d-flex justify-content-center mb-4">
+                    <button type="button" class="btn btn-danger" data-product-id="${product.id}" onclick="deleteProduct(${product.id})">Eliminar</button>
+                </div>
             </div>
         </div>
         `;
-        productCard.appendChild(cardItem);
     });
+    productCard.innerHTML = productosHTML;
+};
+
+let form = document.getElementById('addProductForm');
+
+form.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    let title = document.getElementById('title').value;
+    let description = document.getElementById('description').value;
+    let price = parseInt(document.getElementById('price').value);
+    let code = document.getElementById('code').value;
+    let stock = parseInt(document.getElementById('stock').value);
+    let category = document.getElementById('category').value;
+
+    socketClient.emit('addProduct', { title, description, price, code, stock, category });
+
+    form.reset();
 });
+
+function deleteProduct(productId) {
+    socketClient.emit("deleteProduct", productId);
+}

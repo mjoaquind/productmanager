@@ -30,21 +30,38 @@ app.use('/api/carts',cartsRouter);
 app.use('/',viewsRouter);
 
 
-socketServer.on("connection", (socket) => {
+socketServer.on("connection", async (socket) => {
     console.log("Nuevo cliente conectado con ID:",socket.id);
+    const path = `${__dirname}/files/Products.json`;
+    const productManager = new ProductManager(path);
+
+    // Emite el evento 'products' a todos los clientes conectados
+    try {
+        const products = await productManager.getProducts();
+        socketServer.emit('products', products);
+    } catch (error) {
+        console.error('Error al obtener los productos:', error.message);
+    }
 
     socket.on('addProduct', async (product) => {
         try {
-            console.log('Datos del producto recibidos en el servidor:', product);
-
-            const path = `${__dirname}/files/Products.json`;
-            const productManager = new ProductManager(path);
             await productManager.addProduct(product);
-
-            // Emite el evento 'newProduct' a todos los clientes conectados para actualizar la lista en tiempo real
-            socketServer.emit('newProduct', product);
+            const products = await productManager.getProducts();
+            socketServer.emit('products', products);
+            console.log('Producto agregado:', product);
         } catch (error) {
-            console.error('Error al agregar producto:', error.message);
+            console.error('Error al agregar el producto:', error.message);
+        }
+    });
+
+    socket.on('deleteProduct', async (id) => {
+        try {
+            await productManager.deleteProduct(id);
+            const products = await productManager.getProducts();
+            socketServer.emit('products', products);
+            console.log('Producto eliminado:', id);
+        } catch (error) {
+            console.error('Error al eliminar el producto:', error.message);
         }
     });
 });

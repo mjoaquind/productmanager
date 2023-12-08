@@ -3,11 +3,10 @@
     
     {{> addProductForm}}
     <h2>Listado de Productos</h2>
-    <div  id="product-card" class="row">
-        {{#each products}}
-            {{> card this}}
-        {{/each}}
+    <div  id="product-card" class="row mt-4">
+        
     </div>
 </div>
+
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/index.js"></script>
