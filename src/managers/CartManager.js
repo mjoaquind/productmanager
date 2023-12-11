@@ -114,35 +114,38 @@ class CartManager {
         try {
             const carts = await this.getCarts();
             const index = carts.findIndex(cart => cart.id === cartId);
-            
+    
             if (index === -1) {
                 throw new Error(`Carrito con ID ${cartId} no encontrado`);
             }
+    
+            for (const prod of updatedData.products) {
+                const { id, quantity } = prod;
+                
+                if (!id || !quantity) {
+                    throw new Error('Todos los campos del producto son obligatorios');
+                }
 
-            const { id, quantity } = updatedData.products[0];
-
-            if (!id || !quantity) {
-                throw new Error('Todos los campos del producto son obligatorios');
+                const productsPath = `${__dirname}/files/Products.json`;
+                const producto = new ProductManager(productsPath);
+                const product = await producto.getProductById(id);
+    
+                if (product.id !== id) {
+                    throw new Error(`Producto con ID ${id} no encontrado`);
+                }
+    
+                const totalQuantityInAllCarts = this.getTotalQuantityInAllCarts(carts, id);
+    
+                if (totalQuantityInAllCarts >= product.stock) {
+                    throw new Error(`No hay suficiente stock del producto con ID ${id}`);
+                }
             }
-
-            const productsPath = `${__dirname}/files/Products.json`;
-            const producto = new ProductManager(productsPath);
-            const product = await producto.getProductById(id);
-            if(product.id !== id) {
-                throw new Error(`Producto con ID ${id} no encontrado`);
-            }
-
-            const totalQuantityInAllCarts = this.getTotalQuantityInAllCarts(carts, id);
-
-            if(totalQuantityInAllCarts >= product.stock) {
-                throw new Error(`No hay suficiente stock del producto con ID ${id}`);
-            }
-
+    
             const updatedCart = {
                 ...carts[index],
                 ...updatedData,
             };
-
+    
             carts[index] = updatedCart;
             await fs.promises.writeFile(this.path, JSON.stringify(carts, null, '\t'));
             let resultado = `Se actualizó el carrito con el ID: ${cartId}`;
