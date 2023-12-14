@@ -1,6 +1,6 @@
 import fs from 'fs';
 import ProductManager from './ProductManager.js';
-import __dirname from "../utils.js";
+import __dirname from "../../utils.js";
 
 class CartManager {
     constructor(path) {
@@ -35,7 +35,6 @@ class CartManager {
         return carts.reduce((total, cart) => {
             const productIndex = cart.products.findIndex(product => product.id === productId);
             if (productIndex !== -1) {
-                
                 total += cart.products[productIndex].quantity;
             }
             return total;
@@ -72,7 +71,7 @@ class CartManager {
             }
 
             const cart = carts[cartIndex];
-            
+
             const productsPath = `${__dirname}/files/Products.json`;
             const producto = new ProductManager(productsPath);
             const product = await producto.getProductById(productId);
@@ -121,7 +120,7 @@ class CartManager {
     
             for (const prod of updatedData.products) {
                 const { id, quantity } = prod;
-                
+
                 if (!id || !quantity) {
                     throw new Error('Todos los campos del producto son obligatorios');
                 }
@@ -129,23 +128,23 @@ class CartManager {
                 const productsPath = `${__dirname}/files/Products.json`;
                 const producto = new ProductManager(productsPath);
                 const product = await producto.getProductById(id);
-    
+
                 if (product.id !== id) {
                     throw new Error(`Producto con ID ${id} no encontrado`);
                 }
-    
+
                 const totalQuantityInAllCarts = this.getTotalQuantityInAllCarts(carts, id);
-    
+
                 if (totalQuantityInAllCarts >= product.stock) {
                     throw new Error(`No hay suficiente stock del producto con ID ${id}`);
                 }
             }
-    
+
             const updatedCart = {
                 ...carts[index],
                 ...updatedData,
             };
-    
+
             carts[index] = updatedCart;
             await fs.promises.writeFile(this.path, JSON.stringify(carts, null, '\t'));
             let resultado = `Se actualizó el carrito con el ID: ${cartId}`;
@@ -159,7 +158,7 @@ class CartManager {
         try {
             const carts = await this.getCarts();
             const index = carts.findIndex(cart => cart.id === id);
-            
+
             if (index === -1) {
                 throw new Error(`Carrito con ID ${id} no encontrado`);
             }

@@ -40,15 +40,15 @@ class ProductManager {
             } else {
                 id = products[products.length - 1].id + 1;
             }
-    
+
             if (!title || !description || !price || !category || !code || !stock) {
                 throw new Error('Excepto "thumbnails", todos los campos del producto son obligatorios');
             }
-    
+
             if (products.some(product => product.code === code)) {
                 throw new Error(`El código de producto ${code} está duplicado.`);
             }
-    
+
             const productData = {
                 title,
                 description,
@@ -75,7 +75,7 @@ class ProductManager {
             const { title, description, price, status = true, category, thumbnail = [], code, stock } = updatedData;
             const products = await this.getProducts();
             const index = products.findIndex(product => product.id === id);
-            
+
             if (index === -1) {
                 throw new Error(`Producto con ID ${id} no encontrado`);
             }
