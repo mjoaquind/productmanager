@@ -12,4 +12,34 @@ router.get('/', async (req, res) => {
     }
 })
 
+router.post('/', async (req, res) => {
+    let {
+        title,
+        description,
+        price,
+        thumbnail,
+        code,
+        stock,
+        status,
+        category,
+    } = req.body;
+
+    if (!title || !description || !price || !category || !code || !stock) {
+        throw new Error('Excepto "thumbnails", todos los campos del producto son obligatorios');
+    }
+
+    let result = await productsModel.create({
+        title,
+        description,
+        price,
+        thumbnail,
+        code,
+        stock,
+        status,
+        category,
+    });
+
+    res.send({ status: "success", payload: result });
+})
+
 export default router;
