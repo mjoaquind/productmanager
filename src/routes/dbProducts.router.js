@@ -13,33 +13,38 @@ router.get('/', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-    let {
-        title,
-        description,
-        price,
-        thumbnail,
-        code,
-        stock,
-        status,
-        category,
-    } = req.body;
+    try {
+        let {
+            title,
+            description,
+            price,
+            thumbnail = [],
+            code,
+            stock,
+            status = true,
+            category
+        } = req.body;
 
-    if (!title || !description || !price || !category || !code || !stock) {
-        throw new Error('Excepto "thumbnails", todos los campos del producto son obligatorios');
+        if (!title || !description || !price || !category || !code || !stock) {
+            return res.status(400).send({ status: "error", message: "All fields are required" });
+        }
+
+        const product = {
+            title,
+            description,
+            price,
+            thumbnail,
+            code,
+            stock,
+            status,
+            category
+        }
+
+        const result = await productsModel.create(product);
+        res.send({result});
+    } catch (error) {
+        res.status(400).send({ status: "error", message: error.message });
     }
-
-    let result = await productsModel.create({
-        title,
-        description,
-        price,
-        thumbnail,
-        code,
-        stock,
-        status,
-        category,
-    });
-
-    res.send({ status: "success", payload: result });
 })
 
 export default router;
