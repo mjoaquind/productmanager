@@ -2,51 +2,61 @@
     <h2 class="mb-4">Añadir Producto</h2>
 
     <form id="addProductForm">
-        <div class="row">
+        <div class="row m-2">
             <div class="col-md-6">
-                <div class="form-group">
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="title" placeholder="Título" name="title" required>
                     <label for="title">Título</label>
-                    <input type="text" class="form-control" id="title" name="title" required>
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="form-group">
+                <div class="form-floating">
+                    <input type="text" class="form-control" placeholder="Descripción" id="description" name="description" rows="3" required></input>
                     <label for="description">Descripción</label>
-                    <input type="text" class="form-control" id="description" name="description" rows="3" required></input>
                 </div>
             </div>
         </div>
 
-        <div class="row">
+        <div class="row m-2">
             <div class="col-md-6">
-                <div class="form-group">
+                <div class="form-floating">
+                    <input type="number" class="form-control" placeholder="Precio" id="price" name="price" min="0" step="10" required>
                     <label for="price">Precio</label>
-                    <input type="number" class="form-control" id="price" name="price" min="0" step="10" required>
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="form-group">
+                <div class="form-floating">
+                    <input type="text" class="form-control" placeholder="Categoría" id="category" name="category" required>
                     <label for="category">Categoría</label>
-                    <input type="text" class="form-control" id="category" name="category" required>
                 </div>
             </div>
         </div>
 
-        <div class="row">
+        <div class="row m-2">
             <div class="col-md-6">
-                <div class="form-group">
+                <div class="form-floating">
+                    <input type="text" class="form-control" placeholder="Code" id="code" name="code" required>
                     <label for="code">Code</label>
-                    <input type="text" class="form-control" id="code" name="code" required>
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="form-group">
+                <div class="form-floating">
+                    <input type="number" class="form-control" placeholder="Stock" id="stock" name="stock" min="0" required>
                     <label for="stock">Stock</label>
-                    <input type="number" class="form-control" id="stock" name="stock" min="0" required>
                 </div>
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary m-3">Añadir Producto</button>
+        <div class="row m-2">
+            <div class="col-md-6">
+                <div class="input-group mb-3">
+                    <input type="file" class="form-control" id="inputGroupFile02">
+                    <label class="input-group-text" for="inputGroupFile02">Upload</label>
+                </div>
+            </div>
+
+        </div>
+
+        <button type="submit" class="btn btn-outline-primary m-3">Añadir Producto</button>
     </form>
 </div>
