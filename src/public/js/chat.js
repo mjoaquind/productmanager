@@ -36,9 +36,12 @@ socket.on('messages', (data) => {
 })
 
 socket.on('new-user', (user) => {
-    Swal.fire({
-        title: `${user} se unió al chat!`,
-        toast: true,
-        position: "top-end"
-    })
+    Toastify({
+        text:`${user} ingresó al chat`,
+        duration:5000,
+        position:'right',
+        style: {
+            background: "linear-gradient(to right, #00b09b, #96c93d)",
+        }
+    }).showToast()
 })
