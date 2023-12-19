@@ -1,12 +1,13 @@
 import express from "express";
 //import productsRouter from "./routes/products.router.js";
-import cartsRouter from "./routes/carts.router.js";
+//import cartsRouter from "./routes/carts.router.js";
 import viewsRouter from "./routes/views.router.js";
 //import ProductManager from "./dao/fileManagers/ProductManager.js";
 
 import productsModel from "./dao/models/products.model.js";
 
 import dbProductsRouter from "./routes/dbProducts.router.js";
+import dbCartsRouter from './routes/dbCarts.router.js';
 
 import __dirname from "./utils.js";
 import { engine } from 'express-handlebars';
@@ -39,13 +40,14 @@ app.use(express.static(`${__dirname}/public`));
 
 // inicializo las rutas
 //app.use('/api/products',productsRouter);
-app.use('/api/carts',cartsRouter);
+//app.use('/api/carts',cartsRouter);
 app.use('/',viewsRouter);
 app.use('/api/products',dbProductsRouter);
+app.use('/api/carts',dbCartsRouter);
 
 
 socketServer.on("connection", async (socket) => {
-    console.log("Nuevo cliente conectado con ID:",socket.id);
+    //console.log("Nuevo cliente conectado con ID:",socket.id);
     //const path = `${__dirname}/dao/fileManagers/files/Products.json`;
     //const productManager = new ProductManager(path);
 
