@@ -1,0 +1,18 @@
+<div class="container mt-4 text-center">
+    <h1>Chat</h1>
+    <div class="row justify-content-md-center">
+        <div class="col-md-8">
+            <div class="input-group m-3">
+                <span class="input-group-text" id="basic-addon"><i class="bi bi-send"></i></span>
+                <input type="text" id="chat-input" class="form-control" placeholder="" aria-label="Message" aria-describedby="button-addon" autofocus>
+            </div>
+        </div>
+    </div>
+    <div>
+        <p id="messages-panel"></p>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/chat.js"></script>
