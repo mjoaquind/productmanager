@@ -11,9 +11,9 @@ const updateProductCards = (products) => {
 
     products.forEach(product => {
         productosHTML += `
-        <div class="col-md-4">
-            <div id="${product.id}" class="card">
-                <div id="${product.id}" class="carousel slide" data-bs-ride="carousel">
+        <div class="col-md-4 mb-4">
+            <div id="${product._id}" class="card">
+                <div id="${product._id}" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
                     ${product.thumbnail.map((image, index) => `
                         <div class="carousel-item ${index === 0 ? 'active' : ''}">
@@ -29,7 +29,7 @@ const updateProductCards = (products) => {
                     <p class="card-text">Código: ${product.code}</p>
                 </div>
                 <div class="d-flex justify-content-center mb-4">
-                    <button type="button" class="btn btn-danger" data-product-id="${product.id}" onclick="deleteProduct(${product.id})">Eliminar</button>
+                    <button type="button" class="btn btn-danger" data-product-id="${product._id}" onclick="deleteProduct(${product._id})">Eliminar</button>
                 </div>
             </div>
         </div>
