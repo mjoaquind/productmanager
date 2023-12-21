@@ -43,8 +43,7 @@ router.post('/', async (req, res) => {
 router.post('/:cid/products/:pid', async (req, res) => {
     try {
         const cartManager = new CartManager();
-        const cid = req.params.cid;
-        const pid = req.params.pid;
+        const { cid, pid } = req.params;
         
         const cart = await cartManager.addProductToCart(cid, pid);
         res.send({
@@ -88,19 +87,24 @@ router.delete('/:cid', async (req, res) => {
 
 router.delete('/:cid/products/:pid', async (req, res) => {
     try {
-        const cid = req.params.cid;
-        const pid = req.params.pid;
+        const { cid, pid } = req.params;
 
-        const cart = await cartsModel.findById(cid);
+        const result = await cartsModel.findByIdAndUpdate(cid, { $pull: { products: { product: pid } } });
+
+        if (!result) {
+            return res.status(404).json({ message: `Product ${pid} not found in cart ${cid}` });
+        }
+
+        const updatedCart = await cartsModel.findById(cid);
 
         res.send({
-            status:"success",
-            message: `Cart ${cid} deleted`,
-            carritos: {cart}
-        })
+            status: "success",
+            message: `Product ${pid} deleted from cart ${cid}`,
+            carrito: updatedCart
+        });
     } catch (error) {
         res.status(400).send({ status: "error", message: error.message });
     }
-})
+});
 
 export default router;
