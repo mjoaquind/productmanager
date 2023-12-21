@@ -46,8 +46,6 @@ router.post('/:cid/product/:pid', async (req, res) => {
         const cid = req.params.cid;
         const pid = req.params.pid;
         
-        console.log(cid, pid);
-
         const cart = await cartManager.addProductToCart(cid, pid);
         res.send({
             status:"success",

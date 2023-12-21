@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const collection = 'Prodcuts';
+const productsCollection = 'products';
 
 const productsSchema = new mongoose.Schema({
     title: { type: String, required: true },
@@ -13,6 +13,6 @@ const productsSchema = new mongoose.Schema({
     category: { type: String, required: true }
 });
 
-const productsModel = mongoose.model(collection, productsSchema);
+const productsModel = mongoose.model(productsCollection, productsSchema);
 
 export default productsModel;
