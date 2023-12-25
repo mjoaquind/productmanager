@@ -33,31 +33,23 @@ class CartManagerMongo {
         }
     }
 
-    addProductInCart = async (cid, pid, quantity = 1) => {
-        try {
-            const cart = await cartsModel.findOne({_id:cid});
-            if (!cart) {
-                throw new Error(`Carrito con ID ${cid} no encontrado`);
-            }
-            const product = await productsModel.findById({_id:pid});
-            if (!product) {
-                throw new Error(`Producto con ID ${pid} no encontrado`);
-            }
-            const existingProduct = cart.products.find(p => p.product.equals(pid));
-            if (existingProduct) {
-                existingProduct.quantity += quantity;
-            } else {
-                cart.products.push({ product: pid, quantity });
-            }
-            await cart.save();
-            return {
-                status: 'success',
-                message: `Se agrego el producto con el ID: ${pid} en el carrito con el ID: ${cid}`,
-                carrito: cart
-            }
-        } catch (error) {
-            throw new Error(`Error al agregar el producto al carrito: ${error.message}`);
+    addProductToCart = async (cid, pid, quantity = 1) => {
+        const cart = await cartsModel.findOne({_id:cid});
+        if (!cart) {
+            throw new Error(`Carrito con ID ${cid} no encontrado`);
         }
+        const product = await productsModel.findById({_id:pid});
+        if (!product) {
+            throw new Error(`Producto con ID ${pid} no encontrado`);
+        }
+        const existingProduct = cart.products.find(p => p.product.equals(pid));
+        if (existingProduct) {
+            existingProduct.quantity += quantity;
+        } else {
+            cart.products.push({ product: pid, quantity });
+        }
+        await cart.save();
+        return cart;
     }
 /*
     addProductToCart = async (cartId, productId) => {
