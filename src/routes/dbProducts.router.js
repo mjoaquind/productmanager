@@ -1,11 +1,29 @@
 import { Router } from 'express';
-import productsModel from '../dao/models/products.model.js';
+//import productsModel from '../dao/models/products.model.js';
+import productManager from '../dao/mongoManagers/ProductManager.js';
 
 const router = Router();
 
 router.get('/', async (req, res) => {
     try {
-        const products = await productsModel.find();
+        const {limit, page, sort, category, price} = req.query;
+        const options = {
+            limit: limit ?? 10,
+            page: page ?? 1,
+            sort: {price: sort === "asc" ? 1 : -1},
+            lean: true,
+        }
+
+        const products = await productManager.getProducts(options);
+
+        if (products.hasPrevPage){
+            products.prevLink = `/?limit=${options.limit}&page=${options.page - 1}`;
+        }
+
+        if(products.hasNextPage){
+            products.nextLink = `/?limit=${options.limit}&page=${options.page + 1}`;
+        }
+
         res.send({products});
     } catch (error) {
         res.status(400).send({ status: "error", message: error.message });
