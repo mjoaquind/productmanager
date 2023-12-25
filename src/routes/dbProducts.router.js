@@ -1,8 +1,10 @@
 import { Router } from 'express';
 //import productsModel from '../dao/models/products.model.js';
-import productManager from '../dao/mongoManagers/ProductManager.js';
+import ProductManager from '../dao/mongoManagers/ProductManager.js';
 
 const router = Router();
+
+const productManager = new ProductManager();
 
 router.get('/', async (req, res) => {
     try {
@@ -32,7 +34,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:pid', async (req, res) => {
     try {
-        const product = await productsModel.findOne({ _id: req.params.pid });
+        const product = await productManager.getProductById({ _id: req.params.pid });
         res.send({product});
     } catch (error) {
         res.status(400).send({ status: "error", message: error.message });
@@ -67,7 +69,7 @@ router.post('/', async (req, res) => {
             category
         }
 
-        const result = await productsModel.create(product);
+        const result = await productManager.addProduct(product);
         res.send({result});
     } catch (error) {
         res.status(400).send({ status: "error", message: error.message });
