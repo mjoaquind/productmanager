@@ -3,11 +3,10 @@ import express from "express";
 //import cartsRouter from "./routes/carts.router.js";
 import viewsRouter from "./routes/views.router.js";
 //import ProductManager from "./dao/fileManagers/ProductManager.js";
+import ProductManager from "./dao/mongoManagers/ProductManager.js";
 
 //import productsModel from "./dao/models/products.model.js";
-//import messagesModel from "./dao/models/messages.model.js";
-
-import ProductManager from "./dao/mongoManagers/ProductManager.js";
+import messagesModel from "./dao/models/messages.model.js";
 
 import dbProductsRouter from "./routes/dbProducts.router.js";
 import dbCartsRouter from './routes/dbCarts.router.js';
@@ -55,11 +54,12 @@ io.on("connection", async (socket) => {
     //console.log("Nuevo cliente conectado con ID:",socket.id);
     //const path = `${__dirname}/dao/fileManagers/files/Products.json`;
     //const productManager = new ProductManager(path);
+    const productManager = new ProductManager();
 
     // Emite el evento 'products' a todos los clientes conectados
     try {
-        //const products = await productManager.getProducts();
-        const products = await productsModel.find();
+        const products = await productManager.getProducts();
+        //const products = await productsModel.find();
         io.emit('products', products);
     } catch (error) {
         console.error('Error al obtener los productos:', error.message);
@@ -67,10 +67,10 @@ io.on("connection", async (socket) => {
 
     socket.on('addProduct', async (product) => {
         try {
-            //await productManager.addProduct(product);
-            //const products = await productManager.getProducts();
-            await productsModel.create(product);
-            const products = await productsModel.find();
+            await productManager.addProduct(product);
+            const products = await productManager.getProducts();
+            //await productsModel.create(product);
+            //const products = await productsModel.find();
             io.emit('products', products);
             console.log('Producto agregado:', product);
         } catch (error) {
@@ -80,10 +80,10 @@ io.on("connection", async (socket) => {
 
     socket.on('deleteProduct', async (id) => {
         try {
-            //await productManager.deleteProduct(id);
-            //const products = await productManager.getProducts();
-            await productsModel.deleteOne({ _id: id });
-            const products = await productsModel.find();
+            await productManager.deleteProduct(id);
+            const products = await productManager.getProducts();
+            //await productsModel.deleteOne({ _id: id });
+            //const products = await productsModel.find();
             io.emit('products', products);
             console.log('Producto eliminado:', id);
         } catch (error) {

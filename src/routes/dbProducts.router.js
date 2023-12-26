@@ -10,23 +10,15 @@ router.get('/', async (req, res) => {
     try {
         const {limit, page, sort, category, price} = req.query;
         const options = {
+            lean: true,
             limit: limit ?? 10,
             page: page ?? 1,
-            sort: {price: sort === "asc" ? 1 : -1},
-            lean: true,
+            sort: {price: sort === "asc" ? 1 : -1}
         }
 
-        const products = await productManager.getProducts(options);
+        const { totalPages, prevPage, nextPage, hasNextPage, hasPrevPage, docs } = products;
 
-        if (products.hasPrevPage){
-            products.prevLink = `/?limit=${options.limit}&page=${options.page - 1}`;
-        }
-
-        if(products.hasNextPage){
-            products.nextLink = `/?limit=${options.limit}&page=${options.page + 1}`;
-        }
-
-        res.send({products});
+        res.send({ products:docs });
     } catch (error) {
         res.status(400).send({ status: "error", message: error.message });
     }

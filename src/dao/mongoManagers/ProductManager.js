@@ -1,16 +1,12 @@
 import productsModel from '../models/products.model.js';
 
 class ProductManagerMongo {
-    getProducts = async (options) => {
-        const products = await productsModel.paginate(
-            {
-                // parar lo filtrado
-            }, 
-            options
-        );
-        return {
-            status: "success",
-            msg: products
+    getProducts = async (filter, options) => {
+        try {
+            const products = await productsModel.paginate(filter, options);
+            return products;
+        } catch (error) {
+            return error;
         }
     }
 
