@@ -30,7 +30,15 @@ router.get('/', async (req, res) => {
 router.get('/realtimeproducts', async (req, res) => {
     //const products = await productManager.getProducts();
     //const products = await productsModel.find().lean();
-    const products = await productManager.getProducts();
+    const {limit, page, sort, category, price} = req.query;
+    const options = {
+        lean: true,
+        limit: limit ?? 10,
+        page: page ?? 1,
+        sort: {code: sort === "asc" ? 1 : -1}
+    }
+
+    const products = await productManager.getProducts({}, options);
     const { totalPages, prevPage, nextPage, hasNextPage, hasPrevPage, docs } = products;
 
     res.render('realTimeProducts',{products:docs});
