@@ -14,7 +14,7 @@ class CartManagerMongo {
 
     getCartById = async (id) => {
         try {
-            const cart = await cartsModel.findOne({ _id: id });
+            const cart = await cartsModel.findOne({ _id: id }).lean();
             if (!cart) {
                 throw new Error(`Carrito con ID ${id} no encontrado`);
             }

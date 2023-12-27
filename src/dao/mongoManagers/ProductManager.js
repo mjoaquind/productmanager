@@ -11,7 +11,7 @@ class ProductManagerMongo {
     }
 
     getProductById = async (pid) => {
-        const product = await productsModel.findOne({ _id: pid });
+        const product = await productsModel.findOne({ _id: pid }).lean();
         if (!product) {
             return {
                 status: "error",

@@ -14,7 +14,7 @@ const cartManager = new CartManager();
 
 router.get('/carts/:cid', async (req, res) => {
     const cart = await cartManager.getCartById(req.params.cid);
-    res.render('cart', cart);
+    res.render('cart', { cart });
 });
 
 router.get('/products', async (req, res) => {

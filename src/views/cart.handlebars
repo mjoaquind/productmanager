@@ -1,23 +1,31 @@
 <div class="container mt-4 text-center">
     <h1>Listado de Productos</h1>
-    <p>ID: {{_id}}</p>
-    <p>Products: {{products.length}}</p>
-    <p>{{products}}</p>
-    <table>
+    <p>ID de Carrito: {{cart._id}}</p>
+    <p>Productos en el carrito: {{cart.products.length}}</p>
+    <table class="table">
         <thead>
             <tr>
                 <th>ID</th>
+                <th>Título</th>
+                <th>Descripción</th>
+                <th>Código</th>
+                <th>Stock</th>
+                <th>Precio</th>
                 <th>Cantidad</th>
             </tr>
         </thead>
         <tbody>
-            {{#each this.products}}
+            {{#each cart.products}}
                 <tr>
-                    <td>{{products.product.title}}</td>
-                    <td>{{products.quantity}}</td>
+                    <td>{{product._id}}</td>
+                    <td>{{product.title}}</td>
+                    <td>{{product.description}}</td>
+                    <td>{{product.code}}</td>
+                    <td>{{product.stock}}</td>
+                    <td>{{product.price}}</td>
+                    <td>{{this.quantity}}</td>
                 </tr>
             {{/each}}
         </tbody>
-        
     </table>
 </div>
