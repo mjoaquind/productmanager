@@ -2,30 +2,34 @@
     <h1>Listado de Productos</h1>
     <p>ID de Carrito: {{cart._id}}</p>
     <p>Productos en el carrito: {{cart.products.length}}</p>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Título</th>
-                <th>Descripción</th>
-                <th>Código</th>
-                <th>Stock</th>
-                <th>Precio</th>
-                <th>Cantidad</th>
-            </tr>
-        </thead>
-        <tbody>
-            {{#each cart.products}}
+    {{#if cart.products.length}}
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>{{product._id}}</td>
-                    <td>{{product.title}}</td>
-                    <td>{{product.description}}</td>
-                    <td>{{product.code}}</td>
-                    <td>{{product.stock}}</td>
-                    <td>{{product.price}}</td>
-                    <td>{{this.quantity}}</td>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Descripción</th>
+                    <th>Código</th>
+                    <th>Stock</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
                 </tr>
-            {{/each}}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {{#each cart.products}}
+                    <tr>
+                        <td>{{product._id}}</td>
+                        <td>{{product.title}}</td>
+                        <td>{{product.description}}</td>
+                        <td>{{product.code}}</td>
+                        <td>{{product.stock}}</td>
+                        <td>{{product.price}}</td>
+                        <td>{{this.quantity}}</td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    {{else}}
+        <p><strong>No hay productos en el carrito.</strong></p>
+    {{/if}}
 </div>
