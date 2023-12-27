@@ -5,4 +5,13 @@
             {{> card }}
         {{/each}}
     </div>
+    <div>
+        {{#if hasPrevPage}}
+            <a class="fs-2 btn-primary px-1" href="{{prevLink}}"><i class="bi bi-arrow-left-circle"></i></a>
+        {{/if}}
+        {{#if hasNextPage}}
+            <a class="fs-2 btn-primary px-1" href="{{nextLink}}"><i class="bi bi-arrow-right-circle"></i></a>
+        {{/if}}
+        <h3>Page: {{page}}/{{totalPages}}</h3>
+    </div>
 </div>

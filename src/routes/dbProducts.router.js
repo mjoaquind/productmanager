@@ -16,11 +16,27 @@ router.get('/', async (req, res) => {
             sort: {price: sort === "asc" ? 1 : -1}
         }
 
+        const products = await productManager.getProducts({}, options);
+
         const { totalPages, prevPage, nextPage, hasNextPage, hasPrevPage, docs } = products;
 
-        res.send({ products:docs });
+        res.status(200).send({ 
+            status: "success",
+            payload: docs,
+            totalPages,
+            prevPage,
+            nextPage,
+            page,
+            hasPrevPage,
+            hasNextPage,
+            prevLink: hasPrevPage ? `http://localhost:8080/api/products?limit=${limit}&page=${prevPage}` : null,
+            nextLink: hasNextPage ? `http://localhost:8080/api/products?limit=${limit}&page=${nextPage}` : null
+        });
     } catch (error) {
-        res.status(400).send({ status: "error", message: error.message });
+        res.status(400).send({
+            status: "error",
+            message: error.message
+        });
     }
 })
 

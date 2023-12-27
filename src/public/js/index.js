@@ -6,18 +6,16 @@ socketClient.on('products', (obj) => {
 
 const updateProductCards = (products) => {
     const productCard = document.getElementById('product-card');
-    
-
     let productosHTML = "";
 
-    products.forEach(product => {
+    products.docs.forEach(product => {
         productosHTML += `
         <div class="col-md-4 mb-4">
             <div class="card">
                 <div id="${product._id}" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
                     ${product.thumbnail.map((image, index) => `
-                        <div class="${index == 0 ? 'carousel-item active' :'carousel-item'}">
+                        <div class="${index === 0 ? 'carousel-item active' :'carousel-item'}">
                             <img src="${image}" class="d-block w-100" alt="Imagen del Producto">
                         </div>
                     `).join('')}

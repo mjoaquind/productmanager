@@ -7,7 +7,7 @@ const cartManager = new CartManager();
 
 router.get('/', async (req, res) => {
     try {
-        const carts = await cartManager.createCart();
+        const carts = await cartManager.gerCarts();
         res.send({
             status: "success",
             carritos: carts
@@ -29,7 +29,7 @@ router.get('/:cid', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const cart = await cartsModel.create({});
+        const cart = await cartManager.createCart();
         res.send({
             status:"success",
             message: "Cart created",

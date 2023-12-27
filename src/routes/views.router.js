@@ -10,20 +10,31 @@ const router = Router();
 //const productManager = new ProductManager(path);
 const productManager = new ProductManager();
 
-router.get('/', async (req, res) => {
+router.get('/products', async (req, res) => {
     const {limit, page, sort, category, price} = req.query;
     const options = {
         lean: true,
         limit: limit ?? 10,
         page: page ?? 1,
-        sort: {code: sort === "asc" ? 1 : -1}
+        sort: {price: sort === "asc" ? 1 : -1}
     }
 
     const products = await productManager.getProducts({}, options);
     const { totalPages, prevPage, nextPage, hasNextPage, hasPrevPage, docs } = products;
     //const products = await productsModel.find().lean();
-    
-    res.render('home',{products:docs});
+
+    res.render('home',{
+        status: "success",
+        products: docs,
+        totalPages,
+        prevPage,
+        nextPage,
+        page,
+        hasPrevPage,
+        hasNextPage,
+        prevLink: hasPrevPage ? `http://localhost:8080/products?limit=${limit}&page=${prevPage}` : null,
+        nextLink: hasNextPage ? `http://localhost:8080/products?limit=${limit}&page=${nextPage}` : null
+    });
 });
 
 
@@ -41,7 +52,18 @@ router.get('/realtimeproducts', async (req, res) => {
     const products = await productManager.getProducts({}, options);
     const { totalPages, prevPage, nextPage, hasNextPage, hasPrevPage, docs } = products;
 
-    res.render('realTimeProducts',{products:docs});
+    res.render('realTimeProducts',{
+        status: "success",
+        products: docs,
+        totalPages,
+        prevPage,
+        nextPage,
+        page,
+        hasPrevPage,
+        hasNextPage,
+        prevLink: hasPrevPage ? `http://localhost:8080/realtimeproducts?limit=${limit}&page=${prevPage}` : null,
+        nextLink: hasNextPage ? `http://localhost:8080/realtimeproducts?limit=${limit}&page=${nextPage}` : null
+    });
 
 });
 
