@@ -2,6 +2,7 @@ import { Router } from 'express';
 //import ProductManager from "../dao/fileManagers/ProductManager.js";
 import productsModel from '../dao/models/products.model.js';
 import ProductManager from '../dao/mongoManagers/ProductManager.js';
+import CartManager from "../dao/mongoManagers/CartManager.js";
 import __dirname from "../utils.js";
 
 const router = Router();
@@ -9,6 +10,12 @@ const router = Router();
 //const path = `${__dirname}/dao/fileManagers/files/Products.json`;
 //const productManager = new ProductManager(path);
 const productManager = new ProductManager();
+const cartManager = new CartManager();
+
+router.get('/carts/:cid', async (req, res) => {
+    const cart = await cartManager.getCartById(req.params.cid);
+    res.render('cart', cart);
+});
 
 router.get('/products', async (req, res) => {
     const {limit, page, sort, category, price} = req.query;
@@ -23,7 +30,7 @@ router.get('/products', async (req, res) => {
     const { totalPages, prevPage, nextPage, hasNextPage, hasPrevPage, docs } = products;
     //const products = await productsModel.find().lean();
 
-    res.render('home',{
+    res.render('products',{
         status: "success",
         products: docs,
         totalPages,

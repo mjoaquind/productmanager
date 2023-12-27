@@ -1,0 +1,23 @@
+<div class="container mt-4 text-center">
+    <h1>Listado de Productos</h1>
+    <p>ID: {{_id}}</p>
+    <p>Products: {{products.length}}</p>
+    <p>{{products}}</p>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Cantidad</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each this.products}}
+                <tr>
+                    <td>{{products.product.title}}</td>
+                    <td>{{products.quantity}}</td>
+                </tr>
+            {{/each}}
+        </tbody>
+        
+    </table>
+</div>
