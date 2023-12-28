@@ -53,12 +53,30 @@ class ProductManagerMongo {
             };
 
             products.push(productData);
-            const resultado = await products.save();
-            return resultado;
+            const result = await products.save();
+            return result;
         } catch (error) {
-            throw new Error(`Error al agregar el producto: ${error.message}`);
+            return error;
         }
     }
 
+
+    updateProduct = async (id, updatedData) => {
+        try {
+            const result = await productsModel.updateOne({ _id: id }, { $set: updatedData });
+            return result;
+        } catch (error) {
+            return error;
+        }
+    }
+
+    deleteProduct = async (id) => {
+        try {
+            const result = await productsModel.deleteOne({ _id: id });
+            return result;
+        } catch (error) {
+            return error;
+        }
+    }
 }
 export default ProductManagerMongo;

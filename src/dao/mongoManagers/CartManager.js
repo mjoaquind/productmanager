@@ -8,7 +8,7 @@ class CartManagerMongo {
             const carts = await cartsModel.find();
             return carts;
         } catch (error) {
-            throw new Error(`Error al obtener los carritos: ${error.message}`);
+            return error.message;
         }
     }
 
@@ -16,11 +16,11 @@ class CartManagerMongo {
         try {
             const cart = await cartsModel.findOne({ _id: id }).lean();
             if (!cart) {
-                throw new Error(`Carrito con ID ${id} no encontrado`);
+                return new Error(`Carrito con ID ${id} no encontrado`);
             }
             return cart;
         } catch (error) {
-            throw new Error(`Error al buscar el carrito: ${error.message}`);
+            return error.message;
         }
     }
 
@@ -29,27 +29,83 @@ class CartManagerMongo {
             const cart = await cartsModel.create({});
             return cart;
         } catch (error) {
-            throw new Error(`Error al crear el carrito: ${error.message}`);
+            return error;
         }
     }
 
     addProductToCart = async (cid, pid, quantity = 1) => {
-        const cart = await cartsModel.findOne({_id:cid});
-        if (!cart) {
-            throw new Error(`Carrito con ID ${cid} no encontrado`);
+        try {
+            const cart = await cartsModel.findOne({_id:cid});
+            if (!cart) {
+                return new Error(`Carrito con ID ${cid} no encontrado`);
+            }
+            const product = await productsModel.findById({_id:pid});
+            if (!product) {
+                return new Error(`Producto con ID ${pid} no encontrado`);
+            }
+            const existingProduct = cart.products.find(p => p.product.equals(pid));
+            if (existingProduct) {
+                existingProduct.quantity += quantity;
+            } else {
+                cart.products.push({ product: pid, quantity });
+            }
+            await cart.save();
+            return cart;
+        } catch (error) {
+            return error.message;
         }
-        const product = await productsModel.findById({_id:pid});
-        if (!product) {
-            throw new Error(`Producto con ID ${pid} no encontrado`);
+    }
+
+    updateProductQuantity = async (cid, pid, quantity) => {
+        try {
+            const cart = await cartsModel.findOne({ _id: cid });
+            if (!cart) {
+                return new Error(`Carrito con ID ${cid} no encontrado`);
+            }
+            const product = cart.products.find(p => p.product.equals(pid));
+            if (!product) {
+                return new Error(`Producto con ID ${pid} no encontrado en el carrito`);
+            }
+            product.quantity = quantity;
+            await cart.save();
+            return cart;
+        } catch (error) {
+            return error.message;
         }
-        const existingProduct = cart.products.find(p => p.product.equals(pid));
-        if (existingProduct) {
-            existingProduct.quantity += quantity;
-        } else {
-            cart.products.push({ product: pid, quantity });
+    }
+
+    updateCart = async (id, data) => {
+        try {
+            const cart = await cartsModel.findById(id)
+            cart.products.push(data);
+            await cart.save();
+            if (!cart) {
+                return new Error(`Carrito con ID ${id} no encontrado`);
+            }
+            return cart;
+        } catch (error) {
+            return error.message;
         }
-        await cart.save();
-        return cart;
+    }
+
+    deleteCart = async (id) => {
+        try {
+            const cart = await cartsModel.findById(id);
+            cart.products = [];
+            await cart.save();
+            return cart;
+        } catch (error) {
+            return error.message;
+        }
+    }
+
+    deleteProductFromCart = async (cid, pid) => {
+        try {
+            const result = await cartsModel.findByIdAndUpdate(cid, { $pull: { products: { product: pid } } });
+            return result;
+        } catch (error) {
+            return error.message;
+        }
     }
 /*
     addProductToCart = async (cartId, productId) => {

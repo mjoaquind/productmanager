@@ -20,8 +20,8 @@ router.get('/', async (req, res) => {
 router.get('/:cid', async (req, res) => {
     try {
         const cid = req.params.cid;
-        const cart = await cartsModel.findOne({ _id: cid });
-        res.send({cart});
+        const cart = await cartManager.getCartById(cid);
+        res.status(200).send({cart});
     } catch (error) {
         res.status(400).send({ status: "error", message: error.message });
     }
@@ -56,11 +56,27 @@ router.post('/:cid/products/:pid', async (req, res) => {
     }
 })
 
+router.put('/:cid/products/:pid', async (req, res) => {
+    try {
+        const { cid, pid } = req.params;
+        const quantity = req.body.quantity || 1;
+
+        const cart = await cartManager.updateProductQuantity(cid, pid, quantity);
+        res.send({
+            status:"success",
+            message: `Product ${pid} added to Cart ${cid}`,
+            carritos: {cart}
+        })
+    } catch (error) {
+        res.status(400).send({ status: "error", message: error.message });
+    }
+})
+
 router.put('/:cid', async (req, res) => {
     try {
         const cid = req.params.cid;
-        const data = req.body.cart;
-        const cart = await cartsModel.updateOne({ _id: cid }, data);
+        const data = req.body;
+        const cart = await cartManager.updateCart(cid, data);
         res.send({
             status:"success",
             message: `Cart ${cid} updated`,
@@ -74,10 +90,11 @@ router.put('/:cid', async (req, res) => {
 router.delete('/:cid', async (req, res) => {
     try {
         const cid = req.params.cid;
-        const cart = await cartsModel.deleteOne({ _id: cid });
+        const cart = await cartManager.deleteCart(cid);
+        //const cart = await cartsModel.deleteOne({ _id: cid });
         res.send({
             status:"success",
-            message: `Cart ${cid} deleted`,
+            message: `Cart ${cid} is empty`,
             carritos: {cart}
         })
     } catch (error) {
@@ -89,13 +106,13 @@ router.delete('/:cid/products/:pid', async (req, res) => {
     try {
         const { cid, pid } = req.params;
 
-        const result = await cartsModel.findByIdAndUpdate(cid, { $pull: { products: { product: pid } } });
+        const result = await cartManager.deleteProductFromCart(cid, pid);
 
         if (!result) {
             return res.status(404).json({ message: `Product ${pid} not found in cart ${cid}` });
         }
 
-        const updatedCart = await cartsModel.findById(cid);
+        const updatedCart = await cartManager.getCartById(cid);
 
         res.send({
             status: "success",
