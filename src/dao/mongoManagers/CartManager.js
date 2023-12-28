@@ -77,6 +77,7 @@ class CartManagerMongo {
     updateCart = async (id, data) => {
         try {
             const cart = await cartsModel.findById(id)
+            cart.products = [];
             cart.products.push(data);
             await cart.save();
             if (!cart) {
