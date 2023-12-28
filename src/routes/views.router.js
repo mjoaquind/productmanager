@@ -34,7 +34,7 @@ router.get('/products', async (req, res) => {
     const { totalPages, prevPage, nextPage, hasNextPage, hasPrevPage, docs } = products;
     //const products = await productsModel.find().lean();
 
-    let rutaBase = `http://localhost:8080/products`
+    let rutaBase = `http://localhost:8080/products/?`
     if (limit) rutaBase+=`?limit=${limit}`
     if (sort) rutaBase+=`&sort=${sort}`
     if (category) rutaBase+=`&category=${category}`

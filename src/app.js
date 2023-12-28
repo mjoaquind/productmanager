@@ -67,12 +67,12 @@ io.on("connection", async (socket) => {
 
     socket.on('addProduct', async (product) => {
         try {
-            await productManager.addProduct(product);
+            const result = await productManager.addProduct(product);
             const products = await productManager.getProducts();
             //await productsModel.create(product);
             //const products = await productsModel.find();
             io.emit('products', products);
-            console.log('Producto agregado:', product);
+            console.log('Producto agregado:', result);
         } catch (error) {
             console.error('Error al agregar el producto:', error.message);
         }

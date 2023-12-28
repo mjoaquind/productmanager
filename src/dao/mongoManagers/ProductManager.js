@@ -25,7 +25,7 @@ class ProductManagerMongo {
         let id = 0;
         const { title, description, price, status = true, category, thumbnail = [], code, stock } = product;
         try {
-            const products = await this.getProducts();
+            const products = await productsModel.find();
 
             if (!title || !description || !price || !category || !code || !stock) {
                 return {
@@ -52,8 +52,7 @@ class ProductManagerMongo {
                 category,
             };
 
-            products.push(productData);
-            const result = await products.save();
+            const result = await productsModel.create(productData);
             return result;
         } catch (error) {
             return error;
