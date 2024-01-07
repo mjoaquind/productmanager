@@ -24,8 +24,8 @@ router.get('/', async (req, res) => {
 
         const { totalPages, prevPage, nextPage, hasNextPage, hasPrevPage, docs } = products;
 
-        let rutaBase = `http://localhost:8080/api/products`
-        if (limit) rutaBase+=`?limit=${limit}`
+        let rutaBase = `http://localhost:8080/api/products/?`
+        if (limit) rutaBase+=`limit=${limit}`
         if (sort) rutaBase+=`&sort=${sort}`
         if (category) rutaBase+=`&category=${category}`
         if (stock) rutaBase+=`&stock=${stock}`

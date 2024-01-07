@@ -1,4 +1,7 @@
-<div class="container mt-4 text-center">
+<div class="container mt-5 text-center">
+    {{#if user}}
+        {{> nav}}
+    {{/if}}
     <h1>Listado de Productos</h1>
     <p>ID de Carrito: {{cart._id}}</p>
     <p>Productos en el carrito: {{cart.products.length}}</p>

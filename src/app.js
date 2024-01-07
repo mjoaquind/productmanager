@@ -1,4 +1,6 @@
 import express from "express";
+import session from "express-session";
+import MongoStore from "connect-mongo";
 //import productsRouter from "./routes/products.router.js";
 //import cartsRouter from "./routes/carts.router.js";
 import viewsRouter from "./routes/views.router.js";
@@ -10,6 +12,7 @@ import messagesModel from "./dao/models/messages.model.js";
 
 import dbProductsRouter from "./routes/dbProducts.router.js";
 import dbCartsRouter from './routes/dbCarts.router.js';
+import sessionRouter from './routes/sessions.router.js'
 
 import __dirname from "./utils.js";
 import { engine } from 'express-handlebars';
@@ -36,11 +39,21 @@ const MONGO = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}
 
 const connection = mongoose.connect(MONGO);
 
+app.use(express.static(`${__dirname}/public`));
+
+app.use(session({
+    store: new MongoStore({
+        mongoUrl: MONGO,
+        ttl: 3600
+    }),
+    secret: 'CoderSecret',
+    resave: false,
+    save: false
+}));
+
 app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
 app.set('views', `${__dirname}/views`);
-
-app.use(express.static(`${__dirname}/public`));
 
 // inicializo las rutas
 //app.use('/api/products',productsRouter);
@@ -48,6 +61,7 @@ app.use(express.static(`${__dirname}/public`));
 app.use('/',viewsRouter);
 app.use('/api/products',dbProductsRouter);
 app.use('/api/carts',dbCartsRouter);
+app.use('/api/session',sessionRouter);
 
 
 io.on("connection", async (socket) => {

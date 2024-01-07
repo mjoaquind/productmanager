@@ -1,0 +1,25 @@
+<div class="container mt-4 text-center">
+    <h1>Iniciar Sesión</h1>
+    <form id="loginForm">
+        <div class="row m-2">
+            <div class="col-md-6">
+                <div class="form-floating">
+                    <input type="email" class="form-control" id="email" placeholder="Email" name="email" autofocus required>
+                    <label for="email">Email</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating">
+                    <input type="password" class="form-control" id="password" placeholder="Contraseña" name="password" required>
+                    <label for="password">Contraseña</label>
+                </div>
+            </div>
+        </div>
+        <div class="row m-2 align-items-center">
+            <input type="submit" class="btn btn-primary m-3">
+            <input type="reset" class="btn btn-danger m-3">
+        </div>
+    </form>
+    <p>¿No tienes cuenta? <a href="/register">Registrate</a></p>
+</div>
+<script src="/js/login.js"></script>

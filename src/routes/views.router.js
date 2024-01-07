@@ -12,12 +12,27 @@ const router = Router();
 const productManager = new ProductManager();
 const cartManager = new CartManager();
 
-router.get('/carts/:cid', async (req, res) => {
+const publicAccess = (req, res, next) => {
+    if(req.session.user) {
+        return res.redirect('/');
+    }
+    next();
+}
+
+const privateAccess = (req, res, next) => {
+    if(!req.session.user) {
+        return res.redirect('/login');
+    }
+    next();
+}
+
+router.get('/carts/:cid', privateAccess, async (req, res) => {
     const cart = await cartManager.getCartById(req.params.cid);
-    res.render('cart', { cart });
+    const user = req.session.user;
+    res.render('cart', { cart, user });
 });
 
-router.get('/products', async (req, res) => {
+router.get('/products', privateAccess, async (req, res) => {
     const {limit, page, sort, category, stock} = req.query;
     const options = {
         lean: true,
@@ -35,7 +50,7 @@ router.get('/products', async (req, res) => {
     //const products = await productsModel.find().lean();
 
     let rutaBase = `http://localhost:8080/products/?`
-    if (limit) rutaBase+=`?limit=${limit}`
+    if (limit) rutaBase+=`limit=${limit}`
     if (sort) rutaBase+=`&sort=${sort}`
     if (category) rutaBase+=`&category=${category}`
     if (stock) rutaBase+=`&stock=${stock}`
@@ -43,6 +58,7 @@ router.get('/products', async (req, res) => {
     res.render('products',{
         status: "success",
         products: docs,
+        user: req.session.user,
         totalPages,
         prevPage,
         nextPage,
@@ -54,6 +70,17 @@ router.get('/products', async (req, res) => {
     });
 });
 
+router.get('/register', publicAccess, (req, res) => {
+    res.render('register')
+})
+
+router.get('/login', publicAccess, (req, res) => {
+    res.render('login')
+})
+
+router.get('/', privateAccess, (req, res) => {
+    res.render('profile', {user: req.session.user})
+})
 
 router.get('/realtimeproducts', async (req, res) => {
     //const products = await productManager.getProducts();
