@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import UserManager from '../dao/mongoManagers/UserManager.js';
+import { createHash, validatePassword } from '../utils.js';
 
 const router = Router();
 
@@ -20,7 +21,7 @@ router.post('/register', async (req, res) => {
             last_name,
             email,
             age,
-            password
+            password: createHash(password)
         }
 
         const result = await userManager.createUser(user);
@@ -33,8 +34,9 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
-        const user = await userManager.getByEmailAndPassword(email, password);
-        if (!user) {
+        const user = await userManager.getByEmail(email);
+        const isValidPassword = validatePassword(password, user.password);
+        if (!user || !isValidPassword) {
             return res.status(400).send({ status: "error", message: "User not found" });
         }
 
