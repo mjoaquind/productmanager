@@ -6,6 +6,8 @@ class UserManagerMongo {
         return users;
     }
 
+    getUserById = async (id) => await usersModel.findById(id);
+
     getByEmail = async (email) => {
         const user = await usersModel.findOne({ email });
         return user;

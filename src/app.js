@@ -14,6 +14,9 @@ import dbProductsRouter from "./routes/dbProducts.router.js";
 import dbCartsRouter from './routes/dbCarts.router.js';
 import sessionRouter from './routes/sessions.router.js'
 
+import passport from "passport";
+import initializePassport from "./config/passport.config.js";
+
 import __dirname from "./utils.js";
 import { engine } from 'express-handlebars';
 import { Server } from 'socket.io';
@@ -48,8 +51,12 @@ app.use(session({
     }),
     secret: 'CoderSecret',
     resave: false,
-    save: false
+    saveUninitialized: false
 }));
+
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
