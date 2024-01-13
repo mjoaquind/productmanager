@@ -35,7 +35,7 @@ router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
         const user = await userManager.getByEmail(email);
-        const isValidPassword = validatePassword(password, user.password);
+        const isValidPassword = validatePassword(password, user);
         if (!user || !isValidPassword) {
             return res.status(400).send({ status: "error", message: "User not found" });
         }
@@ -74,6 +74,24 @@ router.get('/logout', (req, res) => {
             }
             res.redirect('/login')
         });
+    } catch (error) {
+        res.status(400).send({ status: "error", message: error.message });
+    }
+})
+
+router.post('/resetPassword', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        if (!email || !password) {
+            return res.status(400).send({ status: "error", message: "Email and password are required" });
+        }
+        const user = await userManager.getByEmail(email);
+        if (!user) {
+            return res.status(400).send({ status: "error", message: "User not found" });
+        }
+        const newPassword = createHash(password);
+        await userManager.updatePassword(user._id, newPassword);
+        res.status(200).send({ status: "success", message: "Password reset successfully" });
     } catch (error) {
         res.status(400).send({ status: "error", message: error.message });
     }

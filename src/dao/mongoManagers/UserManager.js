@@ -20,6 +20,11 @@ class UserManagerMongo {
         const newUser = await usersModel.create(user);
         return newUser;
     }
+
+    updatePassword = async (id, password) => {
+        const user = await usersModel.updateOne({ _id: id }, { password });
+        return user;
+    }
 }
 
 export default UserManagerMongo;

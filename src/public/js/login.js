@@ -15,6 +15,7 @@ form.addEventListener('submit', (event) => {
         }
     }).then(result=>{
         if(result.status===200) {
+            console.log(result);
             window.location.replace('/products');
         } else {
             Toastify({
