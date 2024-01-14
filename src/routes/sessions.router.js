@@ -77,28 +77,46 @@ router.get('failregister', async (req, res) => {
     }
 })*/
 
+router.get('/github', passport.authenticate('github', {scope: ['user:email']}), async (req, res) => {});
+
+router.get('/githubcallback', passport.authenticate('github', { failureRedirect: '/login' }), async (req, res) => {
+    //req.session.user = req.user;
+    req.session.user = {
+        first_name: req.user.first_name,
+        last_name: req.user.last_name,
+        email: req.user.email,
+        age: req.user.age,
+        role: 'admin'
+    }
+    res.redirect('/products');
+});
+
 router.post('/login', passport.authenticate('login', { failureRedirect: '/api/session/faillogin' }),
 async (req, res) => {
     if(!req.user) {
         return res.status(400).send({ status: "error", message: "User not found" });
     }
-/*    req.session.user = {
+    /*    
+    req.session.user = {
         first_name: req.user.first_name,
         last_name: req.user.last_name,
         email: req.user.email,
         age: req.user.age
-    }*/
+    }
+    */
 
     if (req.user.email === 'adminCoder@coder.com' && req.user.password === 'adminCod3r123') {
         req.session.user = {
-            full_name: `${req.user.first_name} ${req.user.last_name}`,
+            first_name: req.user.first_name,
+            last_name: req.user.last_name,
             email: req.user.email,
             age: req.user.age,
             role: 'admin'
         }
     } else {
         req.session.user = {
-            full_name: `${req.user.first_name} ${req.user.last_name}`,
+            first_name: req.user.first_name,
+            last_name: req.user.last_name,
             email: req.user.email,
             age: req.user.age,
             role: 'user'
