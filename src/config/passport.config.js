@@ -72,7 +72,7 @@ const initializePassport = () =>{
             }
             const user = await userManager.getByEmail(profile._json.email);
             if(user){
-                console.log('User already exists');
+                console.log('User already exists, session created');
                 return done(null, user)
                 // return done(null, false);
                 // si dejo en false no me redirecciona a la pagina principal
