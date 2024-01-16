@@ -67,7 +67,7 @@ const initializePassport = () =>{
             console.log(process.env.CLIENT_ID, process.env.CLIENT_SECRET);
             const first_name = profile._json.name;
             const last_name = "";
-            const email = profile._json.email;
+            let email = profile._json.email;
             if(!profile._json.email){
                 email = profile._json.username;
             }
