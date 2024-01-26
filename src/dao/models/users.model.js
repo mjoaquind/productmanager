@@ -18,7 +18,7 @@ const usersSchema = new mongoose.Schema({
         }],
         default: []
     },
-    role: { type: String, default: 'user' }
+    role: { type: String, enum: ['admin', 'user'], default: 'user' }
 });
 
 cartsSchema.pre('findOne', function () {
