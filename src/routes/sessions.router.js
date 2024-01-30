@@ -86,7 +86,7 @@ router.get('/githubcallback', passport.authenticate('github', { failureRedirect:
         last_name: req.user.last_name,
         email: req.user.email,
         age: req.user.age,
-        role: 'admin'
+        role: req.user.role
     }
     res.redirect('/products');
 });
@@ -119,7 +119,7 @@ async (req, res) => {
             last_name: req.user.last_name,
             email: req.user.email,
             age: req.user.age,
-            role: 'user'
+            role: req.user.role
         }
     }
 

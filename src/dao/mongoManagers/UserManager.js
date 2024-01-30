@@ -1,4 +1,5 @@
 import usersModel from "../models/users.model.js";
+import CartManager from './CartManager.js';
 
 class UserManagerMongo {
     getUsers = async () => {
@@ -19,6 +20,9 @@ class UserManagerMongo {
     }
 
     createUser = async (user) => {
+        const cartManager = new CartManager();
+        const cart = await cartManager.createCart();
+        user.cart = cart._id;
         const newUser = await usersModel.create(user);
         return newUser;
     }
