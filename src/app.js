@@ -21,11 +21,7 @@ import __dirname from "./utils.js";
 import { engine } from 'express-handlebars';
 import { Server } from 'socket.io';
 import mongoose from "mongoose";
-import * as dotenv from 'dotenv';
-
-dotenv.config();
-
-const PORT = 8080;
+import { options } from './config/config.js';
 
 let messages = [];
 
@@ -34,11 +30,11 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
-const httpServer = app.listen(PORT, () => console.log(`Servidor escuchando en el puerto ${PORT}`));
+const httpServer = app.listen(options.server.port, () => console.log(`Servidor escuchando en el puerto ${options.server.port}`));
 
 const io = new Server(httpServer);
 
-const MONGO = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@${process.env.MONGO_CLUSTER}.mongodb.net/ecommerce`;
+const MONGO = `mongodb+srv://${options.mongo.user}:${options.mongo.pass}@${options.mongo.cluster}.mongodb.net/ecommerce`;
 
 const connection = mongoose.connect(MONGO);
 

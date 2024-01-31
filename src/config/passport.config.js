@@ -3,6 +3,7 @@ import local from 'passport-local';
 import GitHubStrategy from 'passport-github2';
 import UserManager from '../dao/mongoManagers/UserManager.js';
 import { createHash, validatePassword } from '../utils.js';
+import { options } from './config.js';
 
 const userManager = new UserManager();
 
@@ -58,13 +59,11 @@ const initializePassport = () =>{
     });
 
     passport.use('github', new GitHubStrategy({
-        clientID: process.env.GITHUB_ID,
-        clientSecret: process.env.GITHUB_SECRET,
+        clientID: options.github.id,
+        clientSecret: options.github.secret,
         callbackURL:'http://localhost:8080/api/session/githubcallback'
     }, async(accesToken, refreshToken, profile, done)=>{
         try {
-            //console.log(profile);
-            console.log(process.env.CLIENT_ID, process.env.CLIENT_SECRET);
             const first_name = profile._json.name;
             const last_name = "";
             let email = profile._json.email;
