@@ -1,16 +1,8 @@
 import { Router } from 'express';
 //import ProductManager from "../dao/fileManagers/ProductManager.js";
 //import productsModel from '../dao/models/products.model.js';
-import ProductManager from '../dao/mongoManagers/ProductManager.js';
-import CartManager from "../dao/mongoManagers/CartManager.js";
-import __dirname from "../utils.js";
 
 const router = Router();
-
-//const path = `${__dirname}/dao/fileManagers/files/Products.json`;
-//const productManager = new ProductManager(path);
-const productManager = new ProductManager();
-const cartManager = new CartManager();
 
 const publicAccess = (req, res, next) => {
     if(req.session.user) {
