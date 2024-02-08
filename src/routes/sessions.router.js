@@ -94,15 +94,7 @@ router.post('/login', passport.authenticate('login', { failureRedirect: '/api/se
     if(!req.user) {
         return res.status(400).send({ status: "error", message: "User not found" });
     }
-    /*    
-    req.session.user = {
-        first_name: req.user.first_name,
-        last_name: req.user.last_name,
-        email: req.user.email,
-        age: req.user.age
-    }
-    */
-
+    
     if (req.user.email === 'adminCoder@coder.com' && req.user.password === 'adminCod3r123') {
         req.session.user = {
             first_name: req.user.first_name,
