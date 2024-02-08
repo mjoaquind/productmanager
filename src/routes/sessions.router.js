@@ -80,7 +80,6 @@ router.get('failregister', async (req, res) => {
 router.get('/github', passport.authenticate('github', {scope: ['user:email']}), async (req, res) => {});
 
 router.get('/githubcallback', passport.authenticate('github', { failureRedirect: '/login' }), async (req, res) => {
-    //req.session.user = req.user;
     req.session.user = {
         first_name: req.user.first_name,
         last_name: req.user.last_name,
@@ -91,8 +90,7 @@ router.get('/githubcallback', passport.authenticate('github', { failureRedirect:
     res.redirect('/products');
 });
 
-router.post('/login', passport.authenticate('login', { failureRedirect: '/api/session/faillogin' }),
-async (req, res) => {
+router.post('/login', passport.authenticate('login', { failureRedirect: '/api/session/faillogin' }), async (req, res) => {
     if(!req.user) {
         return res.status(400).send({ status: "error", message: "User not found" });
     }
