@@ -1,6 +1,7 @@
 import { Router } from 'express';
 //import ProductManager from "../dao/fileManagers/ProductManager.js";
 //import productsModel from '../dao/models/products.model.js';
+import { ViewController } from '../controllers/views.controller.js';
 
 const router = Router();
 
@@ -18,108 +19,20 @@ const privateAccess = (req, res, next) => {
     next();
 }
 
-router.get('/carts/:cid', privateAccess, async (req, res) => {
-    const cart = await cartManager.getCartById(req.params.cid);
-    const user = req.session.user;
-    res.render('cart', { cart, user });
-});
+router.get('/carts/:cid', privateAccess, ViewController.getCartById);
 
-router.get('/products', privateAccess, async (req, res) => {
-    const {limit, page, sort, category, stock} = req.query;
-    const options = {
-        lean: true,
-        limit: limit ?? 10,
-        page: page ?? 1,
-        sort: {price: sort === "asc" ? 1 : -1}
-    }
+router.get('/products', privateAccess, ViewController.getProducts);
 
-    const filter = {}        
-    if(category) filter.category = category
-    if(stock) filter.stock = stock
+router.get('/register', publicAccess, ViewController.register);
 
-    const products = await productManager.getProducts(filter, options);
-    const { totalPages, prevPage, nextPage, hasNextPage, hasPrevPage, docs } = products;
-    //const products = await productsModel.find().lean();
+router.get('/login', publicAccess, ViewController.login);
 
-    let rutaBase = `http://localhost:8080/products/?`
-    if (limit) rutaBase+=`limit=${limit}`
-    if (sort) rutaBase+=`&sort=${sort}`
-    if (category) rutaBase+=`&category=${category}`
-    if (stock) rutaBase+=`&stock=${stock}`
+router.get('/resetPassword', ViewController.resetPassword);
 
-    res.render('products',{
-        status: "success",
-        products: docs,
-        user: req.session.user,
-        totalPages,
-        prevPage,
-        nextPage,
-        page,
-        hasPrevPage,
-        hasNextPage,
-        prevLink: hasPrevPage ? `${rutaBase}&page=${prevPage}` : null,
-        nextLink: hasNextPage ? `${rutaBase}&page=${nextPage}` : null
-    });
-});
+router.get('/', privateAccess, ViewController.profile);
 
-router.get('/register', publicAccess, (req, res) => {
-    res.render('register')
-})
+router.get('/realtimeproducts', ViewController.getRealTimeProducts);
 
-router.get('/login', publicAccess, (req, res) => {
-    res.render('login')
-})
-
-router.get('/resetPassword', (req, res) => {
-    res.render('resetPassword')
-})
-
-router.get('/', privateAccess, (req, res) => {
-    res.render('profile', {user: req.session.user})
-})
-
-router.get('/realtimeproducts', async (req, res) => {
-    //const products = await productManager.getProducts();
-    //const products = await productsModel.find().lean();
-    const {limit, page, sort, category, stock} = req.query;
-    const options = {
-        lean: true,
-        limit: limit ?? 10,
-        page: page ?? 1,
-        sort: {price: sort === "asc" ? 1 : -1}
-    }
-
-    const filter = {}        
-    if(category) filter.category = category
-    if(stock) filter.stock = stock
-
-    const products = await productManager.getProducts(filter, options);
-    const { totalPages, prevPage, nextPage, hasNextPage, hasPrevPage, docs } = products;
-
-    let rutaBase = `http://localhost:8080/realtimeproducts`
-    if (limit) rutaBase+=`?limit=${limit}`
-    if (sort) rutaBase+=`&sort=${sort}`
-    if (category) rutaBase+=`&category=${category}`
-    if (stock) rutaBase+=`&stock=${stock}`
-
-    res.render('realTimeProducts',{
-        status: "success",
-        products: docs,
-        totalPages,
-        prevPage,
-        nextPage,
-        page,
-        hasPrevPage,
-        hasNextPage,
-        prevLink: hasPrevPage ? `${rutaBase}&page=${prevPage}` : null,
-        nextLink: hasNextPage ? `${rutaBase}&page=${nextPage}` : null
-    });
-
-});
-
-router.get('/chat', async (req, res) => {
-    res.render('chat',{});
-
-});
+router.get('/chat', ViewController.chat);
 
 export default router;
