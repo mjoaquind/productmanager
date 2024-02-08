@@ -20,8 +20,9 @@ import initializePassport from "./config/passport.config.js";
 import __dirname from "./utils.js";
 import { engine } from 'express-handlebars';
 import { Server } from 'socket.io';
-import mongoose from "mongoose";
+
 import { options } from './config/config.js';
+import { ConnectionDB } from "./services/connectionDB.js";
 
 let messages = [];
 
@@ -36,7 +37,7 @@ const io = new Server(httpServer);
 
 const MONGO = `mongodb+srv://${options.mongo.user}:${options.mongo.pass}@${options.mongo.cluster}.mongodb.net/ecommerce`;
 
-const connection = mongoose.connect(MONGO);
+const connection = ConnectionDB.getInstance();
 
 app.use(express.static(`${__dirname}/public`));
 
