@@ -85,6 +85,19 @@ class SessionController {
             res.status(400).send({ status: "error", message: error.message });
         }
     }
+
+    static current = async (req, res) => {
+        console.log('llega');
+        try {
+            if (req.session && req.session.user) {
+                res.send.json({ status: "success", user: req.session.user });
+            } else {
+                res.send({ status: "error", message: "User not authenticated" });
+            }
+        } catch (error) {
+            res.status(400).send({ status: "error", message: error.message });
+        }
+    }
 }
 
 export { SessionController }

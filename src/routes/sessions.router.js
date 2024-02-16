@@ -20,4 +20,6 @@ router.get('/logout', SessionController.logout);
 
 router.post('/resetPassword', SessionController.resetPassword);
 
+router.get('/current', SessionController.current);
+
 export default router;
