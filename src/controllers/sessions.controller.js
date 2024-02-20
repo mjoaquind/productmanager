@@ -87,10 +87,9 @@ class SessionController {
     }
 
     static current = async (req, res) => {
-        console.log('llega');
         try {
             if (req.session && req.session.user) {
-                res.send.json({ status: "success", user: req.session.user });
+                res.send({ status: "success", payload: req.session.user });
             } else {
                 res.send({ status: "error", message: "User not authenticated" });
             }

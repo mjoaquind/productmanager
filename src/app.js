@@ -22,7 +22,7 @@ import { engine } from 'express-handlebars';
 import { Server } from 'socket.io';
 
 import { options } from './config/config.js';
-import { ConnectionDB } from "./services/connectionDB.js";
+import { ConnectionDB } from "./config/connectionDB.js";
 
 let messages = [];
 
