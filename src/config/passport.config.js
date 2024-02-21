@@ -1,11 +1,11 @@
 import passport from 'passport';
 import local from 'passport-local';
 import GitHubStrategy from 'passport-github2';
-import UserManager from '../dao/mongoManagers/UserManager.js';
+import UserDAO from '../dao/managers/mongo/UserDAO.js';
 import { createHash, validatePassword } from '../utils.js';
 import { options } from './config.js';
 
-const userManager = new UserManager();
+const userDAO = new UserDAO();
 
 const LocalStrategy = local.Strategy;
 
@@ -15,7 +15,7 @@ const initializePassport = () =>{
         async (req, username, password, done) => {
             const { first_name, last_name, email, age } = req.body;
             try {
-                const user = await userManager.getByEmail(username);
+                const user = await userDAO.getByEmail(username);
                 if(user) {
                     console.log("User already exists");
                     return done(null, false);
@@ -27,7 +27,7 @@ const initializePassport = () =>{
                     age,
                     password: createHash(password)
                 }
-                const result = await userManager.createUser(newUser);
+                const result = await userDAO.createUser(newUser);
                 return done(null, result);
             } catch (error) {
                 return done(error);
@@ -39,7 +39,7 @@ const initializePassport = () =>{
     {usernameField:"email"},
     async (username, password, done)=>{
         try {
-            const user = await userManager.getByEmail(username);
+            const user = await userDAO.getByEmail(username);
             if(!user || !validatePassword(password, user)){
                 return done(null, false);
             } 
@@ -54,7 +54,7 @@ const initializePassport = () =>{
     });
 
     passport.deserializeUser(async (id,done)=>{
-        const user = await userManager.getUserById(id);
+        const user = await userDAO.getUserById(id);
         done(null, user);
     });
 
@@ -70,7 +70,7 @@ const initializePassport = () =>{
             if(!profile._json.email){
                 email = profile._json.username;
             }
-            const user = await userManager.getByEmail(profile._json.email);
+            const user = await userDAO.getByEmail(profile._json.email);
             if(user){
                 console.log('User already exists, session created');
                 return done(null, user)
@@ -84,7 +84,7 @@ const initializePassport = () =>{
                 age: 18,
                 password: ""
             }
-            const result = await userManager.createUser(newUser);
+            const result = await userDAO.createUser(newUser);
             return done (null, result);
         } catch (error) {
             return done(error)

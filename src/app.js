@@ -5,7 +5,7 @@ import MongoStore from "connect-mongo";
 //import cartsRouter from "./routes/carts.router.js";
 import viewsRouter from "./routes/views.router.js";
 //import ProductManager from "./dao/fileManagers/ProductManager.js";
-import ProductManager from "./dao/mongoManagers/ProductManager.js";
+import ProductDAO from "./dao/managers/mongo/ProductDAO.js";
 
 //import productsModel from "./dao/models/products.model.js";
 import messagesModel from "./dao/models/messages.model.js";
@@ -72,11 +72,11 @@ io.on("connection", async (socket) => {
     //console.log("Nuevo cliente conectado con ID:",socket.id);
     //const path = `${__dirname}/dao/fileManagers/files/Products.json`;
     //const productManager = new ProductManager(path);
-    const productManager = new ProductManager();
+    const productDAO = new ProductDAO();
 
     // Emite el evento 'products' a todos los clientes conectados
     try {
-        const products = await productManager.getProducts();
+        const products = await productDAO.getProducts();
         //const products = await productsModel.find();
         io.emit('products', products);
     } catch (error) {
@@ -85,8 +85,8 @@ io.on("connection", async (socket) => {
 
     socket.on('addProduct', async (product) => {
         try {
-            const result = await productManager.addProduct(product);
-            const products = await productManager.getProducts();
+            const result = await productDAO.addProduct(product);
+            const products = await productDAO.getProducts();
             //await productsModel.create(product);
             //const products = await productsModel.find();
             io.emit('products', products);
@@ -98,8 +98,8 @@ io.on("connection", async (socket) => {
 
     socket.on('deleteProduct', async (id) => {
         try {
-            await productManager.deleteProduct(id);
-            const products = await productManager.getProducts();
+            await productDAO.deleteProduct(id);
+            const products = await productDAO.getProducts();
             //await productsModel.deleteOne({ _id: id });
             //const products = await productsModel.find();
             io.emit('products', products);

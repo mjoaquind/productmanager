@@ -1,8 +1,7 @@
-import UserManager from '../dao/mongoManagers/UserManager.js';
+import { userService } from '../repository/index.js';
 import { createHash, validatePassword } from '../utils.js';
 
 
-const userManager = new UserManager();
 class SessionController {
     static register = async (req, res) => {
         res.send({ status: "success", message: "User created successfully", user: req.user })
@@ -74,12 +73,12 @@ class SessionController {
             if (!email || !password) {
                 return res.status(400).send({ status: "error", message: "Email and password are required" });
             }
-            const user = await userManager.getByEmail(email);
+            const user = await userService.getByEmail(email);
             if (!user) {
                 return res.status(400).send({ status: "error", message: "User not found" });
             }
             const newPassword = createHash(password);
-            await userManager.updatePassword(user._id, newPassword);
+            await userService.updatePassword(user._id, newPassword);
             res.status(200).send({ status: "success", message: "Password reset successfully" });
         } catch (error) {
             res.status(400).send({ status: "error", message: error.message });

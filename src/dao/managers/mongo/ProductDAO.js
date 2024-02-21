@@ -1,6 +1,6 @@
-import productsModel from '../models/products.model.js';
+import productsModel from '../../models/products.model.js';
 
-class ProductManagerMongo {
+class ProductDAO {
     getProducts = async (filter, options) => {
         try {
             const products = await productsModel.paginate(filter, options);
@@ -60,9 +60,9 @@ class ProductManagerMongo {
     }
 
 
-    updateProduct = async (id, updatedData) => {
+    updateProduct = async (pid, product) => {
         try {
-            const result = await productsModel.updateOne({ _id: id }, { $set: updatedData });
+            const result = await productsModel.updateOne({ _id: pid }, { $set: product });
             return result;
         } catch (error) {
             return error;
@@ -78,4 +78,4 @@ class ProductManagerMongo {
         }
     }
 }
-export default ProductManagerMongo;
+export default ProductDAO;

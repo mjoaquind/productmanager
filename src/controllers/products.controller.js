@@ -1,6 +1,4 @@
-import ProductManager from '../dao/mongoManagers/ProductManager.js';
-
-const productManager = new ProductManager();
+import { productService } from "../repository/index.js";
 
 class ProductController {
     static getProducts = async (req, res) => {
@@ -17,7 +15,7 @@ class ProductController {
             if(category) filter.category = category
             if(stock) filter.stock = stock
     
-            const products = await productManager.getProducts(filter, options);
+            const products = await productService.getProducts(filter, options);
     
             const { totalPages, prevPage, nextPage, hasNextPage, hasPrevPage, docs } = products;
     
@@ -49,7 +47,7 @@ class ProductController {
 
     static getProductById = async (req, res) => {
         try {
-            const product = await productManager.getProductById({ _id: req.params.pid });
+            const product = await productService.getProductById({ _id: req.params.pid });
             res.status(200).send({product});
         } catch (error) {
             res.status(400).send({ status: "error", message: error.message });
@@ -84,7 +82,7 @@ class ProductController {
                 category
             }
     
-            const result = await productManager.addProduct(product);
+            const result = await productService.addProduct(product);
             res.status(200).send({result});
         } catch (error) {
             res.status(400).send({ status: "error", message: error.message });
@@ -120,7 +118,7 @@ class ProductController {
                 category
             }
     
-            const result = await productManager.updateProduct(id, product);
+            const result = await productService.updateProduct(id, product);
             res.status(200).send({result});
         } catch (error) {
             res.status(400).send({ status: "error", message: error.message });
@@ -130,7 +128,7 @@ class ProductController {
     static deleteProduct = async (req, res) => {
         try {
             const id = req.params.pid;
-            let result = await productManager.deleteProduct(id);
+            let result = await productService.deleteProduct(id);
             res.status(200).send({result});
         } catch (error) {
             res.status(400).send({ status: "error", message: error.message });

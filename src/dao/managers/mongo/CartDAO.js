@@ -1,5 +1,5 @@
-import cartsModel from '../models/carts.model.js';
-import productsModel from '../models/products.model.js';
+import cartsModel from '../../models/carts.model.js';
+import productsModel from '../../models/products.model.js';
 
 class CartManagerMongo {
 

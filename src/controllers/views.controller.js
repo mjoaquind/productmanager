@@ -1,13 +1,9 @@
-import ProductManager from '../dao/mongoManagers/ProductManager.js';
-import CartManager from "../dao/mongoManagers/CartManager.js";
+import { productService, cartService } from "../repository/index.js";
 
-
-const productManager = new ProductManager();
-const cartManager = new CartManager();
 
 class ViewController {
     static getCartById = async (req, res) => {
-        const cart = await cartManager.getCartById(req.params.cid);
+        const cart = await cartService.getCartById(req.params.cid);
         const user = req.session.user;
         res.render('cart', { cart, user });
     }
@@ -25,7 +21,7 @@ class ViewController {
         if(category) filter.category = category
         if(stock) filter.stock = stock
     
-        const products = await productManager.getProducts(filter, options);
+        const products = await productService.getProducts(filter, options);
         const { totalPages, prevPage, nextPage, hasNextPage, hasPrevPage, docs } = products;
         //const products = await productsModel.find().lean();
     
@@ -63,7 +59,7 @@ class ViewController {
         if(category) filter.category = category
         if(stock) filter.stock = stock
     
-        const products = await productManager.getProducts(filter, options);
+        const products = await productService.getProducts(filter, options);
         const { totalPages, prevPage, nextPage, hasNextPage, hasPrevPage, docs } = products;
     
         let rutaBase = `http://localhost:8080/realtimeproducts`
