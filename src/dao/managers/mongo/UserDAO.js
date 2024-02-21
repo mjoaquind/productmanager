@@ -1,7 +1,7 @@
 import usersModel from "../../models/users.model.js";
-import CartManager from './CartDAO.js';
+import { CartDAO } from './CartDAO.js';
 
-class UserDAO {
+export class UserDAO {
     getUsers = async () => {
         const users = await usersModel.find();
         return users;
@@ -32,5 +32,3 @@ class UserDAO {
         return user;
     }
 }
-
-export default UserDAO;

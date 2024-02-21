@@ -1,7 +1,7 @@
 import passport from 'passport';
 import local from 'passport-local';
 import GitHubStrategy from 'passport-github2';
-import UserDAO from '../dao/managers/mongo/UserDAO.js';
+import { UserDAO } from '../dao/managers/mongo/UserDAO.js';
 import { createHash, validatePassword } from '../utils/bcrypt.js';
 import { options } from './config.js';
 

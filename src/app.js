@@ -5,7 +5,7 @@ import MongoStore from "connect-mongo";
 //import cartsRouter from "./routes/carts.router.js";
 import viewsRouter from "./routes/views.router.js";
 //import ProductManager from "./dao/fileManagers/ProductManager.js";
-import ProductDAO from "./dao/managers/mongo/ProductDAO.js";
+import { ProductDAO } from "./dao/managers/mongo/ProductDAO.js";
 
 //import productsModel from "./dao/models/products.model.js";
 import messagesModel from "./dao/models/messages.model.js";
@@ -22,7 +22,7 @@ import { engine } from 'express-handlebars';
 import { Server } from 'socket.io';
 
 import { options } from './config/config.js';
-import { ConnectionDB } from "./config/connectionDB.js";
+import { connectDB } from "./config/connectDB.js";
 
 let messages = [];
 
@@ -39,7 +39,7 @@ const io = new Server(httpServer);
 
 const MONGO = `mongodb+srv://${options.mongo.user}:${options.mongo.pass}@${options.mongo.cluster}.mongodb.net/ecommerce`;
 
-const connection = ConnectionDB.getInstance();
+const connection = connectDB();
 
 app.use(express.static(`${__dirname}/public`));
 

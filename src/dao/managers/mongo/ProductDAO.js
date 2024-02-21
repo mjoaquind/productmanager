@@ -1,6 +1,6 @@
 import productsModel from '../../models/products.model.js';
 
-class ProductDAO {
+export class ProductDAO {
     getProducts = async (filter, options) => {
         try {
             const products = await productsModel.paginate(filter, options);
@@ -78,4 +78,3 @@ class ProductDAO {
         }
     }
 }
-export default ProductDAO;

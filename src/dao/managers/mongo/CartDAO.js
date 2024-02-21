@@ -1,7 +1,7 @@
 import cartsModel from '../../models/carts.model.js';
 import productsModel from '../../models/products.model.js';
 
-class CartManagerMongo {
+export class CartDAO {
 
     gerCarts = async () => {
         try {
@@ -142,5 +142,3 @@ class CartManagerMongo {
     }
 */
 }
-
-export default CartManagerMongo;
