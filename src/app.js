@@ -17,7 +17,7 @@ import sessionRouter from './routes/sessions.router.js'
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
 
-import __dirname from "./utils.js";
+import __dirname from "./dirname.js";
 import { engine } from 'express-handlebars';
 import { Server } from 'socket.io';
 
@@ -31,7 +31,9 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
-const httpServer = app.listen(options.server.port, () => console.log(`Servidor escuchando en el puerto ${options.server.port}`));
+const PORT = options.server.port || 8080;
+
+const httpServer = app.listen(PORT, () => console.log(`Servidor escuchando en el puerto ${PORT}`));
 
 const io = new Server(httpServer);
 

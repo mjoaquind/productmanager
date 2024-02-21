@@ -1,5 +1,5 @@
 import { userService } from '../repository/index.js';
-import { createHash, validatePassword } from '../utils.js';
+import { createHash, validatePassword } from '../utils/bcrypt.js';
 
 
 class SessionController {

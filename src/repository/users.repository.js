@@ -1,4 +1,4 @@
-//import { getUserDTO } from '../dao/dto/users.dto.js';
+import getUsersDTO from '../dao/dto/users.dto.js';
 
 class UsersRepository {
     constructor(dao) {
@@ -11,9 +11,8 @@ class UsersRepository {
 
     getUserById = async (id) => {
         const user = await this.dao.getUserById(id);
-        //const userDTO = new getUserDTO(user);
-        //return userDTO;
-        return user;
+        const userDTO = new getUsersDTO(user);
+        return userDTO;
     }
 
     getByEmail = async (email) => {
