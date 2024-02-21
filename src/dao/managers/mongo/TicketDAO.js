@@ -3,20 +3,20 @@ import ticketsModel from "../../models/tickets.model.js";
 export class TicketDAO {
 
     constructor() {
-        this.ticketsModel = ticketsModel;
+        this.tickets = ticketsModel;
     }
-    async createTicket(ticket) {
-        const newTicket = await this.ticketsModel.create(ticket);
+    createTicket = async (ticket) => {
+        const newTicket = await this.tickets.create(ticket);
         return newTicket;
     }
 
-    async getTickets() {
-        const tickets = await this.ticketsModel.find();
+    getTickets = async () => {
+        const tickets = await this.tickets.find();
         return tickets;
     }
 
-    async getTicketById(id) {
-        const ticket = await this.ticketsModel.findById(id);
+    getTicketById = async (id) => {
+        const ticket = await this.tickets.findById(id);
         return ticket;
     }
 }

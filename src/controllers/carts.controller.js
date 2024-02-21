@@ -3,7 +3,7 @@ import { cartService } from "../repository/index.js";
 class CartController {
     static getCarts = async (req, res) => {
         try {
-            const carts = await cartService.gerCarts();
+            const carts = await cartService.getCarts();
             res.send({
                 status: "success",
                 carritos: carts
@@ -119,6 +119,20 @@ class CartController {
             res.status(400).send({ status: "error", message: error.message });
         }
     }
+
+    /*static purchaseCart = async (req, res) => {
+        try {
+            const cid = req.params.cid;
+            const cart = await cartService.purchaseCart(cid);
+            res.send({
+                status:"success",
+                message: `Cart ${cid} purchased`,
+                carritos: {cart}
+            })
+        } catch (error) {
+            res.status(400).send({ status: "error", message: error.message });
+        }
+    }*/
 }
 
 export { CartController };

@@ -1,9 +1,14 @@
 import productsModel from '../../models/products.model.js';
 
 export class ProductDAO {
+
+    constructor() {
+        this.products = productsModel;
+    }
+
     getProducts = async (filter, options) => {
         try {
-            const products = await productsModel.paginate(filter, options);
+            const products = await this.products.paginate(filter, options);
             return products;
         } catch (error) {
             return error;
@@ -11,7 +16,7 @@ export class ProductDAO {
     }
 
     getProductById = async (pid) => {
-        const product = await productsModel.findOne({ _id: pid }).lean();
+        const product = await this.products.findOne({ _id: pid }).lean();
         if (!product) {
             return {
                 status: "error",
@@ -25,7 +30,7 @@ export class ProductDAO {
         let id = 0;
         const { title, description, price, status = true, category, thumbnail = [], code, stock } = product;
         try {
-            const products = await productsModel.find();
+            const products = await this.products.find();
 
             if (!title || !description || !price || !category || !code || !stock) {
                 return {
@@ -52,7 +57,7 @@ export class ProductDAO {
                 category,
             };
 
-            const result = await productsModel.create(productData);
+            const result = await this.products.create(productData);
             return result;
         } catch (error) {
             return error;
@@ -62,7 +67,7 @@ export class ProductDAO {
 
     updateProduct = async (pid, product) => {
         try {
-            const result = await productsModel.updateOne({ _id: pid }, { $set: product });
+            const result = await this.products.updateOne({ _id: pid }, { $set: product });
             return result;
         } catch (error) {
             return error;
@@ -71,7 +76,7 @@ export class ProductDAO {
 
     deleteProduct = async (id) => {
         try {
-            const result = await productsModel.deleteOne({ _id: id });
+            const result = await this.products.deleteOne({ _id: id });
             return result;
         } catch (error) {
             return error;

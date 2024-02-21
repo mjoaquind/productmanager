@@ -22,7 +22,6 @@ import { engine } from 'express-handlebars';
 import { Server } from 'socket.io';
 
 import { options } from './config/config.js';
-import { ConnectDB } from "./config/connectDB.js";
 
 let messages = [];
 
@@ -38,8 +37,6 @@ const httpServer = app.listen(PORT, () => console.log(`Servidor escuchando en el
 const io = new Server(httpServer);
 
 const MONGO = `mongodb+srv://${options.mongo.user}:${options.mongo.pass}@${options.mongo.cluster}.mongodb.net/ecommerce`;
-
-//const connection = ConnectDB.getInstance();
 
 app.use(express.static(`${__dirname}/public`));
 

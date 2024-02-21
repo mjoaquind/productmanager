@@ -3,9 +3,14 @@ import productsModel from '../../models/products.model.js';
 
 export class CartDAO {
 
-    gerCarts = async () => {
+    constructor() {
+        this.carts = cartsModel;
+        this.products = productsModel;
+    }
+
+    getCarts = async () => {
         try {
-            const carts = await cartsModel.find();
+            const carts = await this.carts.find();
             return carts;
         } catch (error) {
             return error.message;
@@ -14,7 +19,7 @@ export class CartDAO {
 
     getCartById = async (id) => {
         try {
-            const cart = await cartsModel.findOne({ _id: id }).lean();
+            const cart = await this.carts.findOne({ _id: id }).lean();
             if (!cart) {
                 return new Error(`Carrito con ID ${id} no encontrado`);
             }
@@ -26,7 +31,7 @@ export class CartDAO {
 
     createCart = async () => {
         try {
-            const cart = await cartsModel.create({});
+            const cart = await this.carts.create({});
             return cart;
         } catch (error) {
             return error;
@@ -35,11 +40,11 @@ export class CartDAO {
 
     addProductToCart = async (cid, pid, quantity = 1) => {
         try {
-            const cart = await cartsModel.findOne({_id:cid});
+            const cart = await this.carts.findOne({_id:cid});
             if (!cart) {
                 return new Error(`Carrito con ID ${cid} no encontrado`);
             }
-            const product = await productsModel.findById({_id:pid});
+            const product = await this.pŕoducts.findById({_id:pid});
             if (!product) {
                 return new Error(`Producto con ID ${pid} no encontrado`);
             }
@@ -58,7 +63,7 @@ export class CartDAO {
 
     updateProductQuantity = async (cid, pid, quantity) => {
         try {
-            const cart = await cartsModel.findOne({ _id: cid });
+            const cart = await this.carts.findOne({ _id: cid });
             if (!cart) {
                 return new Error(`Carrito con ID ${cid} no encontrado`);
             }
@@ -76,7 +81,7 @@ export class CartDAO {
 
     updateCart = async (id, data) => {
         try {
-            const cart = await cartsModel.findById(id)
+            const cart = await this.carts.findById(id)
             cart.products = [];
             cart.products.push(data);
             await cart.save();
@@ -91,7 +96,7 @@ export class CartDAO {
 
     deleteCart = async (id) => {
         try {
-            const cart = await cartsModel.findById(id);
+            const cart = await this.carts.findById(id);
             cart.products = [];
             await cart.save();
             return cart;
@@ -102,7 +107,7 @@ export class CartDAO {
 
     deleteProductFromCart = async (cid, pid) => {
         try {
-            const result = await cartsModel.findByIdAndUpdate(cid, { $pull: { products: { product: pid } } });
+            const result = await this.carts.findByIdAndUpdate(cid, { $pull: { products: { product: pid } } });
             return result;
         } catch (error) {
             return error.message;

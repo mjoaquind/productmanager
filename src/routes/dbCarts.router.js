@@ -19,4 +19,6 @@ router.delete('/:cid', CartController.deleteCart);
 
 router.delete('/:cid/products/:pid', CartController.deleteProductFromCart);
 
+//router.get('/cid/purschase', CartController.purchaseCart);
+
 export default router;
