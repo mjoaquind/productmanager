@@ -2,18 +2,18 @@ import { options } from '../config/config.js';
 
 const persistence = options.server.persistence;
 
-let ticketDAO;
+let ticketsDAO;
 let productsDAO;
 let cartsDAO;
 let usersDAO;
 
 switch (persistence) {
     case 'MONGO':
-        const { connectDB } = await import('../config/connectDB.js');
-        connectDB();
+        const { ConnectDB } = await import('../config/connectDB.js');
+        const coneccion = ConnectDB.getInstance();
 
         const { TicketDAO } = await import('./managers/mongo/TicketDAO.js');
-        ticketDAO = new TicketDAO();
+        ticketsDAO = new TicketDAO();
         const { ProductDAO } = await import('./managers/mongo/ProductDAO.js');
         productsDAO = new ProductDAO();
         const { CartDAO } = await import('./managers/mongo/CartDAO.js');
@@ -23,4 +23,4 @@ switch (persistence) {
         break;
 }
 
-export { ticketDAO, productsDAO, cartsDAO, usersDAO }
+export { ticketsDAO, productsDAO, cartsDAO, usersDAO }
