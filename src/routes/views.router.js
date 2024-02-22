@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { checkRole } from '../middlewares/auth.js';
 //import ProductManager from "../dao/fileManagers/ProductManager.js";
 //import productsModel from '../dao/models/products.model.js';
 import { ViewController } from '../controllers/views.controller.js';
@@ -33,6 +34,6 @@ router.get('/', privateAccess, ViewController.profile);
 
 router.get('/realtimeproducts', ViewController.getRealTimeProducts);
 
-router.get('/chat', ViewController.chat);
+router.get('/chat', checkRole('user'), ViewController.chat);
 
 export default router;
