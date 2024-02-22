@@ -21,6 +21,16 @@ switch (persistence) {
         const { UserDAO } = await import('./managers/mongo/UserDAO.js');
         usersDAO = new UserDAO();
         break;
+    /*case 'FILE':
+        const { ProductManager } = await import('./managers/fileSystem/ProductManager.js');
+        productsDAO = new ProductManager();
+        const { CartManager } = await import('./managers/fileSystem/CartManager.js');
+        cartsDAO = new CartManager();
+        const { TicketManager } = await import('./managers/fileSystem/TicketManager.js');
+        ticketsDAO = new TicketManager();
+        const { UserManager } = await import('./managers/fileSystem/UserManager.js');
+        usersDAO = new UserManager();
+        break;*/
 }
 
 export { ticketsDAO, productsDAO, cartsDAO, usersDAO }
