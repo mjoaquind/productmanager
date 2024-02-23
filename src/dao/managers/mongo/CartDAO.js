@@ -44,7 +44,7 @@ export class CartDAO {
             if (!cart) {
                 return new Error(`Carrito con ID ${cid} no encontrado`);
             }
-            const product = await this.pŕoducts.findById({_id:pid});
+            const product = await this.products.findById({_id:pid});
             if (!product) {
                 return new Error(`Producto con ID ${pid} no encontrado`);
             }

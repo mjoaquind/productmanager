@@ -1,4 +1,5 @@
-import { cartService } from "../repository/index.js";
+import { cartService, productService, ticketService } from "../repository/index.js";
+import { v4 as uuidv4 } from 'uuid';
 
 class CartController {
     static getCarts = async (req, res) => {
@@ -120,19 +121,51 @@ class CartController {
         }
     }
 
-    /*static purchaseCart = async (req, res) => {
+    static purchaseCart = async (req, res) => {
         try {
             const cid = req.params.cid;
-            const cart = await cartService.purchaseCart(cid);
-            res.send({
-                status:"success",
-                message: `Cart ${cid} purchased`,
-                carritos: {cart}
-            })
+            const cart = await cartService.getCartById(cid);
+            if(cart){
+                if(cart.products.length == 0){
+                    return res.status(400).json({ message: `Cart ${cid} is empty` });
+                }
+                const ticketProducts = [];
+                const rejectedProducts = [];
+                let ticketAmount = 0;
+                for(let i=0; i<cart.products.length; i++){
+                    const cartProduct = cart.products[i];
+                    const productDB = await productService.getProductById(cartProduct.product._id);
+                    if(!productDB){
+                        return res.status(404).json({ message: `Product ${cartProduct.product._id} not found` });
+                    }
+                    if(cartProduct.quantity <= productDB.stock){
+                        productDB.stock = productDB.stock - cartProduct.quantity;
+                        await cartService.deleteProductFromCart(cid, productDB._id);
+                        await productService.updateProduct(productDB._id, productDB);
+                        ticketAmount += productDB.price * cartProduct.quantity;
+                        ticketProducts.push(cartProduct);
+                    } else {
+                        rejectedProducts.push(cartProduct);
+                    }
+                }
+                console.log("ticketProducts: ", ticketProducts);
+                console.log("rejectedProducts: ", rejectedProducts);
+                const newTicket = {
+                    code: uuidv4(),
+                    timestamp: Date.now(),
+                    products: ticketProducts,
+                    amount: ticketAmount,
+                    purchaser: 'email@email.com'
+                }
+                const ticketCreated = await ticketService.createTicket(newTicket);
+                res.send(ticketCreated);
+            } else {
+                return res.status(404).json({ message: `Cart ${cid} not found` });
+            }
         } catch (error) {
             res.status(400).send({ status: "error", message: error.message });
         }
-    }*/
+    }
 }
 
 export { CartController };
