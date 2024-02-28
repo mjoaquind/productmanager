@@ -14,6 +14,8 @@ import dbProductsRouter from "./routes/dbProducts.router.js";
 import dbCartsRouter from './routes/dbCarts.router.js';
 import sessionRouter from './routes/sessions.router.js'
 
+import mockingProducts from './routes/mocking.router.js';
+
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
 
@@ -65,6 +67,7 @@ app.use('/',viewsRouter);
 app.use('/api/products',dbProductsRouter);
 app.use('/api/carts',dbCartsRouter);
 app.use('/api/session',sessionRouter);
+app.use('/mockingproducts',mockingProducts);
 
 
 io.on("connection", async (socket) => {
