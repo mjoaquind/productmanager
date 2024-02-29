@@ -1,4 +1,8 @@
 import { productService } from "../repository/index.js";
+import { CustomError } from '../utils/errors/customError.service.js';
+import { EError } from '../utils/errors/EError.js'
+import { generateProductErrorInfo } from '../utils/errors/productErrorInfo.js';
+import { generateProductErrorParam } from '../utils/errors/productErrorParam.js';
 
 class ProductController {
     static getProducts = async (req, res) => {
@@ -47,6 +51,7 @@ class ProductController {
 
     static getProductById = async (req, res) => {
         try {
+            
             const product = await productService.getProductById({ _id: req.params.pid });
             res.status(200).send({product});
         } catch (error) {
@@ -66,11 +71,17 @@ class ProductController {
                 status = true,
                 category
             } = req.body;
-    
+
             if (!title || !description || !price || !category || !code || !stock) {
-                return res.status(400).send({ status: "error", message: error.message });
+                CustomError.createError({
+                    name: 'Product creation error',
+                    cause: generateProductErrorInfo(req.body),
+                    message: 'Some required fields are empty',
+                    errorCode: EError.INVALID_PARAM_ERROR
+                })
+                //return res.status(400).send({ status: "error", message: error.message });
             }
-    
+
             const product = {
                 title,
                 description,
@@ -81,7 +92,7 @@ class ProductController {
                 status,
                 category
             }
-    
+
             const result = await productService.addProduct(product);
             res.status(200).send({result});
         } catch (error) {

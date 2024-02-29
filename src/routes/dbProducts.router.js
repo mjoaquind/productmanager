@@ -8,7 +8,7 @@ router.get('/', ProductController.getProducts);
 
 router.get('/:pid', ProductController.getProductById);
 
-router.post('/', checkRole('admin'), ProductController.addProduct);
+router.post('/',ProductController.addProduct);
 
 router.put('/:pid', checkRole('admin'), ProductController.updateProduct);
 
