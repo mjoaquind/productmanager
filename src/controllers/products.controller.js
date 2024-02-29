@@ -77,7 +77,7 @@ class ProductController {
                     name: 'Product creation error',
                     cause: generateProductErrorInfo(req.body),
                     message: 'Some required fields are empty',
-                    errorCode: EError.INVALID_PARAM_ERROR
+                    code: EError.INVALID_PARAM_ERROR
                 })
                 //return res.status(400).send({ status: "error", message: error.message });
             }

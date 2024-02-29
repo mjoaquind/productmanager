@@ -1,6 +1,8 @@
 import { EError } from '../utils/errors/EError.js';
 
 export const errorHandler = (error, req, res, next) => {
+    console.log('bug tuped', error.code);
+    console.log(error.cause);
     switch (error.code) {
         case EError.ROUTING_ERROR:
             res.json({status: 'error', error: error.cause, message: error.message});
@@ -15,7 +17,7 @@ export const errorHandler = (error, req, res, next) => {
             res.json({status: 'error', error: error.cause, message: error.message});
             break;
         case EError.INVALID_PARAM_ERROR:
-            res.json({status: 'error', error: error.cause});
+            res.json({status: 'error', error: error.cause, message: error.message});
             break;
         default:
             res.status(500).send({ status: 'error', message: 'Unexpected error' });
