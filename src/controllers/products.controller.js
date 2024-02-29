@@ -2,7 +2,6 @@ import { productService } from "../repository/index.js";
 import { CustomError } from '../utils/errors/customError.service.js';
 import { EError } from '../utils/errors/EError.js'
 import { generateProductErrorInfo } from '../utils/errors/productErrorInfo.js';
-import { generateProductErrorParam } from '../utils/errors/productErrorParam.js';
 
 class ProductController {
     static getProducts = async (req, res) => {
@@ -73,13 +72,13 @@ class ProductController {
             } = req.body;
 
             if (!title || !description || !price || !category || !code || !stock) {
+                console.log(generateProductErrorInfo(req.body));
                 CustomError.createError({
                     name: 'Product creation error',
                     cause: generateProductErrorInfo(req.body),
                     message: 'Some required fields are empty',
                     code: EError.INVALID_PARAM_ERROR
-                })
-                //return res.status(400).send({ status: "error", message: error.message });
+                });
             }
 
             const product = {
@@ -115,7 +114,13 @@ class ProductController {
             } = req.body;
     
             if (!title || !description || !price || !category || !code || !stock) {
-                return res.status(400).send({ status: "error", message: error.message });
+                console.log(generateProductErrorInfo(req.body));
+                CustomError.createError({
+                    name: 'Product update error',
+                    cause: generateProductErrorInfo(req.body),
+                    message: 'Some required fields are empty',
+                    code: EError.INVALID_PARAM_ERROR
+                });
             }
     
             const product = {

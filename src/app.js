@@ -34,8 +34,6 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
-app.use(errorHandler);
-
 const PORT = options.server.port || 8080;
 
 const httpServer = app.listen(PORT, () => console.log(`Servidor escuchando en el puerto ${PORT}`));
@@ -73,6 +71,7 @@ app.use('/api/carts',dbCartsRouter);
 app.use('/api/session',sessionRouter);
 app.use('/mockingproducts',mockingProducts);
 
+app.use(errorHandler);
 
 io.on("connection", async (socket) => {
     //console.log("Nuevo cliente conectado con ID:",socket.id);
