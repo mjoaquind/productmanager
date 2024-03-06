@@ -3,9 +3,30 @@ import { options } from '../config/config.js';
 import __dirname from '../dirname.js';
 import path from 'path';
 
+
+const customLevels = {
+    levels: {
+        debug:5,
+        http:4,
+        info:3,
+        warning:2,
+        error:1,
+        fatal:0
+    },
+    colors: {
+        fatal: 'red',
+        error: 'orange',
+        warning: 'yellow',
+        info: 'green',
+        http: 'magenta',
+        debug: 'blue'
+    }
+}
+
 const devLogger = winston.createLogger({
+    levels: customLevels.levels,
     transports: [
-        new winston.transports.Console({level:'verbose'})
+        new winston.transports.Console({level:'info'})
     ]
 });
 
