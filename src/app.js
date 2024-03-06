@@ -27,12 +27,16 @@ import { options } from './config/config.js';
 
 import { errorHandler } from "./middlewares/errorHandler.js";
 
+import { addLogger } from "./utils/logger.js";
+
 let messages = [];
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
+
+app.use(addLogger);
 
 const PORT = options.server.port || 8080;
 

@@ -10,11 +10,13 @@ const MONGO_CLUSTER = process.env.MONGO_CLUSTER;
 const GITHUB_ID = process.env.GITHUB_ID;
 const GITHUB_SECRET = process.env.GITHUB_SECRET;
 const JWT_PRIVATE_KEY = process.env.JWT_PRIVATE_KEY;
+const NODE_ENV = process.env.NODE_ENV;
 
 export const options = {
     server: {
         port: PORT,
-        persistence: PERSISTENCE
+        persistence: PERSISTENCE,
+        environment: NODE_ENV
     },
     mongo: {
         user: MONGO_USER,

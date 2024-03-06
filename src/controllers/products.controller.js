@@ -6,6 +6,7 @@ import { generateProductErrorInfo } from '../utils/errors/productErrorInfo.js';
 class ProductController {
     static getProducts = async (req, res) => {
         try {
+            req.logger.warn("Get products endpoint hit");
             const {limit, page, sort, category, stock} = req.query;
             const options = {
                 lean: true,
