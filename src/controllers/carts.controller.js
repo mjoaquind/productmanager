@@ -5,11 +5,13 @@ class CartController {
     static getCarts = async (req, res) => {
         try {
             const carts = await cartService.getCarts();
+            req.logger.info(`List of carts obtained!`);
             res.send({
                 status: "success",
                 carritos: carts
             });
         } catch (error) {
+            req.logger.error(error);
             res.status(400).send({ status: "error", message: error.message });
         }
     }
@@ -18,8 +20,16 @@ class CartController {
         try {
             const cid = req.params.cid;
             const cart = await cartService.getCartById(cid);
-            res.status(200).send({cart});
+            if(cart) {
+                req.logger.info(`Cart ${cid} obtained!`);
+                res.status(200).send({cart});
+            } else {
+                req.logger.error(`Cart ${cid} not found!`);
+                res.status(404).send({ status: "error", message: "Cart not found" });
+            }
+            
         } catch (error) {
+            req.logger.error(error);
             res.status(400).send({ status: "error", message: error.message });
         }
     }
@@ -27,12 +37,14 @@ class CartController {
     static createCart = async (req, res) => {
         try {
             const cart = await cartService.createCart();
+            req.logger.info(`Cart ${cart._id} created!`);
             res.send({
                 status:"success",
                 message: "Cart created",
                 carritos: {cart}
             })
         } catch (error) {
+            req.logger.error(error);
             res.status(400).send({ status: "error", message: error.message });
         }
     }
@@ -43,12 +55,14 @@ class CartController {
             const quantity = req.body.quantity || 1;
             
             const cart = await cartService.addProductToCart(cid, pid, quantity);
+            req.logger.info(`Product ${pid} added to Cart ${cid}`);
             res.send({
                 status:"success",
                 message: `Product ${pid} added to Cart ${cid}`,
                 carritos: {cart}
             })
         } catch (error) {
+            req.logger.error(error);
             res.status(400).send({ status: "error", message: error.message });
         }
     }
@@ -59,12 +73,14 @@ class CartController {
             const quantity = req.body.quantity || 1;
     
             const cart = await cartService.updateProductQuantity(cid, pid, quantity);
+            req.logger.info(`Product ${pid} added to Cart ${cid}`);
             res.send({
                 status:"success",
                 message: `Product ${pid} added to Cart ${cid}`,
                 carritos: {cart}
             })
         } catch (error) {
+            req.logger.error(error);
             res.status(400).send({ status: "error", message: error.message });
         }
     }
@@ -74,12 +90,14 @@ class CartController {
             const cid = req.params.cid;
             const data = req.body;
             const cart = await cartService.updateCart(cid, data);
+            req.logger.info(`Cart ${cid} updated`);
             res.send({
                 status:"success",
                 message: `Cart ${cid} updated`,
                 carritos: {cart}
             })
         } catch (error) {
+            req.logger.error(error);
             res.status(400).send({ status: "error", message: error.message });
         }
     }
@@ -89,12 +107,14 @@ class CartController {
             const cid = req.params.cid;
             const cart = await cartService.deleteCart(cid);
             //const cart = await cartsModel.deleteOne({ _id: cid });
+            req.logger.info(`Cart ${cid} deleted`);
             res.send({
                 status:"success",
                 message: `Cart ${cid} is empty`,
                 carritos: {cart}
             })
         } catch (error) {
+            req.logger.error(error);
             res.status(400).send({ status: "error", message: error.message });
         }
     }
@@ -111,12 +131,14 @@ class CartController {
     
             const updatedCart = await cartService.getCartById(cid);
     
+            req.logger.info(`Product ${pid} deleted from cart ${cid}`);
             res.send({
                 status: "success",
                 message: `Product ${pid} deleted from cart ${cid}`,
                 carrito: updatedCart
             });
         } catch (error) {
+            req.logger.error(error);
             res.status(400).send({ status: "error", message: error.message });
         }
     }
@@ -127,6 +149,7 @@ class CartController {
             const cart = await cartService.getCartById(cid);
             if(cart){
                 if(cart.products.length == 0){
+                    req.logger.warn(`Cart ${cid} is empty`);
                     return res.status(400).json({ message: `Cart ${cid} is empty` });
                 }
                 const ticketProducts = [];
@@ -136,6 +159,7 @@ class CartController {
                     const cartProduct = cart.products[i];
                     const productDB = await productService.getProductById(cartProduct.product._id);
                     if(!productDB){
+                        req.logger.warn(`Product ${cartProduct.product._id} not found`);
                         return res.status(404).json({ message: `Product ${cartProduct.product._id} not found` });
                     }
                     if(cartProduct.quantity <= productDB.stock){
@@ -158,11 +182,14 @@ class CartController {
                     purchaser: 'email@email.com'
                 }
                 const ticketCreated = await ticketService.createTicket(newTicket);
+                req.logger.info(`Cart ${cid} purchased`);
                 res.send(ticketCreated);
             } else {
+                req.logger.warn(`Cart ${cid} not found`);
                 return res.status(404).json({ message: `Cart ${cid} not found` });
             }
         } catch (error) {
+            req.logger.error(error);
             res.status(400).send({ status: "error", message: error.message });
         }
     }

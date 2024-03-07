@@ -44,11 +44,9 @@ export const addLogger = (req, res, next) => {
     switch (currentEnv) {
         case 'production':
             req.logger = prodLogger;
-            console.log('PROD');
             break;
         default:
             req.logger = devLogger;
-            console.log('DEV');
             break;
     }
 

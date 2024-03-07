@@ -6,7 +6,6 @@ import { generateProductErrorInfo } from '../utils/errors/productErrorInfo.js';
 class ProductController {
     static getProducts = async (req, res) => {
         try {
-            req.logger.warn("Get products endpoint hit");
             const {limit, page, sort, category, stock} = req.query;
             const options = {
                 lean: true,
@@ -29,7 +28,7 @@ class ProductController {
             if (category) rutaBase+=`&category=${category}`
             if (stock) rutaBase+=`&stock=${stock}`
     
-            req.logger.info("Error!");
+            req.logger.info("Listado de productos obtenido!");
             res.status(200).send({ 
                 status: "success",
                 payload: docs,
@@ -43,6 +42,7 @@ class ProductController {
                 nextLink: hasNextPage ? `${rutaBase}&page=${nextPage}` : null
             });
         } catch (error) {
+            req.logger.error(error);
             res.status(400).send({
                 status: "error",
                 message: error.message
@@ -52,10 +52,11 @@ class ProductController {
 
     static getProductById = async (req, res) => {
         try {
-            
             const product = await productService.getProductById({ _id: req.params.pid });
+            req.logger.info(`Producto ID ${req.params.pid} obtenido!`);
             res.status(200).send({product});
         } catch (error) {
+            req.logger.error(error);
             res.status(400).send({ status: "error", message: error.message });
         }
     }
@@ -74,7 +75,6 @@ class ProductController {
             } = req.body;
 
             if (!title || !description || !price || !category || !code || !stock) {
-                console.log(generateProductErrorInfo(req.body));
                 CustomError.createError({
                     name: 'Product creation error',
                     cause: generateProductErrorInfo(req.body),
@@ -95,8 +95,10 @@ class ProductController {
             }
 
             const result = await productService.addProduct(product);
+            req.logger.info(`Producto ID ${result._id} creado!`);
             res.status(200).send({result});
         } catch (error) {
+            req.logger.error(error);
             res.status(400).send({ status: "error", message: error.message });
         }
     }
@@ -116,7 +118,6 @@ class ProductController {
             } = req.body;
     
             if (!title || !description || !price || !category || !code || !stock) {
-                console.log(generateProductErrorInfo(req.body));
                 CustomError.createError({
                     name: 'Product update error',
                     cause: generateProductErrorInfo(req.body),
@@ -137,8 +138,10 @@ class ProductController {
             }
     
             const result = await productService.updateProduct(id, product);
+            req.logger.info(`Producto ID ${id} actualizado!`);
             res.status(200).send({result});
         } catch (error) {
+            req.logger.error(error);
             res.status(400).send({ status: "error", message: error.message });
         }
     }
@@ -147,8 +150,10 @@ class ProductController {
         try {
             const id = req.params.pid;
             let result = await productService.deleteProduct(id);
+            req.logger.info(`Producto ID ${id} eliminado!`);
             res.status(200).send({result});
         } catch (error) {
+            req.logger.error(error);
             res.status(400).send({ status: "error", message: error.message });
         }
     }
