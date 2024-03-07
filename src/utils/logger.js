@@ -52,6 +52,6 @@ export const addLogger = (req, res, next) => {
             break;
     }
 
-    req.logger.info(`${req.url} - method: ${req.method}`);
+    req.logger.info(`${new Date()} - url: ${req.url} - method: ${req.method}`);
     next();
 }

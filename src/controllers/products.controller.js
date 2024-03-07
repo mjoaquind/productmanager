@@ -29,7 +29,7 @@ class ProductController {
             if (category) rutaBase+=`&category=${category}`
             if (stock) rutaBase+=`&stock=${stock}`
     
-            req.logger.warn("Error!");
+            req.logger.info("Error!");
             res.status(200).send({ 
                 status: "success",
                 payload: docs,

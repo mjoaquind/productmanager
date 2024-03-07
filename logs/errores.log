@@ -29,3 +29,12 @@
 {"level":"error","message":"/api/session/github - method: GET"}
 {"level":"error","message":"/api/session/githubcallback?code=1c3446ca78bffea95b18 - method: GET"}
 {"level":"error","message":"/products - method: GET"}
+{"level":"info","message":"Thu Mar 07 2024 15:07:21 GMT-0300 (hora estándar de Argentina) - url: /api/session/logout - method: GET"}
+{"level":"info","message":"Thu Mar 07 2024 15:07:21 GMT-0300 (hora estándar de Argentina) - url: /login - method: GET"}
+{"level":"info","message":"Thu Mar 07 2024 15:07:21 GMT-0300 (hora estándar de Argentina) - url: /js/login.js - method: GET"}
+{"level":"info","message":"Thu Mar 07 2024 15:07:23 GMT-0300 (hora estándar de Argentina) - url: /api/session/github - method: GET"}
+{"level":"info","message":"Thu Mar 07 2024 15:07:24 GMT-0300 (hora estándar de Argentina) - url: /api/session/githubcallback?code=cf461d5dc314b7a7a464 - method: GET"}
+{"level":"info","message":"Thu Mar 07 2024 15:07:25 GMT-0300 (hora estándar de Argentina) - url: /products - method: GET"}
+{"level":"info","message":"Thu Mar 07 2024 15:08:36 GMT-0300 (hora estándar de Argentina) - url: /api/session/logout - method: GET"}
+{"level":"info","message":"Thu Mar 07 2024 15:08:36 GMT-0300 (hora estándar de Argentina) - url: /login - method: GET"}
+{"level":"info","message":"Thu Mar 07 2024 15:08:36 GMT-0300 (hora estándar de Argentina) - url: /js/login.js - method: GET"}
