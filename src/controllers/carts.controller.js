@@ -149,7 +149,7 @@ class CartController {
             const cart = await cartService.getCartById(cid);
             if(cart){
                 if(cart.products.length == 0){
-                    req.logger.warn(`Cart ${cid} is empty`);
+                    req.logger.warning(`Cart ${cid} is empty`);
                     return res.status(400).json({ message: `Cart ${cid} is empty` });
                 }
                 const ticketProducts = [];
@@ -159,7 +159,7 @@ class CartController {
                     const cartProduct = cart.products[i];
                     const productDB = await productService.getProductById(cartProduct.product._id);
                     if(!productDB){
-                        req.logger.warn(`Product ${cartProduct.product._id} not found`);
+                        req.logger.warning(`Product ${cartProduct.product._id} not found`);
                         return res.status(404).json({ message: `Product ${cartProduct.product._id} not found` });
                     }
                     if(cartProduct.quantity <= productDB.stock){
@@ -185,7 +185,7 @@ class CartController {
                 req.logger.info(`Cart ${cid} purchased`);
                 res.send(ticketCreated);
             } else {
-                req.logger.warn(`Cart ${cid} not found`);
+                req.logger.warning(`Cart ${cid} not found`);
                 return res.status(404).json({ message: `Cart ${cid} not found` });
             }
         } catch (error) {

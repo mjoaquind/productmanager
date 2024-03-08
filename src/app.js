@@ -16,6 +16,8 @@ import sessionRouter from './routes/sessions.router.js'
 
 import mockingProducts from './routes/mocking.router.js';
 
+import loggersRouter from './routes/logger.router.js';
+
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
 
@@ -74,6 +76,7 @@ app.use('/api/products',dbProductsRouter);
 app.use('/api/carts',dbCartsRouter);
 app.use('/api/session',sessionRouter);
 app.use('/mockingproducts',mockingProducts);
+app.use('/loggerTest',loggersRouter);
 
 app.use(errorHandler);
 

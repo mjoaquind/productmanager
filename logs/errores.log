@@ -39,3 +39,5 @@
 {"level":"info","message":"Thu Mar 07 2024 15:08:36 GMT-0300 (hora estándar de Argentina) - url: /login - method: GET"}
 {"level":"info","message":"Thu Mar 07 2024 15:08:36 GMT-0300 (hora estándar de Argentina) - url: /js/login.js - method: GET"}
 {"level":"error","message":"Login failed"}
+{"level":"error","message":"Logger test Error"}
+{"level":"error","message":"Logger test Error"}

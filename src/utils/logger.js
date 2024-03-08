@@ -50,6 +50,6 @@ export const addLogger = (req, res, next) => {
             break;
     }
 
-    req.logger.info(`${new Date()} - url: ${req.url} - method: ${req.method}`);
+    req.logger.http(`${new Date()} - url: ${req.url} - method: ${req.method}`);
     next();
 }
