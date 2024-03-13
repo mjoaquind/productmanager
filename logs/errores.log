@@ -41,3 +41,7 @@
 {"level":"error","message":"Login failed"}
 {"level":"error","message":"Logger test Error"}
 {"level":"error","message":"Logger test Error"}
+{"level":"fatal","message":"Logger test Fatal"}
+{"level":"error","message":"Logger test Error"}
+{"level":"fatal","message":"Logger test Fatal"}
+{"level":"error","message":"Logger test Error"}

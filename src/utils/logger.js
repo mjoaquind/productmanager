@@ -31,6 +31,7 @@ const devLogger = winston.createLogger({
 });
 
 const prodLogger = winston.createLogger({
+    levels: customLevels.levels,
     transports: [
         new winston.transports.Console({level:'info'}),
         new winston.transports.File({filename:path.join(__dirname, '../logs/errores.log'), level:'error'})
