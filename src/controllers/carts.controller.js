@@ -55,18 +55,18 @@ class CartController {
             if (req.user.role === 'premium') {
                 const product = await productService.getProductById(pid);
                 if (product.owner === req.user._id) {
-                    return res.status(400).send({ status: "error", message: "You cannot add your own product to the cart" });
-                } else {
-                    const quantity = req.body.quantity || 1;
-                    const cart = await cartService.addProductToCart(cid, pid, quantity);
-                    req.logger.info(`Product ${pid} added to Cart ${cid}`);
-                    res.send({
-                        status:"success",
-                        message: `Product ${pid} added to Cart ${cid}`,
-                        carritos: {cart}
-                    })
-                }
+                    return res.status(400).send({ status: "error", message: `You cannot add your own product to the cart` });
+                } 
+                
             }
+            const quantity = req.body.quantity || 1;
+            const cart = await cartService.addProductToCart(cid, pid, quantity);
+            req.logger.info(`Product ${pid} added to Cart ${cid}`);
+            res.send({
+                status:"success",
+                message: `Product ${pid} added to Cart ${cid}`,
+                carritos: {cart}
+            })
         } catch (error) {
             req.logger.error(error);
             res.status(400).send({ status: "error", message: error.message });
