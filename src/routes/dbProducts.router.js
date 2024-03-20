@@ -8,10 +8,10 @@ router.get('/', ProductController.getProducts);
 
 router.get('/:pid', ProductController.getProductById);
 
-router.post('/', checkRole('admin'), ProductController.addProduct);
+router.post('/', checkRole(['admin', 'premium']), ProductController.addProduct);
 
-router.put('/:pid', checkRole('admin'), ProductController.updateProduct);
+router.put('/:pid', checkRole(['admin', 'premium']), ProductController.updateProduct);
 
-router.delete('/:pid', checkRole('admin'), ProductController.deleteProduct);
+router.delete('/:pid', checkRole(['admin', 'premium']), ProductController.deleteProduct);
 
 export default router;

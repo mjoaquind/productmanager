@@ -91,7 +91,8 @@ class ProductController {
                 code,
                 stock,
                 status,
-                category
+                category,
+                owner: req.user._id
             }
 
             const result = await productService.addProduct(product);
@@ -126,20 +127,24 @@ class ProductController {
                 });
             }
     
-            const product = {
-                title,
-                description,
-                price,
-                thumbnail,
-                code,
-                stock,
-                status,
-                category
+            if (product.owner.equals(req.user._id) || req.user.role === 'admin') {
+                const product = {
+                    title,
+                    description,
+                    price,
+                    thumbnail,
+                    code,
+                    stock,
+                    status,
+                    category
+                }
+        
+                const result = await productService.updateProduct(id, product);
+                req.logger.info(`Producto ID ${id} actualizado!`);
+                res.status(200).send({result});
+            } else {
+                res.status(403).send('No autorizado para modificar este producto');
             }
-    
-            const result = await productService.updateProduct(id, product);
-            req.logger.info(`Producto ID ${id} actualizado!`);
-            res.status(200).send({result});
         } catch (error) {
             req.logger.error(error);
             res.status(400).send({ status: "error", message: error.message });
@@ -148,10 +153,14 @@ class ProductController {
 
     static deleteProduct = async (req, res) => {
         try {
-            const id = req.params.pid;
-            let result = await productService.deleteProduct(id);
-            req.logger.info(`Producto ID ${id} eliminado!`);
-            res.status(200).send({result});
+            if (product.owner.equals(req.user._id) || req.user.role === 'admin') {
+                const id = req.params.pid;
+                let result = await productService.deleteProduct(id);
+                req.logger.info(`Producto ID ${id} eliminado!`);
+                res.status(200).send({result});
+            } else {
+                res.status(403).send('No autorizado para eliminar este producto');
+            }
         } catch (error) {
             req.logger.error(error);
             res.status(400).send({ status: "error", message: error.message });
