@@ -117,6 +117,10 @@ class SessionController {
                 req.logger.error(`User ${uid} not found!`);
                 return res.status(404).send({ status: "error", message: "User not found" });
             }
+            if(user.role === 'admin') {
+                req.logger.error(`User ${uid} is admin!`);
+                return res.status(400).send({ status: "error", message: "User is admin" });
+            }
             let role = user.role;
             switch (user.role) {
                 case 'premium': role = 'user';
