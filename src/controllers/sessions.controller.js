@@ -1,5 +1,6 @@
 import { userService } from '../repository/index.js';
 import { createHash, validatePassword } from '../utils/bcrypt.js';
+import { generateEmailToken, recoverPassword } from '../utils/gmail.js';
 
 
 class SessionController {
@@ -106,6 +107,57 @@ class SessionController {
         } catch (error) {
             req.logger.error(error);
             res.status(400).send({ status: "error", message: error.message });
+        }
+    }
+
+    static forgotPassword = async (req, res) => {
+        try {
+            const {email} = req.body;
+            const user = await userService.getByEmail(email);
+            if(!user) {
+                res.send(`<div>El usuario no existe, <a href="/forgotPassword">¿Olviaste tu contraseña?</a></div>`)
+            }
+
+            const token = generateEmailToken(email, 60*3);
+
+            await recoverPassword(email, token);
+
+            res.send(`<div>Se ha enviado un correo electronico a ${email}.</div>`)
+
+        } catch (error) {
+            req.logger.error(error);
+            res.send(`<div>Error, <a href="/forgotPassword">¿Olviaste tu contraseña?</a></div>`)
+        }
+    }
+
+    static restorePassword = async (req, res) => {
+        try {
+            const token = req.query.token;
+            const {email, newPassword} = req.body;
+
+            const validToken = verifyEmailToken(token);
+
+            if (!validToken) {
+                return res.send(`<div>El token ha expirado.</div>`)
+            }
+
+            const user = await userService.getByEmail(email);
+
+            if (!user) {
+                return res.send(`<div>El usuario no existe.</div>`)
+            }
+
+            if (validatePassword(newPassword)) {
+                return res.send(`<div>No se puede usar la misma contraseña.</div>`)
+            }
+
+            await userService.updatePassword(user._id, createHash(newPassword));
+
+            res.render('login', { message: 'Password changed successfully' })
+
+        } catch (error) {
+            req.logger.error(error);
+            res.send(`<div>Error, contáctese con el administrador.</div>`)
         }
     }
 

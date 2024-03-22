@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { checkRole } from '../middlewares/auth.js';
+import { checkRole, verifyEmailTokenMW } from '../middlewares/auth.js';
 //import ProductManager from "../dao/fileManagers/ProductManager.js";
 //import productsModel from '../dao/models/products.model.js';
 import { ViewController } from '../controllers/views.controller.js';
@@ -29,6 +29,10 @@ router.get('/register', publicAccess, ViewController.register);
 router.get('/login', publicAccess, ViewController.login);
 
 router.get('/resetPassword', ViewController.resetPassword);
+
+router.get('/forgotPassword', publicAccess, ViewController.forgotPassword);
+
+router.get('/restorePassword/', verifyEmailTokenMW(), ViewController.restorePassword);
 
 router.get('/', privateAccess, ViewController.profile);
 

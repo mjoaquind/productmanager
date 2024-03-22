@@ -90,6 +90,15 @@ class ViewController {
         res.render('resetPassword')
     }
 
+    static forgotPassword = (req, res) => {
+        res.render('forgotPassword')
+    }
+
+    static restorePassword = (req, res) => {
+        const token = req.quey.token;
+        res.render('restorePassword', {token})
+    }
+
     static profile = (req, res) => {
         res.render('profile', {user: req.session.user})
     }

@@ -13,7 +13,6 @@ const JWT_PRIVATE_KEY = process.env.JWT_PRIVATE_KEY;
 const NODE_ENV = process.env.NODE_ENV;
 const MAILING_USER = process.env.MAILING_USER;
 const MAILING_PASS = process.env.MAILING_PASS;
-const MAILING_SERVICE = process.env.MAILING_SERVICE;
 const MAILING_SECRET = process.env.MAILING_SECRET;
 
 export const options = {
@@ -37,7 +36,6 @@ export const options = {
     gmail: {
         user: MAILING_USER,
         pass: MAILING_PASS,
-        service: MAILING_SERVICE,
         secret: MAILING_SECRET
     }
 }

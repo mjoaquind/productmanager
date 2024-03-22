@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import jwt from 'jsonwebtoken';
 import {options } from '../config/config.js';
 
 // credenciales
@@ -6,7 +7,7 @@ const MAILING_USER = options.gmail.MAILING_USER;
 const MAILING_PASS = options.gmail.MAILING_PASS;
 
 const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
+    host: 'gmail',
     port: 587,
     auth: {
         user: MAILING_USER,
@@ -34,3 +35,19 @@ export const recoverPassword = async (email, token) => {
         `
     })
 }
+
+export const generateEmailToken = (email,expireTime)=>{
+    const token = jwt.sign({email},options.gmail.MAILING_SECRET,{expiresIn:expireTime}); //
+    return token;
+};
+
+export const verifyEmailToken = (token)=>{
+    try {
+        const info = jwt.verify(token,options.gmail.MAILING_SECRET);
+        console.log(info);
+        return info.email;
+    } catch (error) {
+        console.log(error.message);
+        return null;
+    }
+};
