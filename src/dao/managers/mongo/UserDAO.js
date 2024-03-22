@@ -36,4 +36,9 @@ export class UserDAO {
         const user = await this.users.updateOne({ _id: id }, { password });
         return user;
     }
+
+    changeRole = async (id, role) => {
+        const user = await this.users.updateOne({ _id: id }, { role });
+        return user;
+    }
 }

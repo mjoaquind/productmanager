@@ -10,6 +10,10 @@ class UsersRepository {
     }
 
     getUserById = async (id) => {
+        return await this.dao.getUserById(id);
+    }
+
+    getUserByIdDTO = async (id) => {
         const user = await this.dao.getUserById(id);
         const userDTO = new getUsersDTO(user);
         return userDTO;
@@ -29,6 +33,10 @@ class UsersRepository {
 
     updatePassword = async (id, password) => {
         return await this.dao.updatePassword(id, password);
+    }
+
+    changeRole = async (id, role) => {
+        return await this.dao.changeRole(id, role);
     }
 }
 

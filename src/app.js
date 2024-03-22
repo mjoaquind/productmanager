@@ -12,7 +12,8 @@ import messagesModel from "./dao/models/messages.model.js";
 
 import dbProductsRouter from "./routes/dbProducts.router.js";
 import dbCartsRouter from './routes/dbCarts.router.js';
-import sessionRouter from './routes/sessions.router.js'
+import sessionRouter from './routes/sessions.router.js';
+import userRouter from './routes/users.router.js';
 
 import mockingProducts from './routes/mocking.router.js';
 
@@ -75,6 +76,7 @@ app.use('/',viewsRouter);
 app.use('/api/products',dbProductsRouter);
 app.use('/api/carts',dbCartsRouter);
 app.use('/api/session',sessionRouter);
+app.use('/api/users', userRouter);
 app.use('/mockingproducts',mockingProducts);
 app.use('/loggerTest',loggersRouter);
 

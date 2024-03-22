@@ -108,6 +108,32 @@ class SessionController {
             res.status(400).send({ status: "error", message: error.message });
         }
     }
+
+    static changeRole = async (req, res) => {
+        try {
+            const uid = req.params.uid;
+            const user = await userService.getUserById(uid);
+            if(!user) {
+                req.logger.error(`User ${uid} not found!`);
+                return res.status(404).send({ status: "error", message: "User not found" });
+            }
+            let role = user.role;
+            console.log(role);
+            switch (user.role) {
+                case 'premium': role = 'user';
+                    break;
+                case 'user': role = 'premium';
+                    break;
+            }
+            console.log(role);
+            await userService.changeRole(uid, role);
+            req.logger.info(`User ${uid} role changed to ${role}!`);
+            res.send({ status: "success", message: `User ${uid} role changed to ${role}` });
+        } catch (error) {
+            req.logger.error(error);
+            res.status(400).send({ status: "error", message: error.message });
+        }
+    }
 }
 
 export { SessionController }

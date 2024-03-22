@@ -45,3 +45,7 @@
 {"level":"error","message":"Logger test Error"}
 {"level":"fatal","message":"Logger test Fatal"}
 {"level":"error","message":"Logger test Error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
