@@ -118,14 +118,12 @@ class SessionController {
                 return res.status(404).send({ status: "error", message: "User not found" });
             }
             let role = user.role;
-            console.log(role);
             switch (user.role) {
                 case 'premium': role = 'user';
                     break;
                 case 'user': role = 'premium';
                     break;
             }
-            console.log(role);
             await userService.changeRole(uid, role);
             req.logger.info(`User ${uid} role changed to ${role}!`);
             res.send({ status: "success", message: `User ${uid} role changed to ${role}` });
