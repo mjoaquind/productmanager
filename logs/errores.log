@@ -51,3 +51,19 @@
 {"level":"error"}
 {"level":"error","message":"User 65d7f0e8078df745cfae8108 is admin!"}
 {"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"code":"EDNS","command":"CONN","errno":-3008,"hostname":"gmail","level":"error","syscall":"getaddrinfo"}
+{"code":"EDNS","command":"CONN","errno":-3008,"hostname":"gmail","level":"error","syscall":"getaddrinfo"}
+{"code":"EDNS","command":"CONN","errno":-3008,"hostname":"gmail","level":"error","syscall":"getaddrinfo"}
+{"code":"EDNS","command":"CONN","errno":-3008,"hostname":"gmail","level":"error","syscall":"getaddrinfo"}

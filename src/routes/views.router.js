@@ -30,9 +30,9 @@ router.get('/login', publicAccess, ViewController.login);
 
 router.get('/resetPassword', ViewController.resetPassword);
 
-router.get('/forgotPassword', publicAccess, ViewController.forgotPassword);
+router.get('/forgotPassword', ViewController.forgotPassword);
 
-router.get('/restorePassword/', verifyEmailTokenMW(), ViewController.restorePassword);
+router.get('/restorePassword', verifyEmailTokenMW(), ViewController.restorePassword);
 
 router.get('/', privateAccess, ViewController.profile);
 

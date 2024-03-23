@@ -12,7 +12,6 @@ const GITHUB_SECRET = process.env.GITHUB_SECRET;
 const JWT_PRIVATE_KEY = process.env.JWT_PRIVATE_KEY;
 const NODE_ENV = process.env.NODE_ENV;
 const MAILING_USER = process.env.MAILING_USER;
-const MAILING_PASS = process.env.MAILING_PASS;
 const MAILING_SECRET = process.env.MAILING_SECRET;
 
 export const options = {
@@ -35,7 +34,6 @@ export const options = {
     },
     gmail: {
         user: MAILING_USER,
-        pass: MAILING_PASS,
-        secret: MAILING_SECRET
+        pass: MAILING_SECRET
     }
 }
