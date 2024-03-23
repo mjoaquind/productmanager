@@ -21,7 +21,6 @@ const transporter = nodemailer.createTransport({
 
 export const recoverPassword = async (email, token) => {
     const url = `http://localhost:8080/restorePassword?token=${token}`;
-    console.log(url);
     await transporter.sendMail({
         from: MAILING_USER,
         to: email,

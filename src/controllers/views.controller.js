@@ -95,7 +95,7 @@ class ViewController {
     }
 
     static restorePassword = (req, res) => {
-        const token = req.quey.token;
+        const token = req.query.token;
         res.render('restorePassword', {token})
     }
 

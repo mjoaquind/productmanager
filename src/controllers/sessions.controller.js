@@ -1,6 +1,6 @@
 import { userService } from '../repository/index.js';
 import { createHash, validatePassword } from '../utils/bcrypt.js';
-import { generateEmailToken, recoverPassword } from '../utils/gmail.js';
+import { generateEmailToken, recoverPassword, verifyEmailToken } from '../utils/gmail.js';
 
 
 class SessionController {
@@ -118,7 +118,7 @@ class SessionController {
                 res.send(`<div>El usuario no existe, <a href="/forgotPassword">¿Olviaste tu contraseña?</a></div>`)
             }
 
-            const token = generateEmailToken(email, 60*3);
+            const token = generateEmailToken(email, '1h');
 
             await recoverPassword(email, token);
 
@@ -147,7 +147,7 @@ class SessionController {
                 return res.send(`<div>El usuario no existe.</div>`)
             }
 
-            if (validatePassword(newPassword)) {
+            if (validatePassword(newPassword, user)) {
                 return res.send(`<div>No se puede usar la misma contraseña.</div>`)
             }
 

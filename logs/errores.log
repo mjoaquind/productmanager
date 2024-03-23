@@ -67,3 +67,6 @@
 {"code":"EDNS","command":"CONN","errno":-3008,"hostname":"gmail","level":"error","syscall":"getaddrinfo"}
 {"code":"EDNS","command":"CONN","errno":-3008,"hostname":"gmail","level":"error","syscall":"getaddrinfo"}
 {"code":"EDNS","command":"CONN","errno":-3008,"hostname":"gmail","level":"error","syscall":"getaddrinfo"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}

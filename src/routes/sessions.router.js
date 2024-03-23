@@ -20,7 +20,7 @@ router.get('/logout', SessionController.logout);
 
 router.post('/resetPassword', SessionController.resetPassword);
 
-router.post('/restorePassword', SessionController.resetPassword);
+router.post('/restorePassword', SessionController.restorePassword);
 
 router.post('/forgotPassword', SessionController.forgotPassword);
 
