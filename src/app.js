@@ -32,6 +32,9 @@ import { errorHandler } from "./middlewares/errorHandler.js";
 
 import { addLogger } from "./utils/logger.js";
 
+import { swaggerSpecs } from "./config/docs.config.js";
+import swaggerUi from 'swagger-ui-express';
+
 let messages = [];
 
 const app = express();
@@ -79,6 +82,8 @@ app.use('/api/session',sessionRouter);
 app.use('/api/users', userRouter);
 app.use('/mockingproducts',mockingProducts);
 app.use('/loggerTest',loggersRouter);
+// endpoints api docs
+app.use('/api/docs/', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
 app.use(errorHandler);
 

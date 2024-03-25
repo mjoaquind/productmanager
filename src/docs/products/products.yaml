@@ -1,0 +1,34 @@
+paths:
+  /api/products:
+    get:
+      summary: Get all products
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Products'
+        500:
+          description: Internal Server Error
+
+  /api/product/{pid}
+    get:
+      summary: Get product
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        404:
+          description: Not Found
+        500:
+          description: Internal Server Error
