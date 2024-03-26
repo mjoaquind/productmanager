@@ -1,0 +1,54 @@
+paths:
+  /api/session/login:
+    post:
+      summary: Login
+      tags:
+        - Sessions
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Session'
+        '400':
+          description: Bad Request
+  /api/session/logout:
+    post:
+      summary: Logout
+      tags:
+        - Sessions
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Session'
+        '400':
+          description: Bad Request
+  /api/session/current:
+    get:
+      summary: Current
+      tags:
+        - Sessions
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Session'
+        '400':
+          description: Bad Request
