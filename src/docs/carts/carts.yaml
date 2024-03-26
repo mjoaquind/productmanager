@@ -1,0 +1,87 @@
+paths:
+  /api/carts:
+    get:
+      summary: Returns a list with all the carts in store.
+      tags:
+        - Carts
+      responses:
+        '200':
+          description: A JSON array of objects containing each cart information.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Carts'
+        '500':
+          description: Error while getting carts from database
+    post:
+      summary: Create a new cart
+      tags:
+        - Carts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/CartObject'
+      responses:
+        "201":
+          description: The cart was created successfully
+        "500":
+          description: Internal server error
+  /api/carts/{cid}:
+    get:
+      summary: Get a cart by id
+      tags:
+        - Carts
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: Cart id to get
+        schema: 
+          type: string
+      responses:
+        "200":
+          description: Cart was fetched successfully
+        "500":
+          description: Internal server error
+    put:
+      summary: Update a Cart by id
+      tags:
+        - Carts
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: Cart id to update
+        schema: 
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/CartObject'
+      responses:
+        "200":
+          description: Cart was updated successfully
+        "500":
+          description: Internal server error
+    delete:
+      summary: Delete a cart by id
+      tags:
+        - Carts
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: Cart id to delete
+        schema: 
+          type: string
+      responses:
+        "200":
+          description: Cart was deleted successfully
+        "500":
+          description: Internal server error

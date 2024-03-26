@@ -2,6 +2,30 @@ paths:
   /api/products:
     get:
       summary: Returns a list with all the products in store.
+      tags:
+        - Products
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of products to return per page.
+          schema:
+            type: integer
+        - name: sort
+          in: query
+          description: Product sort order by price (ascending or descending).
+          schema:
+            type: string
+            enum: ['asc', 'desc']
+        - name: page
+          in: query
+          description: Page number for pagination.
+          schema:
+            type: integer
+        - name: query
+          in: query
+          description: Search term to filter products by category or status, accepted values; categoryName, true or false
+          schema:
+            type: string
       responses:
         '200':
           description: A JSON array of objects containing each product information.
@@ -10,6 +34,76 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/products'
+                  $ref: '#/components/schemas/Products'
         '500':
           description: Error while getting products from database
+    post:
+      summary: Create a new product (you need to be an administrator or premium user)
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/ProductObject'
+      responses:
+        "201":
+          description: The product was created successfully
+        "500":
+          description: Internal server error
+  /api/products/{pid}:
+    get:
+      summary: Get a product by id
+      tags:
+        - Products
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: Product id to get
+        schema: 
+          type: string
+      responses:
+        "200":
+          description: Product was fetched successfully
+        "500":
+          description: Internal server error
+    put:
+      summary: Update a product by id
+      tags:
+        - Products
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: Product id to update
+        schema: 
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/ProductObject'
+      responses:
+        "200":
+          description: Product was updated successfully
+        "500":
+          description: Internal server error
+    delete:
+      summary: Delete a product by id
+      tags:
+        - Products
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: Product id to delete
+        schema: 
+          type: string
+      responses:
+        "200":
+          description: Product was deleted successfully
+        "500":
+          description: Internal server error
