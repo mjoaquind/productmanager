@@ -1,11 +1,11 @@
-import chai from 'chai';
+import { expect } from 'chai';
 import supertest from 'supertest';
+import { productService } from '../src/repository/index.js';
 
-const expect = chai.expect;
 const requester = supertest('http://localhost:8080');
 
-describe('Testing e-commerce', () => {
-    describe('Test de productos', () => {
+describe('Testing de App e-commerce', () => {
+    describe('Test de Productos', () => {
         it('El endpoint PUT /api/products debe crear un producto', async () => {
             const productMock = {
                 title: 'test',
@@ -13,19 +13,13 @@ describe('Testing e-commerce', () => {
                 price: 1,
                 status: true,
                 category: 'test',
-                thumbnail: 'test',
+                thumbnail: [],
                 code: 'test',
-                stock: 1
+                stock: 1,
+                owner: null
             }
-            const {
-                statusCode,
-                ok,
-                _body
-            } = await requester.post('/api/products').send(productMock);
-            console.log(statusCode);
-            console.log(ok);
-            console.log(_body);
-            expect(_body.playload).to.have.property('_id');
+            const result = await requester.post('/api/products').send(productMock);
+            expect(result).to.have.property('_id');
         })
     })
 })
