@@ -143,3 +143,5 @@ io.on("connection", async (socket) => {
         socket.broadcast.emit("new-user", user);
     })
 })
+
+export { app }

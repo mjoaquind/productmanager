@@ -8,7 +8,7 @@ class CartController {
             req.logger.info(`List of carts obtained!`);
             res.send({
                 status: "success",
-                carritos: carts
+                carts
             });
         } catch (error) {
             req.logger.error(error);
