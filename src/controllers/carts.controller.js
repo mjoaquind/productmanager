@@ -83,7 +83,7 @@ class CartController {
             res.send({
                 status:"success",
                 message: `Product ${pid} added to Cart ${cid}`,
-                carritos: {cart}
+                carts: {cart}
             })
         } catch (error) {
             req.logger.error(error);
