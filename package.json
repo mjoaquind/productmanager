@@ -6,7 +6,8 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon src/app.js",
-    "testCarts": "mocha test/routerCarts.test.js --timeout 10000"
+    "testCarts": "mocha test/routerCarts.test.js --timeout 10000",
+    "testProducts": "mocha test/routerProducts.test.js --timeout 10000"
   },
   "keywords": [],
   "author": "",
