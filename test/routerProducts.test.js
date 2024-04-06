@@ -13,16 +13,13 @@ describe('Test Products Router', () => {
             expect(body.payload).to.be.an('array');
         })
 
-        /*
-        // no se por que no funciona
         it('GET /api/products/:pid should return a product by id', async () => {
-            const pid = '65de657e4a87bd1574089a60';
+            const pid = '65838536472f0b4d94b0b856';
             const result = await requester.get(`/api/products/${pid}`);
             const { status, body } = result;
-            console.log(body);
             expect(status).to.be.equal(200);
             expect(body.product).to.have.property('category');
+            expect(body.product.thumbnail).to.be.an('array');
         })
-        */
 
 })
