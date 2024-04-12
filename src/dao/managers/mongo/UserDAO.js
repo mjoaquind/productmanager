@@ -24,6 +24,11 @@ export class UserDAO {
         return user;
     }
 
+    getByCartId = async (cid) => {
+        const user = await this.users.findOne({ cart: cid });
+        return user;
+    }
+
     createUser = async (user) => {
         const cartDAO = new CartDAO();
         const cart = await cartDAO.createCart();
@@ -35,6 +40,18 @@ export class UserDAO {
     updatePassword = async (id, password) => {
         const user = await this.users.updateOne({ _id: id }, { password });
         return user;
+    }
+
+    updateLastConnection = async (id) => {
+        const user = await this.users.updateOne({ _id: id }, { last_connection: new Date() });
+        return user;
+    }
+
+    addDocument = async (uid, document_name, document_reference, document_type) => {
+        const user = this.users.findById(uid);
+        const update = { $push: { documents: { name: document_name, reference: document_reference, document_type: document_type } } };
+        const updatedUser = await this.users.updateOne({ _id: uid }, update);
+        return updatedUser;
     }
 
     changeRole = async (id, role) => {

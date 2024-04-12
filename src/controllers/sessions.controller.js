@@ -51,6 +51,7 @@ class SessionController {
             }
         }
     
+        await userService.updateLastConnection(req.user._id);
         req.logger.info("Login successful");
         res.send({ status: "success", message: "User logged in successfully", payload: req.session.user })
     }
@@ -60,15 +61,17 @@ class SessionController {
         res.send({ status: "error", message: "Login failed" })
     }
 
-    static logout = (req, res) => {
+    static logout =  async(req, res) => {
         try {
             req.session.destroy(err => {
                 if(err) {
                     return res.status(500).send({ status: "error", error: "Can't log out" });
                 }
+                
                 req.logger.info("User logged out");
                 res.redirect('/login')
             });
+            await userService.updateLastConnection(req.user._id);
         } catch (error) {
             req.logger.error(error);
             res.status(400).send({ status: "error", message: error.message });

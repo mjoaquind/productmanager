@@ -13,7 +13,13 @@ const usersSchema = new mongoose.Schema({
         ref: 'carts',
         required: true
     },
-    role: { type: String, enum: ['admin', 'user', 'premium'], default: 'user' }
+    role: { type: String, enum: ['admin', 'user', 'premium'], default: 'user' },
+    documents: [{
+        name: { type: String },
+        reference: { type: String },
+        document_type: { type: String }
+    }],
+    last_connection: { type: Date, default: new Date() }
 });
 
 const usersModel = mongoose.model(usersCollection, usersSchema);
