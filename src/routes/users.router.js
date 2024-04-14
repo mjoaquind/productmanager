@@ -1,8 +1,9 @@
 import { Router } from 'express';
-import { SessionController } from '../controllers/sessions.controller.js';
+import { UserController } from '../controllers/users.controller.js';
 
 const router = Router();
 
-router.put('/premium/:uid', SessionController.changeRole);
+router.put('/premium/:uid', UserController.changeRole);
+router.post('/:uid/documents', UserController.addDocuments);
 
 export default router;

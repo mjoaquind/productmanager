@@ -39,6 +39,10 @@ class UsersRepository {
         return await this.dao.updateLastConnection(id);
     }
 
+    addDocuments = async (id, documents) => {
+        return await this.dao.addDocuments(id, documents);
+    }
+
     changeRole = async (id, role) => {
         return await this.dao.changeRole(id, role);
     }
