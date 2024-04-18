@@ -16,8 +16,7 @@ const usersSchema = new mongoose.Schema({
     role: { type: String, enum: ['admin', 'user', 'premium'], default: 'user' },
     documents: [{
         name: { type: String },
-        reference: { type: String },
-        document_type: { type: String }
+        reference: { type: String }
     }],
     last_connection: { type: Date, default: new Date() }
 });

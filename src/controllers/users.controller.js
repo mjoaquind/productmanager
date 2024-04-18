@@ -14,6 +14,21 @@ class UserController {
                 return res.status(400).send({ status: "error", message: "User is admin" });
             }
             let role = user.role;
+            if(role === 'user') {
+                const documents = user.documents;
+                if(documents.length > 0) {
+                    documents.map(doc => {
+                        console.log(doc.name);
+                        if(!doc.name === 'Identificación' || !doc.name === 'Comprobante de domicilio' || !doc.name === 'Comprobante de estado de cuenta') {
+                            req.logger.error(`User ${uid} has to complete upload documents!`);
+                            return res.status(400).send({ status: "error", message: "User has to complete upload documents" });
+                        }
+                    })
+                } else {
+                    req.logger.error(`User ${uid} has to complete upload documents!`);
+                    return res.status(400).send({ status: "error", message: "User has to complete upload documents" });
+                }
+            }
             switch (user.role) {
                 case 'premium': role = 'user';
                     break;
@@ -32,17 +47,18 @@ class UserController {
     static addDocuments = async (req, res) => {
         try {
             const uid = req.params.uid;
+            console.log("entra a addDocuments");
             const user = await userService.getUserById(uid);
             if(!user) {
                 req.logger.error(`User ${uid} not found!`);
                 return res.status(404).send({ status: "error", message: "User not found" });
             }
             const files = req.files;
+            console.log(files);
             const documents = files.map(file => {
                 return {
                     name: file.originalname,
-                    reference: file.filename,
-                    type: file.mimetype
+                    reference: file.path
                 }
             });
             await userService.addDocuments(uid, documents);

@@ -48,8 +48,9 @@ export class UserDAO {
     }
 
     addDocuments = async (uid, documents) => {
-        const { document_name, document_reference, document_type } = documents;
-        const update = { $push: { documents: { name: document_name, reference: document_reference, document_type: document_type } } };
+        const { document_name, document_reference } = documents;
+        console.log(documents);
+        const update = { $push: { documents: { name: document_name, reference: document_reference } } };
         const updatedUser = await this.users.updateOne({ _id: uid }, update);
         return updatedUser;
     }

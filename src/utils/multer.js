@@ -20,16 +20,10 @@ const storage = multer.diskStorage({
         }
     },
     filename: function(req, file, cb) {
-        cb(null, `${file.fieldname}-${Date.now()}-${file.originalname}`);
+        cb(null, `${file.fieldname}-${Date.now()}`);
     }
 });
 
-const uploader = multer({
-    storage,
-    onError: function(err, next) {
-        console.log(err);
-        next(err);
-    }
-});
+const uploader = multer({ storage });
 
 export default uploader;
