@@ -38,7 +38,7 @@ export class CartDAO {
         }
     }
 
-    addProductToCart = async (cid, pid, quantity = 1) => {
+    addProductToCart = async (cid, pid, quantity) => {
         try {
             const cart = await this.carts.findOne({_id:cid});
             if (!cart) {
@@ -50,7 +50,7 @@ export class CartDAO {
             }
             const existingProduct = cart.products.find(p => p.product.equals(pid));
             if (existingProduct) {
-                existingProduct.quantity += quantity;
+                existingProduct.quantity += parseInt(quantity) || 1;
             } else {
                 cart.products.push({ product: pid, quantity });
             }

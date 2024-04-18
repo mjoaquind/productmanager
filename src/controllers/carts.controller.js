@@ -59,7 +59,7 @@ class CartController {
                 } 
                 
             }
-            const quantity = req.body.quantity || 1;
+            const quantity = req.body.quantity;
             const cart = await cartService.addProductToCart(cid, pid, quantity);
             req.logger.info(`Product ${pid} added to Cart ${cid}`);
             res.send({

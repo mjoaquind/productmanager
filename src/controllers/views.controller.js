@@ -42,7 +42,8 @@ class ViewController {
             hasPrevPage,
             hasNextPage,
             prevLink: hasPrevPage ? `${rutaBase}&page=${prevPage}` : null,
-            nextLink: hasNextPage ? `${rutaBase}&page=${nextPage}` : null
+            nextLink: hasNextPage ? `${rutaBase}&page=${nextPage}` : null,
+            cart: req.user.cart
         });
     }
 
@@ -100,7 +101,7 @@ class ViewController {
     }
 
     static profile = (req, res) => {
-        res.render('profile', {user: req.session.user})
+        res.render('profile', {user: req.session.user, cart: req.user.cart})
     }
 
     static register = (req, res) => {
