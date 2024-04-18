@@ -12,8 +12,8 @@ const storage = multer.diskStorage({
             case 'products':
                 cb(null, `${__dirname}/public/uploads/products`);
                 break;
-            case 'profile':
-                cb(null, `${__dirname}/public/uploads/profile`);
+            case 'profiles':
+                cb(null, `${__dirname}/public/uploads/profiles`);
                 break;
             default:
                 break;
