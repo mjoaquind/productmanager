@@ -19,7 +19,7 @@ class UserController {
                 if(documents.length > 0) {
                     documents.map(doc => {
                         console.log(doc.name);
-                        if(!doc.name === 'Identificación' || !doc.name === 'Comprobante de domicilio' || !doc.name === 'Comprobante de estado de cuenta') {
+                        if(!doc.name === 'identity' || !doc.name === 'address' || !doc.name === 'account') {
                             req.logger.error(`User ${uid} has to complete upload documents!`);
                             return res.status(400).send({ status: "error", message: "User has to complete upload documents" });
                         }
