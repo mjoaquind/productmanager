@@ -53,15 +53,11 @@ class UserController {
                 req.logger.error(`User ${uid} not found!`);
                 return res.status(404).send({ status: "error", message: "User not found" });
             }
-            const files = req.files;
-            console.log(files);
-            const documents = files.map(file => {
-                return {
-                    name: file.originalname,
-                    reference: file.path
-                }
-            });
-            await userService.addDocuments(uid, documents);
+            const file = req.files;
+            const document = [];
+            document.name= file[0].fieldname;
+            document.reference= file[0].destination;
+            await userService.addDocuments(uid, document);
             req.logger.info(`User ${uid} documents uploaded!`);
             res.send({ status: "success", message: `User ${uid} documents uploaded` });
         } catch (error) {
