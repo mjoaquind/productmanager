@@ -151,6 +151,7 @@ class CartController {
 
     static purchaseCart = async (req, res) => {
         try {
+            console.log(req.user);
             const cid = req.params.cid;
             const cart = await cartService.getCartById(cid);
             if(cart){
@@ -185,7 +186,7 @@ class CartController {
                     timestamp: Date.now(),
                     products: ticketProducts,
                     amount: ticketAmount,
-                    purchaser: 'email@email.com'
+                    purchaser: req.user.email
                 }
                 const ticketCreated = await ticketService.createTicket(newTicket);
                 req.logger.info(`Cart ${cid} purchased`);

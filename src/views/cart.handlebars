@@ -2,20 +2,20 @@
     {{#if user}}
         {{> nav}}
     {{/if}}
-    <h1>Listado de Productos</h1>
-    <p>ID de Carrito: {{cart._id}}</p>
-    <p>Productos en el carrito: {{cart.products.length}}</p>
+    <h1>Products in Cart</h1>
+    <p>Cart ID: {{cart._id}}</p>
+    <p>Items in Cart: {{cart.products.length}}</p>
     {{#if cart.products.length}}
         <table class="table">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Título</th>
-                    <th>Descripción</th>
-                    <th>Código</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Code</th>
                     <th>Stock</th>
-                    <th>Precio</th>
-                    <th>Cantidad</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,7 +32,16 @@
                 {{/each}}
             </tbody>
         </table>
+        <div>
+            <button class="btn btn-outline-danger" onclick="removeAll('{{cart._id}}')">
+                Remove All
+            </button>
+            <button class="btn btn-outline-success" onclick="purchase('{{cart._id}}')">
+                Purchase
+            </button>
+        </div>
     {{else}}
         <p><strong>No hay productos en el carrito.</strong></p>
     {{/if}}
 </div>
+<script src="/js/cart.js"></script>

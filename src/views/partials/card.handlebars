@@ -17,12 +17,9 @@
             <p class="card-text">Stock: {{this.stock}}</p>
         </div>
         <div class="d-flex justify-content-center mb-4">
-            <form action="/api/carts/{{@root.cart}}/products/{{this._id}}" method="POST">
-                <input type="hidden" name="product" value="{{this._id}}">
-                <input type="hidden" name="quantity" value="1">
-                <input type="submit" value="Comprar" class="btn btn-primary">
-            </form>
-            <!--<button type="button" class="btn btn-primary" data-product-id="{{product._id}}" onclick="addProductToCart('{{product._id}}')">Agregar</button>-->
+            <button class="btn btn-outline-primary" onclick="addProductToCart('{{@root.cart}}','{{this._id}}')">
+                Agregar al carrito
+            </button>
         </div>
     </div>
 </div>
