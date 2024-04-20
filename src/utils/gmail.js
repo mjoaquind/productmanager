@@ -62,8 +62,6 @@ export const sendPurchaseEmail = async (email, ticketProducts, rejectedProducts)
             subject: 'Purchase Ticket',
             html: emailContent
         });
-
-        console.log('Email sent successfully!');
     } catch (error) {
         console.error('Error sending email:', error);
     }
@@ -71,19 +69,23 @@ export const sendPurchaseEmail = async (email, ticketProducts, rejectedProducts)
 
 export const recoverPassword = async (email, token) => {
     const url = `http://localhost:8080/restorePassword?token=${token}`;
-    await transporter.sendMail({
-        from: MAILING_USER,
-        to: email,
-        subject: 'Recover Password',
-        html: `
-        <div>
-            <h2>Cambio de contraseña</h2>
-            <a href="${url}">
-                <button>Restablecer contraseña</button>
-            </a>
-        </div>
-        `
-    })
+    try {
+        await transporter.sendMail({
+            from: MAILING_USER,
+            to: email,
+            subject: 'Recover Password',
+            html: `
+            <div>
+                <h2>Cambio de contraseña</h2>
+                <a href="${url}">
+                    <button>Restablecer contraseña</button>
+                </a>
+            </div>
+            `
+        })
+    } catch (error) {
+        console.error('Error sending email:', error);
+    }
 }
 
 export const generateEmailToken = (email,expireTime)=>{

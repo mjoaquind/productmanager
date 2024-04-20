@@ -1,9 +1,9 @@
 const removeAll = async (id) => {
-    console.log(id);
-    fetch(`/api/carts/${id}`, {
-        method: 'DELETE'
-    }).then(result=>{
-        if(result.status===200) {
+    try {
+        const response = await fetch(`/api/carts/${id}`, {
+            method: 'DELETE'
+        });
+        if(response.status===200) {
             Toastify({
                 text:`${result.status} ${result.statusText} Cart ${id} is empty`,
                 duration:10000,
@@ -23,11 +23,12 @@ const removeAll = async (id) => {
                 }
             }).showToast()
         }
-    })
-}
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 const purchase = async (id) => {
-    console.log(id);
     try {
         const response = await fetch(`/api/carts/${id}/purchase`, {
             method: 'POST'
@@ -42,7 +43,7 @@ const purchase = async (id) => {
                     background: "linear-gradient(to right, #00b09b, #96c93d)",
                 }
             }).showToast();
-            window.location.replace('/');
+            window.location.replace('/products');
         } else {
             Toastify({
                 text: `${response.status} ${response.statusText}`,
@@ -55,6 +56,5 @@ const purchase = async (id) => {
         }
     } catch (error) {
         console.error('Error:', error);
-        // Manejar el error aquí
     }
 };
