@@ -1,3 +1,4 @@
+import { sendPurchaseEmail } from '../utils/gmail.js';
 import { cartService, productService, ticketService } from "../repository/index.js";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -188,6 +189,14 @@ class CartController {
                     amount: ticketAmount,
                     purchaser: req.user.email
                 }
+
+
+
+
+                sendPurchaseEmail(req.user.email, ticketProducts, rejectedProducts);
+
+
+
                 const ticketCreated = await ticketService.createTicket(newTicket);
                 req.logger.info(`Cart ${cid} purchased`);
                 res.send(ticketCreated);
