@@ -2,7 +2,6 @@ import nodemailer from 'nodemailer';
 import jwt from 'jsonwebtoken';
 import {options} from '../config/config.js';
 
-// credenciales
 const MAILING_USER = options.gmail.user;
 const MAILING_SECRET = options.gmail.pass;
 
@@ -62,6 +61,24 @@ export const sendPurchaseEmail = async (email, ticketProducts, rejectedProducts)
             subject: 'Purchase Ticket',
             html: emailContent
         });
+    } catch (error) {
+        console.error('Error sending email:', error);
+    }
+}
+
+export const sendDeleteUserEmail = async (email, last_connection) => {
+    try {
+        await transporter.sendMail({
+            from: MAILING_USER,
+            to: email,
+            subject: 'Delete User',
+            html: `
+            <div>
+                <h2>Account Deleted</h2>
+                <p>Your account has been deleted because of inactivity. Your last connection was on ${last_connection}</p>
+            </div>
+            `
+        })
     } catch (error) {
         console.error('Error sending email:', error);
     }

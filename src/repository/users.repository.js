@@ -46,6 +46,10 @@ class UsersRepository {
     changeRole = async (id, role) => {
         return await this.dao.changeRole(id, role);
     }
+
+    deleteUser = async (id) => {
+        return await this.dao.deleteUser(id);
+    }
 }
 
 export default UsersRepository;

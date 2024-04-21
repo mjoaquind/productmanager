@@ -152,7 +152,6 @@ class CartController {
 
     static purchaseCart = async (req, res) => {
         try {
-            console.log(req.user);
             const cid = req.params.cid;
             const cart = await cartService.getCartById(cid);
             if(cart){
@@ -180,8 +179,6 @@ class CartController {
                         rejectedProducts.push(cartProduct);
                     }
                 }
-                console.log("ticketProducts: ", ticketProducts);
-                console.log("rejectedProducts: ", rejectedProducts);
                 const newTicket = {
                     code: uuidv4(),
                     timestamp: Date.now(),
@@ -189,14 +186,7 @@ class CartController {
                     amount: ticketAmount,
                     purchaser: req.user.email
                 }
-
-
-
-
                 sendPurchaseEmail(req.user.email, ticketProducts, rejectedProducts);
-
-
-
                 const ticketCreated = await ticketService.createTicket(newTicket);
                 req.logger.info(`Cart ${cid} purchased`);
                 res.send(ticketCreated);

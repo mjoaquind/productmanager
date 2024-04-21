@@ -57,4 +57,9 @@ export class UserDAO {
         const user = await this.users.updateOne({ _id: id }, { role });
         return user;
     }
+
+    deleteUser = async (id) => {
+        const user = await this.users.deleteOne({ _id: id });
+        return user;
+    }
 }

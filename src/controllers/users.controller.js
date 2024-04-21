@@ -1,6 +1,23 @@
+import { sendDeleteUserEmail } from '../utils/gmail.js';
 import { userService } from '../repository/index.js';
 
 class UserController {
+    static getUsers = async (req, res) => {
+        try {
+            const users = await userService.getUsers();
+            const usersList = users.map(user => ({
+                first_name: user.first_name,
+                email: user.email,
+                role: user.role
+            }));
+            req.logger.info(`List of users obtained!`);
+            res.send({users: usersList});
+        } catch (error) {
+            req.logger.error(error);
+            res.status(400).send({ status: "error", message: error.message });
+        }
+    }
+
     static changeRole = async (req, res) => {
         try {
             const uid = req.params.uid;
@@ -64,6 +81,31 @@ class UserController {
         } catch (error) {
             req.logger.error(error);
             res.status(400).send({ status: "error", message: error.message });
+        }
+    }
+
+    static deleteUsers = async (req, res) => {
+        try {
+            const users = await userService.getUsers(); // Suponiendo que getUsers() obtiene la lista de usuarios
+            const currentDate = new Date();
+            const twooDaysAgo = new Date(currentDate);
+            twooDaysAgo.setDate(currentDate.getDate() - 2);
+
+            const usersToDelete = users.filter(user => {
+                return user.last_connection <= twooDaysAgo;
+            });
+
+            if (usersToDelete.length > 0) {
+                for (const user of usersToDelete) {
+                    sendDeleteUserEmail(user.email, user.last_connection);
+                    await userService.deleteUser(user.id);
+                }
+            }
+
+            req.logger.info(`Users whose last connection was less than 30 minutes ago deleted!`);
+            res.send({ status: "success", message: `Users whose last connection was less than 30 minutes ago deleted: ${usersToDelete.email}` });
+        } catch (error) {
+            throw new Error(`Error deleting users: ${error.message}`);
         }
     }
 }
