@@ -84,6 +84,24 @@ export const sendDeleteUserEmail = async (email, last_connection) => {
     }
 }
 
+export const sendDeleteProductEmail = async (email, product) => {
+    try{
+        await transporter.sendMail({
+            from: MAILING_USER,
+            to: email,
+            subject: 'Deleted Product',
+            html: `
+            <div>
+                <h2>Product Deleted</h2>
+                <p>Your account ${product.title} has been deleted.</p>
+            </div>
+            `
+        })
+    } catch (error) {
+        console.error('Error sending email:', error);
+    }
+}
+
 export const recoverPassword = async (email, token) => {
     const url = `http://localhost:8080/restorePassword?token=${token}`;
     try {

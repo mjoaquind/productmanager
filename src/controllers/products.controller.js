@@ -2,6 +2,7 @@ import { productService } from "../repository/index.js";
 import { CustomError } from '../utils/errors/customError.service.js';
 import { EError } from '../utils/errors/EError.js'
 import { generateProductErrorInfo } from '../utils/errors/productErrorInfo.js';
+import { sendDeleteProductEmail } from '../utils/gmail.js';
 
 class ProductController {
     static getProducts = async (req, res) => {
@@ -156,6 +157,10 @@ class ProductController {
             if (product.owner.equals(req.user._id) || req.user.role === 'admin') {
                 const id = req.params.pid;
                 let result = await productService.deleteProduct(id);
+                const user = await userService.getUserById(product.owner);
+                if(user.role === 'premium') {
+                    sendDeleteProductEmail(user.email, product);
+                }
                 req.logger.info(`Producto ID ${id} eliminado!`);
                 res.status(200).send({result});
             } else {
