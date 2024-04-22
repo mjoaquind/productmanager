@@ -11,18 +11,3 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
-
-document.addEventListener("DOMContentLoaded", function () {
-    const userRole = "{{user.role}}"; // Suponiendo que user.role está disponible en tu contexto de plantilla
-    if (userRole === 'admin') {
-        const navUl = document.querySelector('.navbar-nav');
-        const adminLi = document.createElement('li');
-        adminLi.classList.add('nav-item');
-        const adminLink = document.createElement('a');
-        adminLink.classList.add('nav-link');
-        adminLink.href = "/users";
-        adminLink.textContent = "Users";
-        adminLi.appendChild(adminLink);
-        navUl.appendChild(adminLi);
-    }
-});

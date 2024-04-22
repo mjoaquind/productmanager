@@ -40,4 +40,6 @@ router.get('/realtimeproducts', ViewController.getRealTimeProducts);
 
 router.get('/chat', checkRole('user'), ViewController.chat);
 
+router.get('/users', privateAccess, checkRole('admin'), ViewController.getUsers);
+
 export default router;

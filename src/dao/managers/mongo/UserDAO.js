@@ -8,7 +8,7 @@ export class UserDAO {
     }
 
     getUsers = async () => {
-        const users = await this.users.find();
+        const users = await this.users.find().lean();
         return users;
     }
 

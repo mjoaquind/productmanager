@@ -1,4 +1,4 @@
-import { productService, cartService } from "../repository/index.js";
+import { productService, cartService, userService } from "../repository/index.js";
 
 
 class ViewController {
@@ -110,6 +110,11 @@ class ViewController {
 
     static chat = async (req, res) => {
         res.render('chat',{});
+    }
+
+    static getUsers = async (req, res) => {
+        const users = await userService.getUsers();
+        res.render('users', {users, user: req.session.user});
     }
 }
 

@@ -5,6 +5,17 @@ class UserController {
     static getUsers = async (req, res) => {
         try {
             const users = await userService.getUsers();
+            req.logger.info(`List of users obtained!`);
+            res.send({users});
+        } catch (error) {
+            req.logger.error(error);
+            res.status(400).send({ status: "error", message: error.message });
+        }
+    }
+
+    static getSomeUsers = async (req, res) => {
+        try {
+            const users = await userService.getUsers();
             const usersList = users.map(user => ({
                 first_name: user.first_name,
                 email: user.email,
