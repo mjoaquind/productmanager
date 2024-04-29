@@ -5,7 +5,7 @@ class ViewController {
     static getCartById = async (req, res) => {
         const cart = await cartService.getCartById(req.params.cid);
         const user = req.session.user;
-        res.render('cart', { cart, user });
+        res.render('cart', { cart, user, cid: req.user.cart });
     }
 
     static getProducts = async (req, res) => {
@@ -43,7 +43,7 @@ class ViewController {
             hasNextPage,
             prevLink: hasPrevPage ? `${rutaBase}&page=${prevPage}` : null,
             nextLink: hasNextPage ? `${rutaBase}&page=${nextPage}` : null,
-            cart: req.user.cart
+            cid: req.user.cart
         });
     }
 
@@ -101,7 +101,7 @@ class ViewController {
     }
 
     static profile = (req, res) => {
-        res.render('profile', {user: req.session.user, cart: req.user.cart})
+        res.render('profile', {user: req.session.user, cid: req.user.cart})
     }
 
     static register = (req, res) => {
@@ -114,7 +114,7 @@ class ViewController {
 
     static getUsers = async (req, res) => {
         const users = await userService.getUsers();
-        res.render('users', {users, user: req.session.user});
+        res.render('users', {users, user: req.session.user, cid: req.user.cart});
     }
 }
 
