@@ -115,7 +115,7 @@ class CartController {
             const cart = await cartService.deleteCart(cid);
             //const cart = await cartsModel.deleteOne({ _id: cid });
             req.logger.info(`Cart ${cid} deleted`);
-            res.send({
+            res.status(200).send({
                 status:"success",
                 message: `Cart ${cid} is empty`,
                 carritos: {cart}

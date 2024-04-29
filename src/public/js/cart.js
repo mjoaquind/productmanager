@@ -3,20 +3,18 @@ const removeAll = async (id) => {
         const response = await fetch(`/api/carts/${id}`, {
             method: 'DELETE'
         });
-        if(response.status===200) {
+        if(response.status === 200) {
             Toastify({
-                text:`${result.status} ${result.statusText} Cart ${id} is empty`,
-                duration:10000,
+                text:`${response.status} ${response.statusText} Cart ${id} is empty`,
                 position:'right',
                 style: {
                     background: "linear-gradient(to right, #00b09b, #96c93d)",
                 }
             }).showToast()
-            window.location.replace(`/carts/${id}`);
+            window.location.replace('/products');
         } else {
             Toastify({
-                text:`${result.status} ${result.statusText}`,
-                duration:10000,
+                text:`${response.status} ${response.statusText}`,
                 position:'right',
                 style: {
                     background: "linear-gradient(to right, #d9534f, #dc3545)",
@@ -37,7 +35,6 @@ const purchase = async (id) => {
         if (response.status === 200) {
             Toastify({
                 text: `${response.status} ${response.statusText} Cart ${id} purchased successfully`,
-                duration: 10000,
                 position: 'right',
                 style: {
                     background: "linear-gradient(to right, #00b09b, #96c93d)",
@@ -47,7 +44,6 @@ const purchase = async (id) => {
         } else {
             Toastify({
                 text: `${response.status} ${response.statusText}`,
-                duration: 10000,
                 position: 'right',
                 style: {
                     background: "linear-gradient(to right, #d9534f, #dc3545)",
