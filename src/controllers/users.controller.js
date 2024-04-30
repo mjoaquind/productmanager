@@ -1,4 +1,4 @@
-import { sendDeleteUserEmail } from '../utils/gmail.js';
+import { sendDeleteUserEmail, sendDeleteUserByAdminEmail } from '../utils/gmail.js';
 import { userService } from '../repository/index.js';
 
 class UserController {
@@ -129,7 +129,7 @@ class UserController {
                 return res.status(404).send({ status: "error", message: "User not found" });
             }
             await userService.deleteUser(uid);
-            sendDeleteUserEmail(user.email, user.last_connection);
+            sendDeleteUserByAdminEmail(user.email);
             req.logger.info(`User ${uid} deleted!`);
             res.send({ status: "success", message: `User ${uid} deleted` });
         } catch (error) {

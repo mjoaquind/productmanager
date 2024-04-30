@@ -84,6 +84,24 @@ export const sendDeleteUserEmail = async (email, last_connection) => {
     }
 }
 
+export const sendDeleteUserByAdminEmail = async (email) => {
+    try {
+        await transporter.sendMail({
+            from: MAILING_USER,
+            to: email,
+            subject: 'Delete User',
+            html: `
+            <div>
+                <h2>Account Deleted</h2>
+                <p>An admin has deleted your account.</p>
+            </div>
+            `
+        })
+    } catch (error) {
+        console.error('Error sending email:', error);
+    }
+}
+
 export const sendDeleteProductEmail = async (email, product) => {
     try{
         await transporter.sendMail({
