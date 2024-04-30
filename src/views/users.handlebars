@@ -26,7 +26,9 @@
                         <td>{{this.age}}</td>
                         <td>{{this.role}}</td>
                         <td>
-                            {{@root.cid}}
+                            <button class="btn btn-outline-danger" onclick="deleteUser('{{this._id}}')">
+                                <i class="bi bi-trash"></i>
+                            </button>
                         </td>
                     </tr>
                 {{/each}}

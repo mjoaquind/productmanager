@@ -8,5 +8,6 @@ router.get('/', UserController.getSomeUsers);
 router.put('/premium/:uid', UserController.changeRole);
 router.post('/:uid/documents', uploader.any(), UserController.addDocuments);
 router.delete('/', UserController.deleteUsers);
+router.delete('/:uid', UserController.deleteUser);
 
 export default router;

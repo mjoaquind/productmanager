@@ -97,7 +97,7 @@ class UserController {
 
     static deleteUsers = async (req, res) => {
         try {
-            const users = await userService.getUsers(); // Suponiendo que getUsers() obtiene la lista de usuarios
+            const users = await userService.getUsers();
             const currentDate = new Date();
             const twooDaysAgo = new Date(currentDate);
             twooDaysAgo.setDate(currentDate.getDate() - 2);
@@ -117,6 +117,24 @@ class UserController {
             res.send({ status: "success", message: `Users whose last connection was less than 30 minutes ago deleted: ${usersToDelete.email}` });
         } catch (error) {
             throw new Error(`Error deleting users: ${error.message}`);
+        }
+    }
+
+    static deleteUser = async (req, res) => {
+        try {
+            const uid = req.params.uid;
+            const user = await userService.getUserById(uid);
+            if(!user) {
+                req.logger.error(`User ${uid} not found!`);
+                return res.status(404).send({ status: "error", message: "User not found" });
+            }
+            await userService.deleteUser(uid);
+            sendDeleteUserEmail(user.email, user.last_connection);
+            req.logger.info(`User ${uid} deleted!`);
+            res.send({ status: "success", message: `User ${uid} deleted` });
+        } catch (error) {
+            req.logger.error(error);
+            res.status(400).send({ status: "error", message: error.message });
         }
     }
 }
