@@ -14,7 +14,7 @@
                     <th>Email</th>
                     <th>Age</th>
                     <th>Role</th>
-                    <th>Actions</th>
+                    <th colspan="2">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -25,6 +25,11 @@
                         <td>{{this.email}}</td>
                         <td>{{this.age}}</td>
                         <td>{{this.role}}</td>
+                        <td>
+                            <button class="btn btn-outline-success" onclick="changeRole('{{this._id}}')">
+                                <i class="bi bi-arrow-repeat"></i>
+                            </button>
+                        </td>
                         <td>
                             <button class="btn btn-outline-danger" onclick="deleteUser('{{this._id}}')">
                                 <i class="bi bi-trash"></i>
