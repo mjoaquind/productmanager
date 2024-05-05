@@ -31,7 +31,6 @@ const changeRole = async (id) => {
         const response = await fetch(`/api/users/premium/${id}`, {
             method: 'PUT'
         });
-        console.log(response);
         if(response.status === 200) {
             Toastify({
                 text:`${response.status} ${response.statusText} User ${id} role changed`,

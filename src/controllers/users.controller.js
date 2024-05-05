@@ -41,17 +41,11 @@ class UserController {
                 req.logger.error(`User ${uid} is admin!`);
                 return res.status(400).send({ status: "error", message: "User is admin" });
             }
-            let role = user.role;
-            if(role === 'user') {
+            if(user.role === 'user') {
                 const documents = user.documents;
-                if(documents.length > 0) {
-                    documents.map(doc => {
-                        if(!doc.name === 'identity' || !doc.name === 'address' || !doc.name === 'account') {
-                            req.logger.error(`User ${uid} has to complete upload documents!`);
-                            return res.status(400).send({ status: "error", message: "User has to complete upload documents" });
-                        }
-                    })
-                } else {
+                const requiredDocs = documents.some((doc) => doc.name.includes('identity') && doc.name.includes('identity' && 'address' && 'account'));
+                console.log(requiredDocs);
+                if(!requiredDocs) {
                     req.logger.error(`User ${uid} has to complete upload documents!`);
                     return res.status(400).send({ status: "error", message: "User has to complete upload documents" });
                 }

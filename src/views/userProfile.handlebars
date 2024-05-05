@@ -1,0 +1,51 @@
+<div class="container mt-5 text-center">
+    {{#if user}}
+        {{> nav}}
+    {{/if}}
+
+    <h2 class="mb-4">User Profile</h2>
+
+    <form id="userProfileForm">
+        <div class="row m-2">
+            <div class="col-md-6">
+                <div class="form-floating">
+                    <input type="text" class="form-control" placeholder="Firts Name" id="first_name" name="first_name" required autofocus>
+                    <label for="first_name">First Name</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating">
+                    <input type="text" class="form-control" placeholder="Last Name" id="last_name" name="last_name" required></input>
+                    <label for="last_name">Last Name</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row m-2">
+            <div class="col-md-6">
+                <div class="form-floating">
+                    <input type="email" class="form-control" placeholder="email" id="email" name="email" required>
+                    <label for="email">email</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating">
+                    <input type="number" class"form-control" placeholder="Age" id="age" name="age" step="1" min="0" max="150" required>
+                    <label for="age">Age</label>
+                </div>
+            </div>
+        </div>
+
+        <!--<div class="row m-2">
+            <div class="col-md-6">
+                <div class="input-group mb-3">
+                    <input type="file" class="form-control" id="inputGroupFile02">
+                    <label class="input-group-text" for="inputGroupFile02">Upload</label>
+                </div>
+            </div>
+        </div>-->
+
+        <!--<button type="submit" class="btn btn-outline-primary m-3">Añadir Producto</button>-->
+    </form>
+</div>
+<script src="/js/userProfile.js"></script>
