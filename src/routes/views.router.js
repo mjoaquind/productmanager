@@ -42,4 +42,6 @@ router.get('/chat', checkRole('user'), ViewController.chat);
 
 router.get('/users', privateAccess, checkRole('admin'), ViewController.getUsers);
 
+router.get('/userProfile', privateAccess, ViewController.getUserById);
+
 export default router;

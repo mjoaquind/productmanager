@@ -12,7 +12,10 @@ export class UserDAO {
         return users;
     }
 
-    getUserById = async (id) => await this.users.findById(id);
+    getUserById = async (id) => {
+        const user = await this.users.findById(id).lean();
+        return user;
+    }
 
     getByEmail = async (email) => {
         const user = await this.users.findOne({ email });

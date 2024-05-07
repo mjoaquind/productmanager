@@ -5,17 +5,18 @@
 
     <h2 class="mb-4">User Profile</h2>
 
+    {{#if profile}}
     <form id="userProfileForm">
         <div class="row m-2">
             <div class="col-md-6">
                 <div class="form-floating">
-                    <input type="text" class="form-control" placeholder="Firts Name" id="first_name" name="first_name" required autofocus>
+                    <input type="text" class="form-control" placeholder="Firts Name" id="first_name" name="first_name" value="{{profile.first_name}}" disabled>
                     <label for="first_name">First Name</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating">
-                    <input type="text" class="form-control" placeholder="Last Name" id="last_name" name="last_name" required></input>
+                    <input type="text" class="form-control" placeholder="Last Name" id="last_name" name="last_name" value="{{profile.last_name}}" disabled>
                     <label for="last_name">Last Name</label>
                 </div>
             </div>
@@ -24,16 +25,31 @@
         <div class="row m-2">
             <div class="col-md-6">
                 <div class="form-floating">
-                    <input type="email" class="form-control" placeholder="email" id="email" name="email" required>
+                    <input type="email" class="form-control" placeholder="email" id="email" name="email" value="{{profile.email}}" disabled>
                     <label for="email">email</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating">
-                    <input type="number" class"form-control" placeholder="Age" id="age" name="age" step="1" min="0" max="150" required>
+                    <input type="number" class="form-control" placeholder="Age" id="age" name="age" value="{{profile.age}}" step="1" min="0" max="150" disabled>
                     <label for="age">Age</label>
                 </div>
             </div>
+        </div>
+
+        <div class="row m-2">
+            <div class="col-md-6">
+                <div class="form-floating">
+                    <input type="text" class="form-control" placeholder="Role" id="role" name="role" value="{{profile.role}}" disabled>
+                    <label for="role">Role</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating">
+                    <input type="text" class="form-control" placeholder="Last Connection" id="last_connection" name="last_connection" value="{{profile.last_connection}}" disabled>
+                    <label for="last_connection">Last Connection</label>
+                </div>
+            </div> 
         </div>
 
         <!--<div class="row m-2">
@@ -43,9 +59,12 @@
                     <label class="input-group-text" for="inputGroupFile02">Upload</label>
                 </div>
             </div>
-        </div>-->
+        </div>
 
-        <!--<button type="submit" class="btn btn-outline-primary m-3">Añadir Producto</button>-->
+        <button type="submit" class="btn btn-outline-primary m-3">Añadir Producto</button>-->
     </form>
+    {{else}}
+        <p>No profile</p>
+    {{/if}}
 </div>
 <script src="/js/userProfile.js"></script>
