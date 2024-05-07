@@ -85,8 +85,7 @@ class ViewController {
 
     static getUserById = async (req, res) => {
         const profile = await userService.getUserById(req.user._id);
-        console.log(profile);
-        res.render('userProfile', {profile, user: req.session.user})
+        res.render('userProfile', {profile, user: req.session.user, cid: req.user.cart})
     }
 
     static login = (req, res) => {
